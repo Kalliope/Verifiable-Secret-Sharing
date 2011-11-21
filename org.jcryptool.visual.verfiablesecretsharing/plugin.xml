@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            name="Vss View"
+            icon="icons/sample.gif"
+            category="org.jcryptool.visual"
+            class="org.jcryptool.visual.vss.views.VssView"
+            id="org.jcryptool.visual.vss.views.VssView">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension point="org.jcryptool.core.operations.visuals">
+      <Visual
+            name="%Visual.name.0"
+            viewId="org.jcryptool.visual.vss.views.VssView"
+            contextHelpId="org.jcryptool.visual.vss.view">
+      </Visual>
+   </extension>
+
+</plugin>
