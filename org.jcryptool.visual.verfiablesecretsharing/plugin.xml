@@ -8,7 +8,7 @@
             name="Vss View"
             icon="icons/sample.gif"
             category="org.jcryptool.visual"
-            class="org.jcryptool.visual.vss.views.VssView"
+            class="org.jcryptool.visual.verifiablesecretsharing.views.VerifiableSecretSharingView"
             id="org.jcryptool.visual.vss.views.VssView">
       </view>
    </extension>
