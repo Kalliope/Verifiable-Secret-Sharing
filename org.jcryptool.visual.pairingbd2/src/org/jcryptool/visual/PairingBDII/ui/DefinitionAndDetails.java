@@ -94,11 +94,13 @@ public class DefinitionAndDetails {
         spinnerUserIndex = new Spinner(userSelection, SWT.BORDER);
         spinnerUserIndex.setMinimum(1);
         spinnerUserIndex.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
+            @Override
+			public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
-            public void widgetSelected(SelectionEvent e) {
+            @Override
+			public void widgetSelected(SelectionEvent e) {
                 Model.getDefault().infoUserIndex = spinnerUserIndex.getSelection()-1;
 
                 if (!Model.getDefault().isOnBNCurve) {
@@ -112,7 +114,8 @@ public class DefinitionAndDetails {
         labelDetails = new Text(groupDetails, SWT.MULTI | SWT.READ_ONLY | SWT.H_SCROLL);
         labelDetails.addMouseMoveListener(new MouseMoveListener() {
             // work around to ensure parent can be scrolled when entering this text field
-            public void mouseMove(MouseEvent e) {
+            @Override
+			public void mouseMove(MouseEvent e) {
                 groupDetails.getParent().setFocus();
             }
         });
