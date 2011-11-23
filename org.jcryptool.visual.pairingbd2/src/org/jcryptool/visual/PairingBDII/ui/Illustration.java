@@ -70,11 +70,13 @@ public class Illustration {
         GenAuthi.setText(Messages.Illustration_3);
         GenAuthi.setEnabled(false);
         GenAuthi.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
+            @Override
+			public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
-            public void widgetSelected(SelectionEvent e) {
+            @Override
+			public void widgetSelected(SelectionEvent e) {
                 Model.getDefault().setupStep2();
             }
         });
@@ -92,11 +94,13 @@ public class Illustration {
         Broadcast2.setText(Messages.Illustration_6);
         Broadcast2.setEnabled(false);
         Broadcast2.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
+            @Override
+			public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
-            public void widgetSelected(SelectionEvent e) {
+            @Override
+			public void widgetSelected(SelectionEvent e) {
                 Model.getDefault().setupStep3();
             }
         });
@@ -117,11 +121,13 @@ public class Illustration {
         Broadcast3 = new Button(groupStep3, SWT.PUSH);
         Broadcast3.setEnabled(false);
         Broadcast3.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
+            @Override
+			public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
-            public void widgetSelected(SelectionEvent e) {
+            @Override
+			public void widgetSelected(SelectionEvent e) {
                 Model.getDefault().setupStep4();
             }
         });
@@ -141,11 +147,13 @@ public class Illustration {
         Step4.setEnabled(false);
         CompKey = new Button(groupStep4, SWT.PUSH);
         CompKey.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
+            @Override
+			public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
-            public void widgetSelected(SelectionEvent e) {
+            @Override
+			public void widgetSelected(SelectionEvent e) {
                 Model.getDefault().setupStep5();
             }
         });
@@ -165,11 +173,13 @@ public class Illustration {
         Verify.setText(Messages.Illustration_21);
         Verify.setEnabled(false);
         Verify.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
+            @Override
+			public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
-            public void widgetSelected(SelectionEvent e) {
+            @Override
+			public void widgetSelected(SelectionEvent e) {
                 Model.getDefault().setupStep6();
                 Verify.setEnabled(false);
             }

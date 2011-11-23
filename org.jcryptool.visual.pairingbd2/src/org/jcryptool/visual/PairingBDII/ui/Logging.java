@@ -71,11 +71,13 @@ public class Logging {
         buttonSaveLogfile = new Button(group_Logging, SWT.PUSH);
         buttonSaveLogfile.setText(Messages.Logging_4);
         buttonSaveLogfile.addSelectionListener(new SelectionListener() {
-            public void widgetDefaultSelected(SelectionEvent e) {
+            @Override
+			public void widgetDefaultSelected(SelectionEvent e) {
                 widgetSelected(e);
             }
 
-            public void widgetSelected(SelectionEvent e) {
+            @Override
+			public void widgetSelected(SelectionEvent e) {
                 FileDialog dialog = new FileDialog(Display.getCurrent().getActiveShell(), SWT.SAVE);
                 dialog.setFilterPath(DirectoryService.getUserHomeDir());
                 dialog.setFileName(Messages.Logging_6);

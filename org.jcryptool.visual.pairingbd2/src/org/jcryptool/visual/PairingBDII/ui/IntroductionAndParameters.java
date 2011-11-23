@@ -67,10 +67,10 @@ public class IntroductionAndParameters {
 		Label label = new Label(compositeIntro, SWT.WRAP);
 		label.setFont(FontService.getHeaderFont());
 		label.setBackground(white);
-		label.setText(Messages.IntroductionAndParameters_0); //$NON-NLS-1$
+		label.setText(Messages.IntroductionAndParameters_0); 
 
 		label = new Label(compositeIntro, SWT.READ_ONLY | SWT.WRAP);
-		label.setText(Messages.IntroductionAndParameters_1); //$NON-NLS-1$
+		label.setText(Messages.IntroductionAndParameters_1); 
 		label.setBackground(white);
 		label.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 
@@ -112,10 +112,12 @@ public class IntroductionAndParameters {
 		radio_EmbeddedDegreeSmall.setText(Messages.IntroductionAndParameters_18);
 		radio_EmbeddedDegreeSmall.setSelection(true);
 		radio_EmbeddedDegreeSmall.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (((Button) e.widget).getSelection()) {
 					Model.getDefault().reset();
@@ -138,10 +140,12 @@ public class IntroductionAndParameters {
 		radio_EmbeddedDegreeLarge = new Button(group, SWT.RADIO);
 		radio_EmbeddedDegreeLarge.setText(Messages.IntroductionAndParameters_19);
 		radio_EmbeddedDegreeLarge.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (((Button) e.widget).getSelection()) {
 					Model.getDefault().reset();
@@ -168,10 +172,12 @@ public class IntroductionAndParameters {
 		radio_PenAndPaper.setSelection(false);
 		radio_PenAndPaper.setEnabled(false);
 		radio_PenAndPaper.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Model.getDefault().setParameter(Model.PENANDPAPER);
 				Model.getDefault().setupStep1();
@@ -181,10 +187,12 @@ public class IntroductionAndParameters {
 		radio_IndustrialSecurity.setText(Messages.IntroductionAndParameters_22);
 		radio_IndustrialSecurity.setEnabled(false);
 		radio_IndustrialSecurity.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Model.getDefault().setParameter(Model.INDUSTRIALSECURITY);
 				Model.getDefault().setupStep1();
@@ -201,10 +209,12 @@ public class IntroductionAndParameters {
 		spinner_NumberOfUsers.setMinimum(3);
 		spinner_NumberOfUsers.setMaximum(101);
 		spinner_NumberOfUsers.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (spinner_NumberOfUsers.getSelection() == spinner_NumberOfUsers.getMinimum()) {
 					spinner_NumberOfUsers.setSelection(spinner_NumberOfUsers.getMaximum() - 1);
@@ -230,10 +240,12 @@ public class IntroductionAndParameters {
 		radio_TatePairing.setSelection(false);
 		radio_TatePairing.setEnabled(false);
 		radio_TatePairing.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Model.getDefault().setParameter(Model.TATEPAIRING);
 				Model.getDefault().setupStep1();
@@ -243,10 +255,12 @@ public class IntroductionAndParameters {
 		radio_WeilPairing.setText(Messages.IntroductionAndParameters_27);
 		radio_WeilPairing.setEnabled(false);
 		radio_WeilPairing.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Model.getDefault().setParameter(Model.WEILPARING);
 				Model.getDefault().setupStep1();
