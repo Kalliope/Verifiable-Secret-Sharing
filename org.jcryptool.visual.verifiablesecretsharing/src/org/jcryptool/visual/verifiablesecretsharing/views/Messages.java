@@ -47,7 +47,7 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_coefficients_commit_button;
 	public static String VerifiableSecretSharingComposite_coefficients_calculateShares_button;
 	
-	public static String VerifiableSecretSharingComposite_commitments_coeffivient_subtitle;
+	public static String VerifiableSecretSharingComposite_commitments_coefficient_subtitle;
 	public static String VerifiableSecretSharingComposite_commitments_commitment_subtitle;
 	
 	public static String VerifiableSecretSharingComposite_shares_shareNModP_subtitle;
