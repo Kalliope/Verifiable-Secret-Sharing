@@ -13,7 +13,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -116,6 +115,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private Label[] playerLabelReconstructions;
 	private Button[] playerCheckboxReconstructions;
 	private RowLayout shareModNRowLayout;
+	private GridData nextStepSpanData;
+	private GridLayout nextStepSpanLayout;
+	private Composite nextStepParametersComposite;
 	
     public VerifiableSecretSharingComposite(final Composite parent, final int style, VerifiableSecretSharingView verifiableSecretSharingView) {
         super(parent, style);
@@ -169,10 +171,14 @@ public class VerifiableSecretSharingComposite extends Composite {
 		inputBody.setLayout(inputBodyLayout);
 
 		createParametersGroup(inputBody);
-		createCoefficientsGroup(inputBody, 15);
-		createCommitmentsGroup(inputBody, 15);
-		createSharesGroup(inputBody, 15);
-		createReconstructionGroup(inputBody, 15);
+		createCoefficientsGroup(inputBody);
+		showCoefficientsGroup(false, 0);
+		createCommitmentsGroup(inputBody);
+		showCommitmentsGroup(false, 0);
+		createSharesGroup(inputBody);
+		showSharesGroup(false, 0);
+		createReconstructionGroup(inputBody);
+		showRecontructionGroup(false, 0);
 	}
 
 	private void createParametersGroup(Composite parent) {
@@ -214,14 +220,14 @@ public class VerifiableSecretSharingComposite extends Composite {
 		spaceLabel = new Label(parametersGroup, SWT.NONE);
 		spaceLabel = new Label(parametersGroup, SWT.NONE);
 		
-		GridData nextStepSpanData = new GridData(SWT.FILL, SWT.FILL, true, false);
+		nextStepSpanData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		nextStepSpanData.horizontalSpan = 2;
 		
-		GridLayout nextStepSpanLayout = new GridLayout(2,false);
+		nextStepSpanLayout = new GridLayout(2,false);
 		nextStepSpanLayout.marginWidth = 0;
 		nextStepSpanLayout.marginHeight = 0;
 		
-		Composite nextStepParametersComposite = new Composite(parametersGroup, SWT.NONE);
+		nextStepParametersComposite = new Composite(parametersGroup, SWT.NONE);
 		nextStepParametersComposite.setLayoutData(nextStepSpanData);
 		nextStepParametersComposite.setLayout(nextStepSpanLayout);
 		
@@ -231,8 +237,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 		determineCoefficients.setText(Messages.VerifiableSecretSharingComposite_parameters_determineCoefficients);
 		determineCoefficients.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));		
 	}
-
-	private void createCoefficientsGroup(Composite parent, int coefficients) {
+	
+	private void createCoefficientsGroup(Composite parent) {
 		coefficientsGroupLayout = new RowLayout();
 		coefficientsGroupLayout.type = SWT.VERTICAL;
 		coefficientsGroupLayout.marginWidth = 0;
@@ -254,24 +260,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledCoefficientsGroupContent = new Composite(scrolledCoefficientsGroup, SWT.NONE);
 		scrolledCoefficientsGroupContent.setLayout(coefficientsPolynomNextStepLayout);
 		scrolledCoefficientsGroupContent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		
-		coefficientsLabelsCoefficients = new Label[coefficients];
-		coefficientsSpinnersCoefficients = new Spinner[coefficients];
-		coefficientsLabelsCoefficients[0] = new Label(scrolledCoefficientsGroupContent, SWT.NONE);
-		coefficientsLabelsCoefficients[0].setText("a0 = s");
-		coefficientsSpinnersCoefficients[0] = new Spinner(scrolledCoefficientsGroupContent, SWT.BORDER);
-		coefficientsSpinnersCoefficients[0].setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, false));
-		coefficientsSpinnersCoefficients[0].setEnabled(false);
-		for (int i=1; i<coefficients; i++) {
-			coefficientsLabelsCoefficients[i] = new Label(scrolledCoefficientsGroupContent, SWT.NONE);
-			coefficientsLabelsCoefficients[i].setText("a"+i);
-			
-			coefficientsSpinnersCoefficients[i] = new Spinner(scrolledCoefficientsGroupContent, SWT.BORDER);
-			coefficientsSpinnersCoefficients[i].setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, false));
-		}
-		
-		scrolledCoefficientsGroup.setContent(scrolledCoefficientsGroupContent);
-		scrolledCoefficientsGroupContent.pack();
 
 		commitGenerateButtonLayout = new GridLayout(2,true);
 		commitGenerateButtonLayout.marginWidth = 0;
@@ -313,7 +301,36 @@ public class VerifiableSecretSharingComposite extends Composite {
 		calculateShares.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));	
 	}
 
-	private void createCommitmentsGroup(Composite parent, int commitments) {
+	private void showCoefficientsGroup(boolean showGroup, int coefficients) {
+		if(showGroup) {
+			coefficientsLabelsCoefficients = new Label[coefficients+1];
+			coefficientsSpinnersCoefficients = new Spinner[coefficients+1];
+			coefficientsLabelsCoefficients[0] = new Label(scrolledCoefficientsGroupContent, SWT.NONE);
+			coefficientsLabelsCoefficients[0].setText("a"+convertIntegerToSubscript(0)+" = s");
+			coefficientsSpinnersCoefficients[0] = new Spinner(scrolledCoefficientsGroupContent, SWT.BORDER);
+			coefficientsSpinnersCoefficients[0].setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, false));
+			coefficientsSpinnersCoefficients[0].setEnabled(false);
+			for (int i=1; i<=coefficients; i++) {
+				coefficientsLabelsCoefficients[i] = new Label(scrolledCoefficientsGroupContent, SWT.NONE);
+				coefficientsLabelsCoefficients[i].setText("a"+convertIntegerToSubscript(i));
+				
+				coefficientsSpinnersCoefficients[i] = new Spinner(scrolledCoefficientsGroupContent, SWT.BORDER);
+				coefficientsSpinnersCoefficients[i].setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, false));
+			}
+			
+			scrolledCoefficientsGroup.setContent(scrolledCoefficientsGroupContent);
+			scrolledCoefficientsGroupContent.pack();
+			
+		}
+		else {
+			coefficientsGroup.setVisible(false);
+			coefficientsPolynomNextStepLayout = new GridLayout(2,false);
+			coefficientsPolynomNextStepLayout.marginWidth = 0;
+			coefficientsPolynomNextStepLayout.marginHeight = 0;
+		}
+	}
+	
+	private void createCommitmentsGroup(Composite parent) {
 		commitmentsGroupLayout = new RowLayout();
 		commitmentsGroupLayout.type = SWT.VERTICAL;
 		
@@ -349,22 +366,37 @@ public class VerifiableSecretSharingComposite extends Composite {
 		horizontalSeperator = new Label(scrolledCommitmentsGroupContent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		horizontalSeperator.setLayoutData(seperatorData);
 		
-		coefficientsLabelsCommitment = new Label[commitments];
-		coefficientsTextCommitment = new Text[commitments];
-		for (int i=0; i<commitments; i++) {
-			coefficientsLabelsCommitment[i] = new Label(scrolledCommitmentsGroupContent, SWT.NONE);
-			coefficientsLabelsCommitment[i].setText("a"+(i+1));
-			coefficientsLabelsCommitment[i].setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, true));
-			
-			coefficientsTextCommitment[i] = new Text(scrolledCommitmentsGroupContent, SWT.BORDER);
-			coefficientsTextCommitment[i].setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, false));
-		}
+
 		
-		scrolledCommitmentsGroup.setContent(scrolledCommitmentsGroupContent);
-		scrolledCommitmentsGroupContent.pack();
 	}
 
-	private void createSharesGroup(Composite parent, int shares) {
+	private void showCommitmentsGroup(boolean showGroup, int commitments) {
+		if(showGroup) {
+			coefficientsLabelsCommitment = new Label[commitments];
+			coefficientsTextCommitment = new Text[commitments];
+			for (int i=0; i<commitments; i++) {
+				coefficientsLabelsCommitment[i] = new Label(scrolledCommitmentsGroupContent, SWT.NONE);
+				coefficientsLabelsCommitment[i].setText("a"+convertIntegerToSubscript(i+1));
+				coefficientsLabelsCommitment[i].setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, true));
+				
+				coefficientsTextCommitment[i] = new Text(scrolledCommitmentsGroupContent, SWT.BORDER);
+				coefficientsTextCommitment[i].setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, false));
+			}
+
+			scrolledCommitmentsGroup.setContent(scrolledCommitmentsGroupContent);
+			scrolledCommitmentsGroupContent.pack();
+			
+		}
+		else {
+			commitmentsGroup.setVisible(false);
+
+			commitmentsGroupGridLayout = new GridLayout(2,false);
+			commitmentsGroupGridLayout.marginWidth = 0;
+			commitmentsGroupGridLayout.marginHeight = 0;
+		}
+	}
+	
+	private void createSharesGroup(Composite parent) {
 		sharesGroupLayout = new RowLayout();
 		sharesGroupLayout.type = SWT.VERTICAL;
 		
@@ -403,50 +435,60 @@ public class VerifiableSecretSharingComposite extends Composite {
 		horizontalSeperator = new Label(scrolledSharesGroupContent, SWT.SEPARATOR | SWT.HORIZONTAL);
 		horizontalSeperator.setLayoutData(seperatorData);
 		
-		playerLabelShares = new Label[shares];
-		indexLabelShares = new Label[shares];
-		shareNCompositeShares = new Composite[shares];
-		shareNTextShares = new Text[shares];
-		isModShares = new Label[shares];
-		shareModNTextShares = new Text[shares];
-		checkButtonShares = new Button[shares];
-		
 		shareModNRowLayout = new RowLayout();
 		shareModNRowLayout.type = SWT.HORIZONTAL;
 		shareModNRowLayout.wrap = false;
-		
-		for (int i=0; i<shares; i++) {
-			playerLabelShares[i] = new Label(scrolledSharesGroupContent, SWT.NONE);
-			playerLabelShares[i].setText(Messages.VerifiableSecretSharingComposite_playerX+" "+(i+1));
-			playerLabelShares[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			
-			indexLabelShares[i] = new Label(scrolledSharesGroupContent, SWT.NONE);
-			indexLabelShares[i].setText(""+(i+1));
-			indexLabelShares[i].setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, true));
-			
-			shareNCompositeShares[i] = new Composite(scrolledSharesGroupContent, SWT.NONE);
-			shareNCompositeShares[i].setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, false));
-			shareNCompositeShares[i].setLayout(shareModNRowLayout);
-			
-			shareNTextShares[i] = new Text(shareNCompositeShares[i], SWT.BORDER);
-			shareNTextShares[i].setLayoutData(new RowData(40,-1));
-			
-			isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
-			isModShares[i].setText("\u2261");
-			
-			shareModNTextShares[i] = new Text(shareNCompositeShares[i], SWT.BORDER);
-			shareModNTextShares[i].setLayoutData(new RowData(15,-1));
-			
-			checkButtonShares[i] = new Button(scrolledSharesGroupContent, SWT.NONE);
-			checkButtonShares[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			checkButtonShares[i].setText(Messages.VerifiableSecretSharingComposite_shares_check_button);
-		}
-		
-		scrolledSharesGroup.setContent(scrolledSharesGroupContent);
-		scrolledSharesGroupContent.pack();
 	}
+	
+	private void showSharesGroup(boolean showGroup, int shares) {
+		if(showGroup) {
+			playerLabelShares = new Label[shares];
+			indexLabelShares = new Label[shares];
+			shareNCompositeShares = new Composite[shares];
+			shareNTextShares = new Text[shares];
+			isModShares = new Label[shares];
+			shareModNTextShares = new Text[shares];
+			checkButtonShares = new Button[shares];
+			for (int i=0; i<shares; i++) {
+				playerLabelShares[i] = new Label(scrolledSharesGroupContent, SWT.NONE);
+				playerLabelShares[i].setText(Messages.VerifiableSecretSharingComposite_playerX+" "+(i+1));
+				playerLabelShares[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				
+				indexLabelShares[i] = new Label(scrolledSharesGroupContent, SWT.NONE);
+				indexLabelShares[i].setText(""+(i+1));
+				indexLabelShares[i].setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, true));
+				
+				shareNCompositeShares[i] = new Composite(scrolledSharesGroupContent, SWT.NONE);
+				shareNCompositeShares[i].setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, false));
+				shareNCompositeShares[i].setLayout(shareModNRowLayout);
+				
+				shareNTextShares[i] = new Text(shareNCompositeShares[i], SWT.BORDER);
+				shareNTextShares[i].setLayoutData(new RowData(40,-1));
+				
+				isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
+				isModShares[i].setText("\u2261");
+				
+				shareModNTextShares[i] = new Text(shareNCompositeShares[i], SWT.BORDER);
+				shareModNTextShares[i].setLayoutData(new RowData(15,-1));
+				
+				checkButtonShares[i] = new Button(scrolledSharesGroupContent, SWT.NONE);
+				checkButtonShares[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+				checkButtonShares[i].setText(Messages.VerifiableSecretSharingComposite_shares_check_button);
+			}
+			
+			scrolledSharesGroup.setContent(scrolledSharesGroupContent);
+			scrolledSharesGroupContent.pack();
+		}
+		else {
+			sharesGroup.setVisible(false);
 
-	private void createReconstructionGroup(Composite parent, int player) {
+			sharesGroupGridLayout = new GridLayout(4,false);
+			sharesGroupGridLayout.marginWidth = 0;
+			sharesGroupGridLayout.marginHeight = 0;
+		}
+	}
+	
+	private void createReconstructionGroup(Composite parent) {
 		reconstructionGroupLayout = new RowLayout();
 		reconstructionGroupLayout.type = SWT.VERTICAL;
 		
@@ -467,20 +509,32 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledReconstructionGroupContent.setLayout(reconstructionGroupGridLayout);
 		scrolledReconstructionGroupContent.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		
-		playerLabelReconstructions = new Label[player];
-		playerCheckboxReconstructions = new Button[player];
-		
-		for (int i=0; i<player; i++) {
-			playerLabelReconstructions[i] = new Label(scrolledReconstructionGroupContent, SWT.NONE);
-			playerLabelReconstructions[i].setText(Messages.VerifiableSecretSharingComposite_playerX+" "+(i+1));
-			playerLabelReconstructions[i].setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true));
+	}
+	
+	private void showRecontructionGroup(boolean showGroup, int player) {
+		if(showGroup) {
+			playerLabelReconstructions = new Label[player];
+			playerCheckboxReconstructions = new Button[player];
 			
-			playerCheckboxReconstructions[i] = new Button(scrolledReconstructionGroupContent, SWT.CHECK);
-			playerCheckboxReconstructions[i].setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, false));
+			for (int i=0; i<player; i++) {
+				playerLabelReconstructions[i] = new Label(scrolledReconstructionGroupContent, SWT.NONE);
+				playerLabelReconstructions[i].setText(Messages.VerifiableSecretSharingComposite_playerX+" "+(i+1));
+				playerLabelReconstructions[i].setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, true));
+				
+				playerCheckboxReconstructions[i] = new Button(scrolledReconstructionGroupContent, SWT.CHECK);
+				playerCheckboxReconstructions[i].setLayoutData(new GridData(SWT.FILL,SWT.FILL, true, false));
+			}
+			
+			scrolledReconstructionGroup.setContent(scrolledReconstructionGroupContent);
+			scrolledReconstructionGroupContent.pack();
 		}
-		
-		scrolledReconstructionGroup.setContent(scrolledReconstructionGroupContent);
-		scrolledReconstructionGroupContent.pack();
+		else {
+			reconstructionGroup.setVisible(false);
+
+			reconstructionGroupGridLayout = new GridLayout(2,false);
+			reconstructionGroupGridLayout.marginWidth = 0;
+			reconstructionGroupGridLayout.marginHeight = 0;
+		}
 	}
 	
 	private void createDescriptionGroup(Group parent) {
@@ -490,4 +544,66 @@ public class VerifiableSecretSharingComposite extends Composite {
 		descriptionGroup.setText(Messages.VerifiableSecretSharingComposite_description_title);
 	}
 
+	
+	private String convertIntegerToSubscript(int number) {
+		String result = "";
+		String numberString = number+"";
+		for(int i = 0; i < numberString.length(); i++) {
+			switch(numberString.charAt(i)) {
+				case '0': result += "\u2080";
+					break;
+				case '1': result += "\u2081";
+					break;
+				case '2': result += "\u2082";
+					break;
+				case '3': result += "\u2083";
+					break;
+				case '4': result += "\u2084";
+					break;
+				case '5': result += "\u2085";
+					break;
+				case '6': result += "\u2086";
+					break;
+				case '7': result += "\u2087";
+					break;
+				case '8': result += "\u2088";
+					break;
+				case '9': result += "\u2089";
+					break;
+				default: result += "";
+			}
+		}
+		return result;
+	}
+	
+	private String convertIntegerToSuperscript(int number) {
+		String result = "";
+		String numberString = number+"";
+		for(int i = 0; i < numberString.length(); i++) {
+			switch(numberString.charAt(i)) {
+				case '0': result += "\u2070";
+					break;
+				case '1': result += "\u2071";
+					break;
+				case '2': result += "\u2072";
+					break;
+				case '3': result += "\u2073";
+					break;
+				case '4': result += "\u2074";
+					break;
+				case '5': result += "\u2075";
+					break;
+				case '6': result += "\u2076";
+					break;
+				case '7': result += "\u2077";
+					break;
+				case '8': result += "\u2078";
+					break;
+				case '9': result += "\u2079";
+					break;
+				default: result += "";
+			}
+		}
+		return result;
+	}
 }
