@@ -12,6 +12,8 @@ package org.jcryptool.visual.verifiablesecretsharing.views;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -235,7 +237,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 		nextStepButtonParameters.setText(Messages.VerifiableSecretSharingComposite_nextStep_button);
 		determineCoefficients = new Button(nextStepParametersComposite, SWT.NONE);
 		determineCoefficients.setText(Messages.VerifiableSecretSharingComposite_parameters_determineCoefficients);
-		determineCoefficients.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));		
+		determineCoefficients.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		determineCoefficients.addSelectionListener(new SelectionAdapter()  {
+			@Override
+            public void widgetSelected(final SelectionEvent e) {
+				showCoefficientsGroup(true, 15);
+			}
+		});
 	}
 	
 	private void createCoefficientsGroup(Composite parent) {
@@ -303,6 +311,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 	private void showCoefficientsGroup(boolean showGroup, int coefficients) {
 		if(showGroup) {
+			coefficientsGroup.setVisible(true);
+			coefficientsPolynomNextStepLayout = new GridLayout(2,false);
+			coefficientsPolynomNextStepLayout.marginWidth = 0;
+			coefficientsPolynomNextStepLayout.marginHeight = 0;
 			coefficientsLabelsCoefficients = new Label[coefficients+1];
 			coefficientsSpinnersCoefficients = new Spinner[coefficients+1];
 			coefficientsLabelsCoefficients[0] = new Label(scrolledCoefficientsGroupContent, SWT.NONE);
@@ -324,9 +336,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		}
 		else {
 			coefficientsGroup.setVisible(false);
-			coefficientsPolynomNextStepLayout = new GridLayout(2,false);
-			coefficientsPolynomNextStepLayout.marginWidth = 0;
-			coefficientsPolynomNextStepLayout.marginHeight = 0;
 		}
 	}
 	
@@ -372,6 +381,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 	private void showCommitmentsGroup(boolean showGroup, int commitments) {
 		if(showGroup) {
+			commitmentsGroup.setVisible(true);
+			commitmentsGroupGridLayout = new GridLayout(2,false);
+			commitmentsGroupGridLayout.marginWidth = 0;
+			commitmentsGroupGridLayout.marginHeight = 0;
+			
 			coefficientsLabelsCommitment = new Label[commitments];
 			coefficientsTextCommitment = new Text[commitments];
 			for (int i=0; i<commitments; i++) {
@@ -390,9 +404,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		else {
 			commitmentsGroup.setVisible(false);
 
-			commitmentsGroupGridLayout = new GridLayout(2,false);
-			commitmentsGroupGridLayout.marginWidth = 0;
-			commitmentsGroupGridLayout.marginHeight = 0;
 		}
 	}
 	
@@ -442,6 +453,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 	
 	private void showSharesGroup(boolean showGroup, int shares) {
 		if(showGroup) {
+			sharesGroup.setVisible(true);
+			sharesGroupGridLayout = new GridLayout(4,false);
+			sharesGroupGridLayout.marginWidth = 0;
+			sharesGroupGridLayout.marginHeight = 0;
 			playerLabelShares = new Label[shares];
 			indexLabelShares = new Label[shares];
 			shareNCompositeShares = new Composite[shares];
@@ -481,10 +496,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		}
 		else {
 			sharesGroup.setVisible(false);
-
-			sharesGroupGridLayout = new GridLayout(4,false);
-			sharesGroupGridLayout.marginWidth = 0;
-			sharesGroupGridLayout.marginHeight = 0;
 		}
 	}
 	
@@ -513,6 +524,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 	
 	private void showRecontructionGroup(boolean showGroup, int player) {
 		if(showGroup) {
+			reconstructionGroup.setVisible(true);
+			reconstructionGroupGridLayout = new GridLayout(2,false);
+			reconstructionGroupGridLayout.marginWidth = 0;
+			reconstructionGroupGridLayout.marginHeight = 0;
 			playerLabelReconstructions = new Label[player];
 			playerCheckboxReconstructions = new Button[player];
 			
@@ -530,10 +545,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		}
 		else {
 			reconstructionGroup.setVisible(false);
-
-			reconstructionGroupGridLayout = new GridLayout(2,false);
-			reconstructionGroupGridLayout.marginWidth = 0;
-			reconstructionGroupGridLayout.marginHeight = 0;
 		}
 	}
 	
