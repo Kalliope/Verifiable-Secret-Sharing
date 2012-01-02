@@ -615,6 +615,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 				default: result += "";
 			}
 		}
-		return result;
+		return result; // ich bin ein kommentar. was bist denn du?
 	}
 }
