@@ -73,7 +73,7 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_coefficient_smaller_n;
 	public static String VerifiableSecretSharingComposite_coefficient_set_all;
 	
-	//
+	//errors 
 	
 	
 	static {
