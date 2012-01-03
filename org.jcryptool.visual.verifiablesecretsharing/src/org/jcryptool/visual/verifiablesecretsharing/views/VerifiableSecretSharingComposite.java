@@ -62,11 +62,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private static int players;
 
 	/* int array coefficients */
-	private static int[] coefficients;
-	
+	private static int[] coefficientsInt;
+
 	/* instance for calculating shares */
 	private static VerifiableSecretSharing vss = new VerifiableSecretSharing();
-	
+
 	private static int playerID;
 
 	StyledText stDescription;
@@ -381,10 +381,14 @@ public class VerifiableSecretSharingComposite extends Composite {
 		generateCoefficientsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				Random randomGenerator = new Random();
+				coefficientsInt=new int[playersRecon];
 				for (int i = 1; i < playersRecon; i++) {
 					coefficientsSpinnersCoefficients[i]
 							.setSelection(randomGenerator.nextInt(Integer
 									.parseInt(moduleText.getText())));
+					coefficientsInt[i] = Integer
+							.parseInt(coefficientsSpinnersCoefficients[i]
+									.getText());
 				}
 				generatePolynom();
 			}
@@ -421,11 +425,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			public void widgetSelected(final SelectionEvent e) {
 				int[] tmp = new int[coefficientsSpinnersCoefficients.length];
 				showSharesGroup(true, players);
-				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
-					tmp[i] = Integer
-							.parseInt(coefficientsSpinnersCoefficients[i]
-									.getText());
-				}
+
 				vss.calculateShares(tmp,
 						Integer.parseInt(moduleText.getText()), players);
 
@@ -471,6 +471,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 							@Override
 							public void handleEvent(Event event) {
 								generatePolynom();
+								for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
+									coefficientsInt[i] = Integer
+											.parseInt(coefficientsSpinnersCoefficients[i]
+													.getText());
+								}
 							}
 						});
 			}
@@ -663,10 +668,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 				checkButtonShares[i]
 						.addSelectionListener(new SelectionAdapter() {
 							public void widgetSelected(final SelectionEvent e) {
-								if(vss.check(Integer.parseInt(primitiveRootText.getText()), Integer.parseInt(moduleText.getText()), playerID)==true){
-									//TODO: border color green
-								}else{
-									//TODO: border color red
+								if (vss.check(Integer
+										.parseInt(primitiveRootText.getText()),
+										Integer.parseInt(moduleText.getText()),
+										playerID) == true) {
+									// TODO: border color green
+								} else {
+									// TODO: border color red
 								}
 							}
 						});
