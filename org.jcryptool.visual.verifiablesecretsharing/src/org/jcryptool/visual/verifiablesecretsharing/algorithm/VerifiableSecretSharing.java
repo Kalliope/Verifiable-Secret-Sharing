@@ -1,7 +1,7 @@
 package org.jcryptool.visual.verifiablesecretsharing.algorithm;
 
 public class VerifiableSecretSharing {
-	private int[] shares;
+	private double[] shares;
 	private int[] commitments;
 	private int[] sharesModP;
 	
@@ -15,12 +15,12 @@ public class VerifiableSecretSharing {
 	}
 
 
-	public int[] getShares() {
+	public double[] getShares() {
 		return shares;
 	}
 
 
-	public void setShares(int[] shares) {
+	public void setShares(double[] shares) {
 		this.shares = shares;
 	}
 
@@ -35,9 +35,9 @@ public class VerifiableSecretSharing {
 	}
 
 
-	private int calculatePolynom(int[] coefficients, int x, int p){
+	private double calculatePolynom(int[] coefficients, int x, int p){
 		int s = coefficients[0];
-		int y = s;
+		double y = s;
 		
 		for(int i=1; i<coefficients.length; i++){
 			y += (coefficients[i] * power(x,i));
@@ -47,19 +47,16 @@ public class VerifiableSecretSharing {
 	}
 	
 	
-	public int[][] calculateShares(int[] coefficients, int p, int n){
-		int[] shares = new int[n];
+	public void calculateShares(int[] coefficients, int p, int n){
+		double[] shares = new double[n];
 		int[] sharesModP = new int[n];
-		int[][] allShares = new int[2][n];
 		for(int i=0, y =1; i < n; i++,y++){
 			shares[i] = calculatePolynom(coefficients, y, p);
-			sharesModP[i] = (calculatePolynom(coefficients, y, p)) % p;
+			sharesModP[i] = (int)((calculatePolynom(coefficients, y, p)) % p);
 		}
 		setShares(shares);
 		setSharesModP(sharesModP);
-		allShares[0] = shares;
-		allShares[1] = sharesModP;
-		return allShares;
+
 	}
 	
 	public int[] commitment(int g, int[] coefficients, int p){
@@ -67,7 +64,7 @@ public class VerifiableSecretSharing {
 		int[] commitments = new int[coefficients.length];
 		
 		for(int i=1, y=0; i<coefficients.length; i++,y++){
-			commitments[y] = (power(g,coefficients[i])) % p;
+			commitments[y] = (int)((power(g,coefficients[i])) % p);
 		}
 		setCommitments(commitments);
 		return commitments;
@@ -75,15 +72,15 @@ public class VerifiableSecretSharing {
 	
 	public boolean check(int g, int p, int playerId){
 		int[] commitments = getCommitments();
-		int[] shares = getShares();
+		int[] sharesModP = getSharesModP();
 		
 		boolean checked = false;
 		
-		int lValue = (power(g,shares[playerId - 1])) % p;
+		int lValue = (int)((power(g,sharesModP[playerId - 1])) % p);
 		int rValue = 1;
 		
 		for(int j=0; j<commitments.length; j++){
-			rValue *= (power(power(commitments[j], playerId), j)) % p;
+			rValue *= (int)((power(power(commitments[j], playerId), j)) % p);
 		}
 		
 		if(lValue == rValue){
@@ -93,9 +90,17 @@ public class VerifiableSecretSharing {
 		return checked;
 		
 	}
+	
+	public void reconstruct(int[] shares, int[] playerID, int t, int p){
+		
+		for(int i=1;i<=5;i++){
+			
+		}
+		
+	}
 
-	private int power(double x, double j){
-		return (int)Math.pow(x,j);
+	private double power(double x, double j){
+		return Math.pow(x,j);
 	}
 	
 }
