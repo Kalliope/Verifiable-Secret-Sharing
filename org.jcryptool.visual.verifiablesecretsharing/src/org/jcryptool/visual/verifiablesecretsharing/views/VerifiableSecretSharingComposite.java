@@ -351,10 +351,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				/*
-				 * calculating commitments
-				 */
+				int[] tmp = new int[coefficientsSpinnersCoefficients.length];
 				showCommitmentsGroup(true, (playersRecon - 1));
+				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
+					tmp[i] = Integer
+							.parseInt(coefficientsSpinnersCoefficients[i]
+									.getText());
+				}
+				vss.commitment(Integer.parseInt(primitiveRootText.getText()),
+						tmp, Integer.parseInt(moduleText.getText()));
+				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
+					coefficientsTextCommitment[i].setText(String.valueOf(vss
+							.getCommitments()[i]));
+				}
 			}
 		});
 
@@ -406,17 +415,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 		calculateShares.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				int[] tmp = new int[coefficientsSpinnersCoefficients.length];
-				int[] tmp1 = new int[players];
 				showSharesGroup(true, players);
 				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
 					tmp[i] = Integer
 							.parseInt(coefficientsSpinnersCoefficients[i]
 									.getText());
 				}
-				tmp1 = vss.calculateShares(tmp,
+				vss.calculateShares(tmp,
 						Integer.parseInt(moduleText.getText()), players);
+
 				for (int i = 0; i < players; i++) {
-					shareModNTextShares[i].setText(String.valueOf(tmp1[i]));
+					shareModNTextShares[i].setText(String.valueOf(vss
+							.getSharesModP()[i]));
+					shareNTextShares[i].setText(String.valueOf(vss.getShares()[i]));
 				}
 			}
 		});
@@ -458,7 +469,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 							}
 						});
 			}
-
 			scrolledCoefficientsGroup
 					.setContent(scrolledCoefficientsGroupContent);
 			scrolledCoefficientsGroupContent.pack();
