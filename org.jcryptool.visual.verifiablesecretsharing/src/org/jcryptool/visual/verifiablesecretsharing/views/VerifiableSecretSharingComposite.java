@@ -127,6 +127,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private GridData nextStepSpanData;
 	private GridLayout nextStepSpanLayout;
 	private Composite nextStepParametersComposite;
+	private Button reconstruct;
 
 	public VerifiableSecretSharingComposite(final Composite parent,
 			final int style,
@@ -193,7 +194,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		createSharesGroup(inputBody);
 		showSharesGroup(false, 0);
 		createReconstructionGroup(inputBody);
-		showRecontructionGroup(false, 0);
+		showRecontructionGroup(true, 15);
 	}
 
 	private void createParametersGroup(Composite parent) {
@@ -371,6 +372,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		polynomLabel.setText("P(x)    ");
 
 		polynomText = new Text(polynomContent, SWT.BORDER);
+		polynomText.setEnabled(false);
 		polynomText
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
@@ -640,7 +642,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledReconstructionGroup = new ScrolledComposite(
 				reconstructionGroup, SWT.V_SCROLL);
 		scrolledReconstructionGroup.setExpandHorizontal(true);
-		scrolledReconstructionGroup.setLayoutData(new RowData(100, 180));
+		scrolledReconstructionGroup.setLayoutData(new RowData(100, 145));
 
 		scrolledReconstructionGroupContent = new Composite(
 				scrolledReconstructionGroup, SWT.NONE);
@@ -649,6 +651,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledReconstructionGroupContent.setLayoutData(new GridData(SWT.FILL,
 				SWT.FILL, true, false));
 
+		reconstruct = new Button(reconstructionGroup, SWT.NONE);
+		reconstruct
+				.setText(Messages.VerifiableSecretSharingComposite_reconstruction_reconstruct_button);
+		reconstruct.setLayoutData(new RowData(120,-1));
 	}
 
 	private void showRecontructionGroup(boolean showGroup, int player) {
