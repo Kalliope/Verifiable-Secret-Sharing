@@ -10,6 +10,7 @@
 package org.jcryptool.visual.verifiablesecretsharing.views;
 
 import java.math.BigInteger;
+import java.util.Random;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -51,6 +52,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 			SWT.COLOR_WHITE);
 	private static final Color CYAN = Display.getDefault().getSystemColor(
 			SWT.COLOR_CYAN);
+
+	/* number of players for reconstruction t */
+	private static int players;
 
 	StyledText stDescription;
 	private Composite inputBody;
@@ -275,8 +279,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 						if (moduleTextBI.isProbablePrime(3) == true) {
 							if (isSubgroup(primitiveRootText.getText(),
 									moduleText.getText()) == true) {
-								showCoefficientsGroup(true, Integer
-										.parseInt(playerSpinner.getText()));
+								players = Integer.parseInt(reconstructorSpinner
+										.getText());
+								showCoefficientsGroup(true, (players-1));
+								coefficientsSpinnersCoefficients[0].setSelection(Integer
+										.parseInt(secretText.getText()));
 							}
 						}
 					}
@@ -336,9 +343,24 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setText(Messages.VerifiableSecretSharingComposite_coefficients_generate_button);
 		generateCoefficientsButton.setLayoutData(new GridData(SWT.FILL,
 				SWT.FILL, true, false));
-		generateCoefficientsButton.addSelectionListener(new SelectionAdapter(){
-			
-				
+		generateCoefficientsButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				Random randomGenerator = new Random();
+				for (int i = 1; i < players; i++) {
+					coefficientsSpinnersCoefficients[i]
+							.setSelection(randomGenerator.nextInt(Integer
+									.parseInt(moduleText.getText())));
+				}
+			}
+		});
+
+		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				/*
+				 * calculating commitments
+				 */
+				showCommitmentsGroup(true, (players-1));
+			}
 		});
 
 		polynomContent = new Composite(coefficientsGroup, SWT.NONE);
@@ -396,6 +418,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 						scrolledCoefficientsGroupContent, SWT.BORDER);
 				coefficientsSpinnersCoefficients[i].setLayoutData(new GridData(
 						SWT.FILL, SWT.FILL, true, false));
+				coefficientsSpinnersCoefficients[i].setMinimum(1);
 			}
 
 			scrolledCoefficientsGroup
