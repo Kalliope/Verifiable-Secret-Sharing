@@ -94,11 +94,9 @@ public class VerifiableSecretSharing {
 		
 	}
 	
-	public void reconstruct(int[] shares, int[] playerID, int t){
+	public void reconstruct(int[] shares, int[] playerID, int t, int p){
 		
 		for(int i=1;i<=5;i++){
-			
-			
 			
 		}
 		
