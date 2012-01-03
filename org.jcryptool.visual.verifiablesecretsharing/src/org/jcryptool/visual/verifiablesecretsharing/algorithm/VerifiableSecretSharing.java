@@ -1,40 +1,22 @@
 package org.jcryptool.visual.verifiablesecretsharing.algorithm;
 
 public class VerifiableSecretSharing {
+	
+	/*claculated shares*/
 	private int[] shares;
+	/*calculated commitments*/
 	private int[] commitments;
+	/*calculated shares modulo prime p*/
 	private int[] sharesModP;
 	
-	public int[] getSharesModP() {
-		return sharesModP;
-	}
-
-
-	public void setSharesModP(int[] sharesModP) {
-		this.sharesModP = sharesModP;
-	}
-
-
-	public int[] getShares() {
-		return shares;
-	}
-
-
-	public void setShares(int[] shares) {
-		this.shares = shares;
-	}
-
-
-	public int[] getCommitments() {
-		return commitments;
-	}
-
-
-	public void setCommitments(int[] commitments) {
-		this.commitments = commitments;
-	}
-
-
+	/**
+	 * Calculates the function f(x) = s + ax + bx^2 + ... + ix^i
+	 * y is the result for the chosen x. 
+	 * @param coefficients --> a,b,...,i
+	 * @param x --> Player Id
+	 * @param p --> prime
+	 * @return y
+	 */
 	private int calculatePolynom(int[] coefficients, int x, int p){
 		int s = coefficients[0];
 		int y = s;
@@ -75,11 +57,11 @@ public class VerifiableSecretSharing {
 	
 	public boolean check(int g, int p, int playerId){
 		int[] commitments = getCommitments();
-		int[] shares = getShares();
+		int[] sharesModP = getSharesModP();
 		
 		boolean checked = false;
 		
-		int lValue = (power(g,shares[playerId - 1])) % p;
+		int lValue = (power(g,sharesModP[playerId - 1])) % p;
 		int rValue = 1;
 		
 		for(int j=0; j<commitments.length; j++){
@@ -90,10 +72,38 @@ public class VerifiableSecretSharing {
 			checked = true;
 		}
 
-		return checked;
-		
+		return checked;	
 	}
 
+	public int[] getSharesModP() {
+		return sharesModP;
+	}
+
+
+	public void setSharesModP(int[] sharesModP) {
+		this.sharesModP = sharesModP;
+	}
+
+
+	public int[] getShares() {
+		return shares;
+	}
+
+
+	public void setShares(int[] shares) {
+		this.shares = shares;
+	}
+
+
+	public int[] getCommitments() {
+		return commitments;
+	}
+
+
+	public void setCommitments(int[] commitments) {
+		this.commitments = commitments;
+	}
+	
 	private int power(double x, double j){
 		return (int)Math.pow(x,j);
 	}
