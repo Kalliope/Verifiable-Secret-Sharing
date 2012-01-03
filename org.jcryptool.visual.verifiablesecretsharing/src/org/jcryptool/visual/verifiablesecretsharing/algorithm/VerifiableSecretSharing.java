@@ -51,7 +51,7 @@ public class VerifiableSecretSharing {
 		int[] shares = new int[n];
 		int[] sharesModP = new int[n];
 		int[][] allShares = new int[2][n];
-		for(int i=0; i < coefficients.length; i++){
+		for(int i=0; i < n; i++){
 			shares[i] = calculatePolynom(coefficients, i, p);
 			sharesModP[i] = (calculatePolynom(coefficients, i, p)) % p;
 		}
