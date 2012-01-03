@@ -8,6 +8,7 @@
  *******************************************************************************/
 // -----END DISCLAIMER-----
 package org.jcryptool.visual.verifiablesecretsharing.views;
+import org.jcryptool.visual.verifiablesecretsharing.algorithm.VerifiableSecretSharing;
 
 import java.math.BigInteger;
 import java.util.Random;
@@ -15,8 +16,6 @@ import java.util.Random;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -58,7 +57,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 			SWT.COLOR_CYAN);
 
 	/* number of players for reconstruction t */
+	private static int playersRecon;
 	private static int players;
+	
+	/* instance for calculating shares*/
+	private static VerifiableSecretSharing vss = new VerifiableSecretSharing();
 
 	StyledText stDescription;
 	private Composite inputBody;
@@ -284,9 +287,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 						if (moduleTextBI.isProbablePrime(3) == true) {
 							if (isSubgroup(primitiveRootText.getText(),
 									moduleText.getText()) == true) {
-								players = Integer.parseInt(reconstructorSpinner
+								playersRecon = Integer.parseInt(reconstructorSpinner
 										.getText());
-								showCoefficientsGroup(true, (players-1));
+								players = Integer.parseInt(playerSpinner.getText());
+								showCoefficientsGroup(true, (playersRecon-1));
 								coefficientsSpinnersCoefficients[0].setSelection(Integer
 										.parseInt(secretText.getText()));
 							}
@@ -341,6 +345,15 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setText(Messages.VerifiableSecretSharingComposite_coefficients_commit_button);
 		commitCoefficientsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				true, false));
+		
+		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				/*
+				 * calculating commitments
+				 */
+				showCommitmentsGroup(true, (playersRecon-1));
+			}
+		});
 
 		generateCoefficientsButton = new Button(commitGenerateButtonComposite,
 				SWT.PUSH);
@@ -351,7 +364,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		generateCoefficientsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				Random randomGenerator = new Random();
-				for (int i = 1; i < players; i++) {
+				for (int i = 1; i < playersRecon; i++) {
 					coefficientsSpinnersCoefficients[i]
 							.setSelection(randomGenerator.nextInt(Integer
 									.parseInt(moduleText.getText())));
@@ -360,14 +373,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 			}
 		});
 
-		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				/*
-				 * calculating commitments
-				 */
-				showCommitmentsGroup(true, (players-1));
-			}
-		});
 
 		polynomContent = new Composite(coefficientsGroup, SWT.NONE);
 		polynomContent.setLayout(coefficientsPolynomNextStepLayout);
@@ -396,6 +401,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setText(Messages.VerifiableSecretSharingComposite_coefficients_calculateShares_button);
 		calculateShares.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
+		calculateShares.addSelectionListener(new SelectionAdapter(){
+			public void widgetSelected(final SelectionEvent e){
+				showSharesGroup(true, players);
+				int length = coefficientsSpinnersCoefficients.length;
+				int[] coefficients = new int[length];
+				for(int i = 0; i < length;i++){
+					coefficients[i]=Integer.parseInt(coefficientsSpinnersCoefficients[i].getText());
+				}
+				vss.calculateShares(coefficients, Integer.parseInt(moduleText.getText()) , players);
+				
+				
+			}
+		});
 	}
 
 	private void showCoefficientsGroup(boolean showGroup, int coefficients) {
@@ -803,7 +821,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void generatePolynom(){
 		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + ";
 		
-		for(int i = 1;i<players;i++){
+		for(int i = 1;i<playersRecon;i++){
 			polynom += coefficientsSpinnersCoefficients[i].getText()+ "x" + convertIntegerToSuperscript(i) + " + "; 
 		}
 		
