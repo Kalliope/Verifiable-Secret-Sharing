@@ -26,6 +26,7 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
@@ -441,9 +442,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showCoefficientsGroup(boolean showGroup, int coefficients) {
 		if (showGroup) {
 			coefficientsGroup.setVisible(true);
-			coefficientsPolynomNextStepLayout = new GridLayout(2, false);
-			coefficientsPolynomNextStepLayout.marginWidth = 0;
-			coefficientsPolynomNextStepLayout.marginHeight = 0;
+			for(Control control:scrolledCoefficientsGroupContent.getChildren()) {
+				control.dispose();
+			}
 			coefficientsLabelsCoefficients = new Label[coefficients + 1];
 			coefficientsSpinnersCoefficients = new Spinner[coefficients + 1];
 			coefficientsLabelsCoefficients[0] = new Label(
@@ -538,9 +539,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showCommitmentsGroup(boolean showGroup, int commitments) {
 		if (showGroup) {
 			commitmentsGroup.setVisible(true);
-			commitmentsGroupGridLayout = new GridLayout(2, false);
-			commitmentsGroupGridLayout.marginWidth = 0;
-			commitmentsGroupGridLayout.marginHeight = 0;
+			for(Control control:scrolledCommitmentsGroupContent.getChildren()) {
+				control.dispose();
+			}
 
 			coefficientsLabelsCommitment = new Label[commitments];
 			coefficientsTextCommitment = new Text[commitments];
@@ -622,9 +623,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showSharesGroup(boolean showGroup, int shares) {
 		if (showGroup) {
 			sharesGroup.setVisible(true);
-			sharesGroupGridLayout = new GridLayout(3, false);
-			sharesGroupGridLayout.marginWidth = 0;
-			sharesGroupGridLayout.marginHeight = 0;
+			for(Control control:scrolledSharesGroupContent.getChildren()) {
+				control.dispose();
+			}
 			playerLabelShares = new Label[shares];
 			indexLabelShares = new Label[shares];
 			shareNCompositeShares = new Composite[shares];
@@ -723,9 +724,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showRecontructionGroup(boolean showGroup, int player) {
 		if (showGroup) {
 			reconstructionGroup.setVisible(true);
-			reconstructionGroupGridLayout = new GridLayout(2, false);
-			reconstructionGroupGridLayout.marginWidth = 0;
-			reconstructionGroupGridLayout.marginHeight = 0;
+			for(Control control:scrolledReconstructionGroupContent.getChildren()) {
+				control.dispose();
+			}
 			playerLabelReconstructions = new Label[player];
 			playerCheckboxReconstructions = new Button[player];
 
