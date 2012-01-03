@@ -3,7 +3,18 @@ package org.jcryptool.visual.verifiablesecretsharing.algorithm;
 public class VerifiableSecretSharing {
 	private int[] shares;
 	private int[] commitments;
+	private int[] sharesModP;
 	
+	public int[] getSharesModP() {
+		return sharesModP;
+	}
+
+
+	public void setSharesModP(int[] sharesModP) {
+		this.sharesModP = sharesModP;
+	}
+
+
 	public int[] getShares() {
 		return shares;
 	}
@@ -24,25 +35,31 @@ public class VerifiableSecretSharing {
 	}
 
 
-	public int calculatePolynom(int[] coefficients, int x, int p){
+	private int calculatePolynom(int[] coefficients, int x, int p){
 		int s = coefficients[0];
 		int y = s;
 		
 		for(int i=1; i<coefficients.length; i++){
-			y += (coefficients[i] * power(x,i)) % p;
+			y += (coefficients[i] * power(x,i));
 		}
 		
 		return y;
 	}
 	
 	
-	public int[] calculateShares(int[] coefficients, int p, int n){
+	public int[][] calculateShares(int[] coefficients, int p, int n){
 		int[] shares = new int[n];
-		for(int i=0; i < coefficients.length; i++){
+		int[] sharesModP = new int[n];
+		int[][] allShares = new int[2][n];
+		for(int i=0; i < n; i++){
 			shares[i] = calculatePolynom(coefficients, i, p);
+			sharesModP[i] = (calculatePolynom(coefficients, i, p)) % p;
 		}
 		setShares(shares);
-		return shares;
+		setSharesModP(sharesModP);
+		allShares[0] = shares;
+		allShares[1] = sharesModP;
+		return allShares;
 	}
 	
 	public int[] commitment(int g, int[] coefficients, int p){
