@@ -61,8 +61,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private static int playersRecon;
 	private static int players;
 
+	/* int array coefficients */
+	private static int[] coefficients;
+	
 	/* instance for calculating shares */
 	private static VerifiableSecretSharing vss = new VerifiableSecretSharing();
+	
+	private static int playerID;
 
 	StyledText stDescription;
 	private Composite inputBody;
@@ -623,7 +628,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			shareModNTextShares = new Text[shares];
 			checkButtonShares = new Button[shares];
 			for (int i = 0; i < shares; i++) {
-
+				playerID = i;
 				indexLabelShares[i] = new Label(scrolledSharesGroupContent,
 						SWT.NONE);
 				indexLabelShares[i]
@@ -655,6 +660,16 @@ public class VerifiableSecretSharingComposite extends Composite {
 						SWT.FILL, true, true));
 				checkButtonShares[i]
 						.setText(Messages.VerifiableSecretSharingComposite_shares_check_button);
+				checkButtonShares[i]
+						.addSelectionListener(new SelectionAdapter() {
+							public void widgetSelected(final SelectionEvent e) {
+								if(vss.check(Integer.parseInt(primitiveRootText.getText()), Integer.parseInt(moduleText.getText()), playerID)==true){
+									//TODO: border color green
+								}else{
+									//TODO: border color red
+								}
+							}
+						});
 			}
 
 			scrolledSharesGroup.setContent(scrolledSharesGroupContent);
