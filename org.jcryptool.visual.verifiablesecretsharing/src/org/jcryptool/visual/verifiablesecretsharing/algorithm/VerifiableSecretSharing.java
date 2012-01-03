@@ -91,7 +91,7 @@ public class VerifiableSecretSharing {
 		
 	}
 	
-//	public int reconstruct(int[] shares, int[] playerID, int t, int p){
+//	public int reconstruct(double[] shares, int[] playerID, int t, int p){
 //		
 //		int help1=0;
 //		
