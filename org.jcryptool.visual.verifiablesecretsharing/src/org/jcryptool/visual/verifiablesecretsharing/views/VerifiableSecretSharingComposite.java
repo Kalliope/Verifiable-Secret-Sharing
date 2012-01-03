@@ -12,11 +12,14 @@ package org.jcryptool.visual.verifiablesecretsharing.views;
 import org.jcryptool.visual.verifiablesecretsharing.algorithm.VerifiableSecretSharing;
 
 import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.util.Random;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -142,11 +145,26 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private GridLayout nextStepSpanLayout;
 	private Composite nextStepParametersComposite;
 	private Button reconstruct;
+	private Listener onlyDigits;
 
 	public VerifiableSecretSharingComposite(final Composite parent,
 			final int style,
 			VerifiableSecretSharingView verifiableSecretSharingView) {
 		super(parent, style);
+
+		onlyDigits = new Listener() {
+			public void handleEvent(Event e) {
+				String string = e.text;
+				char[] chars = new char[string.length()];
+				string.getChars(0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++) {
+					if (!('0' <= chars[i] && chars[i] <= '9')) {
+						e.doit = false;
+						return;
+					}
+				}
+			}
+		};
 
 		setLayout(new GridLayout());
 		createHead();
@@ -243,6 +261,41 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		secretText = new Text(parametersGroup, SWT.BORDER);
 		secretText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		secretText.addListener(SWT.Verify, new Listener() {
+			public void handleEvent(Event e) {
+				String string = e.text;
+				BigInteger nextPrime;
+				Random prng = new SecureRandom();
+				String text = "";
+				char[] chars = new char[string.length()];
+				string.getChars(0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++) {
+					if (!('0' <= chars[i] && chars[i] <= '9')) {
+						e.doit = false;
+						return;
+					}
+				}
+
+				if (string != "") {
+					text = secretText.getText() + string;
+				} else {
+					if (secretText.getText().length() == 1) {
+						text = "";
+					} else {
+						text = secretText.getText().substring(0,
+								secretText.getText().length() - 1);
+					}
+				}
+				if (text != "") {
+					nextPrime = BigInteger.probablePrime(
+							new BigInteger(text).bitLength() + 1, prng);
+					moduleText.setText(nextPrime.toString());
+				} else {
+					moduleText.setText(text);
+				}
+
+			}
+		});
 
 		moduleLabel = new Label(parametersGroup, SWT.NONE);
 		moduleLabel
@@ -250,6 +303,47 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		moduleText = new Text(parametersGroup, SWT.BORDER);
 		moduleText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		moduleText.addListener(SWT.Verify, new Listener() {
+			public void handleEvent(Event ev) {
+				String string = ev.text;
+				char[] chars = new char[string.length()];
+				int primitiveRoot;
+				string.getChars(0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++) {
+					if (!('0' <= chars[i] && chars[i] <= '9')) {
+						ev.doit = false;
+						return;
+					}
+				}
+				if(string!="") {
+					primitiveRoot=generatePrimitiveRoot(string);
+					primitiveRootText.setText(primitiveRoot+"");
+				}
+				else {
+					if (moduleText.getText().length() == 1) {
+						primitiveRootText.setText("");
+					} else {
+						primitiveRoot=generatePrimitiveRoot(string.substring(0,string.length()-1));
+						primitiveRootText.setText(primitiveRoot+"");
+					}
+				}
+			}
+			
+			private int generatePrimitiveRoot(String p) {
+				int pInt = Integer.parseInt(p);
+				for (int i = 2; i < pInt; i++) {
+					int j = i, o = 1;
+					do {
+						o++;
+						j = j * i % pInt;
+					} while (j != 1);
+					if (o == (pInt - 1)) {
+						return i;
+					}
+				}
+				return -1;
+			}
+		});
 
 		primitiveRootLabel = new Label(parametersGroup, SWT.NONE);
 		primitiveRootLabel
@@ -258,6 +352,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		primitiveRootText = new Text(parametersGroup, SWT.BORDER);
 		primitiveRootText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
+		primitiveRootText.addListener(SWT.Verify, onlyDigits);
 
 		spaceLabel = new Label(parametersGroup, SWT.NONE);
 		spaceLabel = new Label(parametersGroup, SWT.NONE);
@@ -360,7 +455,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				showCommitmentsGroup(true, (playersRecon - 1));
 				vss.commitment(Integer.parseInt(primitiveRootText.getText()),
 						coefficientsInt, Integer.parseInt(moduleText.getText()));
-				for (int i = 0; i < coefficientsSpinnersCoefficients.length-1; i++) {
+				for (int i = 0; i < coefficientsSpinnersCoefficients.length - 1; i++) {
 					coefficientsTextCommitment[i].setText(String.valueOf(vss
 							.getCommitments()[i]));
 				}
@@ -428,7 +523,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 							.getSharesModP()[i]));
 					shareNTextShares[i].setText(String.valueOf(vss.getShares()[i]));
 				}
-				showReconstructionGroup(true,players);
+				showReconstructionGroup(true, players);
 			}
 		});
 	}
@@ -858,6 +953,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 		}
 		return false;
 	}
+	
+
 
 	private void generatePolynom() {
 		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + ";
