@@ -357,16 +357,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				int[] tmp = new int[coefficientsSpinnersCoefficients.length];
 				showCommitmentsGroup(true, (playersRecon - 1));
-				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
-					tmp[i] = Integer
-							.parseInt(coefficientsSpinnersCoefficients[i]
-									.getText());
-				}
 				vss.commitment(Integer.parseInt(primitiveRootText.getText()),
-						tmp, Integer.parseInt(moduleText.getText()));
-				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
+						coefficientsInt, Integer.parseInt(moduleText.getText()));
+				for (int i = 0; i < coefficientsSpinnersCoefficients.length-1; i++) {
 					coefficientsTextCommitment[i].setText(String.valueOf(vss
 							.getCommitments()[i]));
 				}
@@ -382,11 +376,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 		generateCoefficientsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				Random randomGenerator = new Random();
-				coefficientsInt=new int[playersRecon];
+				coefficientsInt = new int[playersRecon];
 				for (int i = 1; i < playersRecon; i++) {
 					coefficientsSpinnersCoefficients[i]
 							.setSelection(randomGenerator.nextInt(Integer
 									.parseInt(moduleText.getText())));
+				}
+				for (int i = 0; i < playersRecon; i++) {
 					coefficientsInt[i] = Integer
 							.parseInt(coefficientsSpinnersCoefficients[i]
 									.getText());
@@ -424,12 +420,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 				false));
 		calculateShares.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				int[] tmp = new int[coefficientsSpinnersCoefficients.length];
 				showSharesGroup(true, players);
-
-				vss.calculateShares(tmp,
+				vss.calculateShares(coefficientsInt,
 						Integer.parseInt(moduleText.getText()), players);
-
 				for (int i = 0; i < players; i++) {
 					shareModNTextShares[i].setText(String.valueOf(vss
 							.getSharesModP()[i]));
@@ -442,7 +435,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showCoefficientsGroup(boolean showGroup, int coefficients) {
 		if (showGroup) {
 			coefficientsGroup.setVisible(true);
-			for(Control control:scrolledCoefficientsGroupContent.getChildren()) {
+			for (Control control : scrolledCoefficientsGroupContent
+					.getChildren()) {
 				control.dispose();
 			}
 			coefficientsLabelsCoefficients = new Label[coefficients + 1];
@@ -539,7 +533,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showCommitmentsGroup(boolean showGroup, int commitments) {
 		if (showGroup) {
 			commitmentsGroup.setVisible(true);
-			for(Control control:scrolledCommitmentsGroupContent.getChildren()) {
+			for (Control control : scrolledCommitmentsGroupContent
+					.getChildren()) {
 				control.dispose();
 			}
 
@@ -623,7 +618,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showSharesGroup(boolean showGroup, int shares) {
 		if (showGroup) {
 			sharesGroup.setVisible(true);
-			for(Control control:scrolledSharesGroupContent.getChildren()) {
+			for (Control control : scrolledSharesGroupContent.getChildren()) {
 				control.dispose();
 			}
 			playerLabelShares = new Label[shares];
@@ -634,7 +629,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			shareModNTextShares = new Text[shares];
 			checkButtonShares = new Button[shares];
 			for (int i = 0; i < shares; i++) {
-				playerID = i;
+				playerID = i + 1;
 				indexLabelShares[i] = new Label(scrolledSharesGroupContent,
 						SWT.NONE);
 				indexLabelShares[i]
@@ -724,7 +719,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showRecontructionGroup(boolean showGroup, int player) {
 		if (showGroup) {
 			reconstructionGroup.setVisible(true);
-			for(Control control:scrolledReconstructionGroupContent.getChildren()) {
+			for (Control control : scrolledReconstructionGroupContent
+					.getChildren()) {
 				control.dispose();
 			}
 			playerLabelReconstructions = new Label[player];
