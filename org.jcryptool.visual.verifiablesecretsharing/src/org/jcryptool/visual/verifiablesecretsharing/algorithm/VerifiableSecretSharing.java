@@ -93,6 +93,16 @@ public class VerifiableSecretSharing {
 		return checked;
 		
 	}
+	
+	public void reconstruct(int[] shares, int[] playerID, int t){
+		
+		for(int i=1;i<=5;i++){
+			
+			
+			
+		}
+		
+	}
 
 	private int power(double x, double j){
 		return (int)Math.pow(x,j);
