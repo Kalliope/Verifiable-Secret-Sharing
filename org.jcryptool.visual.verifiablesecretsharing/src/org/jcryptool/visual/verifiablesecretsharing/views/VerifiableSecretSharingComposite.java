@@ -196,9 +196,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 		createCommitmentsGroup(inputBody);
 		showCommitmentsGroup(false, 0);
 		createSharesGroup(inputBody);
-		showSharesGroup(false, 0);
+		showSharesGroup(true, 15);
 		createReconstructionGroup(inputBody);
-		showRecontructionGroup(true, 15);
+		showRecontructionGroup(false, 0);
 	}
 
 	private void createParametersGroup(Composite parent) {
@@ -527,7 +527,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		sharesGroupLayout = new RowLayout();
 		sharesGroupLayout.type = SWT.VERTICAL;
 
-		sharesGroupGridLayout = new GridLayout(4, false);
+		sharesGroupGridLayout = new GridLayout(3, false);
 		sharesGroupGridLayout.marginWidth = 0;
 		sharesGroupGridLayout.marginHeight = 0;
 
@@ -548,12 +548,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledSharesGroupContent.setLayoutData(new GridData(SWT.FILL,
 				SWT.FILL, true, false));
 
-		spaceLabel = new Label(scrolledSharesGroupContent, SWT.NONE);
-
 		indexLabel = new Label(scrolledSharesGroupContent, SWT.NONE);
 		indexLabel
 				.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, true));
-		indexLabel.setText("i");
+		indexLabel.setText(Messages.VerifiableSecretSharingComposite_playerX+" i");
 
 		shareNLabel = new Label(scrolledSharesGroupContent, SWT.NONE);
 		shareNLabel
@@ -578,7 +576,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private void showSharesGroup(boolean showGroup, int shares) {
 		if (showGroup) {
 			sharesGroup.setVisible(true);
-			sharesGroupGridLayout = new GridLayout(4, false);
+			sharesGroupGridLayout = new GridLayout(3, false);
 			sharesGroupGridLayout.marginWidth = 0;
 			sharesGroupGridLayout.marginHeight = 0;
 			playerLabelShares = new Label[shares];
@@ -589,17 +587,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 			shareModNTextShares = new Text[shares];
 			checkButtonShares = new Button[shares];
 			for (int i = 0; i < shares; i++) {
-				playerLabelShares[i] = new Label(scrolledSharesGroupContent,
-						SWT.NONE);
-				playerLabelShares[i]
-						.setText(Messages.VerifiableSecretSharingComposite_playerX
-								+ " " + (i + 1));
-				playerLabelShares[i].setLayoutData(new GridData(SWT.FILL,
-						SWT.FILL, true, true));
 
 				indexLabelShares[i] = new Label(scrolledSharesGroupContent,
 						SWT.NONE);
-				indexLabelShares[i].setText("" + (i + 1));
+				indexLabelShares[i].setText(Messages.VerifiableSecretSharingComposite_playerX+" " + (i + 1));
 				indexLabelShares[i].setLayoutData(new GridData(SWT.CENTER,
 						SWT.FILL, true, true));
 
@@ -611,14 +602,14 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 				shareNTextShares[i] = new Text(shareNCompositeShares[i],
 						SWT.BORDER);
-				shareNTextShares[i].setLayoutData(new RowData(40, -1));
+				shareNTextShares[i].setLayoutData(new RowData(50, -1));
 
 				isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
 				isModShares[i].setText("\u2261");
 
 				shareModNTextShares[i] = new Text(shareNCompositeShares[i],
 						SWT.BORDER);
-				shareModNTextShares[i].setLayoutData(new RowData(15, -1));
+				shareModNTextShares[i].setLayoutData(new RowData(30, -1));
 
 				checkButtonShares[i] = new Button(scrolledSharesGroupContent,
 						SWT.NONE);
