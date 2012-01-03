@@ -79,8 +79,9 @@ public class VerifiableSecretSharing {
 		int lValue = (int)((power(g,sharesModP[playerId - 1])) % p);
 		int rValue = 1;
 		
-		for(int j=0; j<commitments.length; j++){
-			rValue *= (int)((power(power(commitments[j], playerId), j)) % p);
+		for(int j=0; j<commitments.length-1; j++){
+			rValue *= (int)(power(power(commitments[j], playerId), j));
+			rValue %= p;
 		}
 		
 		if(lValue == rValue){
