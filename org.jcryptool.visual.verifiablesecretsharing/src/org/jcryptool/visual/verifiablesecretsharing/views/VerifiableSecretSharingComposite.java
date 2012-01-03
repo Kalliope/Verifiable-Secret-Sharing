@@ -15,6 +15,8 @@ import java.util.Random;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -25,8 +27,10 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.jcryptool.core.util.fonts.FontService;
@@ -351,6 +355,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 							.setSelection(randomGenerator.nextInt(Integer
 									.parseInt(moduleText.getText())));
 				}
+				generatePolynom();
 			}
 		});
 
@@ -419,6 +424,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 				coefficientsSpinnersCoefficients[i].setLayoutData(new GridData(
 						SWT.FILL, SWT.FILL, true, false));
 				coefficientsSpinnersCoefficients[i].setMinimum(1);
+				coefficientsSpinnersCoefficients[i].addListener(SWT.CHANGED, new Listener(){
+					@Override
+					public void handleEvent(Event event) {
+							generatePolynom();
+						}
+				});
 			}
 
 			scrolledCoefficientsGroup
@@ -743,13 +754,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 				result += "\u2070";
 				break;
 			case '1':
-				result += "\u2071";
+				result += "\u00B9";
 				break;
 			case '2':
-				result += "\u2072";
+				result += "\u00B2";
 				break;
 			case '3':
-				result += "\u2073";
+				result += "\u00B3";
 				break;
 			case '4':
 				result += "\u2074";
@@ -791,4 +802,17 @@ public class VerifiableSecretSharingComposite extends Composite {
 		}
 		return false;
 	}
+	
+	private void generatePolynom(){
+		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + ";
+		
+		for(int i = 1;i<players;i++){
+			polynom += coefficientsSpinnersCoefficients[i].getText()+ "x" + convertIntegerToSuperscript(i) + " + "; 
+		}
+		
+		
+		polynomText.setText(polynom.substring(0, polynom.length()-3));
+		
+	}
+	
 }
