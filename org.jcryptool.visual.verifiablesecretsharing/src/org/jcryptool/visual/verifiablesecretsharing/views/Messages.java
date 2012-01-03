@@ -56,8 +56,7 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_shares_check_button;
 	
 	public static String VerifiableSecretSharingComposite_reconstruction_reconstruct_button;
-	
-	
+		
 	//errors for setting parameters
 	public static String VerifiableSecretSharingComposite_param_player_n_positive;
 	public static String VerifiableSecretSharingComposite_param_player_n_bigger_2;
@@ -73,7 +72,7 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_coefficient_smaller_n;
 	public static String VerifiableSecretSharingComposite_coefficient_set_all;
 	
-	//
+	//errors 
 	
 	
 	static {
