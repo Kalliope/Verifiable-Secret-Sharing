@@ -1,7 +1,9 @@
 package org.jcryptool.visual.verifiablesecretsharing.algorithm;
 
 public class VerifiableSecretSharing {
-	public int[] shares;
+	private int[] shares;
+	private int[] commitments;
+	
 	private int calculatePolynom(int[] coefficients, int x, int p){
 		int s = coefficients[0];
 		int y = s;
@@ -14,14 +16,67 @@ public class VerifiableSecretSharing {
 	}
 	
 	
-	public void calculateShares(int[] coefficients, int p, int n){
+	private void calculateShares(int[] coefficients, int p, int n){
 		int[] shares = new int[n];
 		for(int i=0; i < coefficients.length; i++){
 			shares[i] = calculatePolynom(coefficients, i, p);
 		}
-		this.shares = shares;
+		setShares(shares);
 	}
 	
+	private void commitment(int g, int[] coefficients, int p){
+		
+		int[] commitments = new int[coefficients.length];
+		
+		for(int i=0; i<coefficients.length; i++){
+			commitments[i] = (power(g,coefficients[i])) % p;
+		}
+		
+		setCommitments(commitments);
+	}
+	
+	public boolean check(int g, int p, int playerId){
+		int[] commitments = getCommitments();
+		int[] shares = getShares();
+		
+		boolean checked = false;
+		
+		int lValue = (power(g,shares[playerId - 1])) % p;
+		int rValue = 1;
+		
+		for(int j=0; j<commitments.length; j++){
+			rValue *= (power(power(commitments[j], playerId), j)) % p;
+		}
+		
+		if(lValue == rValue){
+			checked = true;
+		}
+
+		return checked;
+		
+	}
+	
+	
+	public int[] getShares() {
+		return shares;
+	}
+
+
+	public void setShares(int[] shares) {
+		this.shares = shares;
+	}
+
+
+	public int[] getCommitments() {
+		return commitments;
+	}
+
+
+	public void setCommitments(int[] commitments) {
+		this.commitments = commitments;
+	}
+
+
 	public int power(double x, double j){
 		return (int)Math.pow(x,j);
 	}
