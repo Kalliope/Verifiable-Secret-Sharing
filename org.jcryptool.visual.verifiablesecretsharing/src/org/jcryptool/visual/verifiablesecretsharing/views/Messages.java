@@ -15,7 +15,7 @@ import org.eclipse.osgi.util.NLS;
 /**
  *
  * This class defines variables, which are used in the GUI. The values of this
- * variables are defined in the messges.properties and messages_de.properties.
+ * variables are defined in the messages.properties and messages_de.properties.
  * This is an easy way to change text printed in the GUI, without doing anything
  * in the actual code.
  *
@@ -51,11 +51,31 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_commitments_commitment_subtitle;
 	
 	public static String VerifiableSecretSharingComposite_shares_shareNModP_subtitle;
-	//playerX for Shares and Reconstructin
+	//playerX for Shares and Reconstruction
 	public static String VerifiableSecretSharingComposite_playerX;
 	public static String VerifiableSecretSharingComposite_shares_check_button;
 	
 	public static String VerifiableSecretSharingComposite_reconstruction_reconstruct_button;
+	
+	
+	//errors for setting parameters
+	public static String VerifiableSecretSharingComposite_param_player_n_positive;
+	public static String VerifiableSecretSharingComposite_param_player_n_bigger_2;
+	public static String VerifiableSecretSharingComposite_param_player_t_smaller_n;
+	public static String VerifiableSecretSharingComposite_param_secret_s_positive;
+	public static String VerifiableSecretSharingComposite_param_module_p_bigger_s;
+	public static String VerifiableSecretSharingComposite_param_module_p_isPrime;
+	public static String VerifiableSecretSharingComposite_param_primitive_g;
+	public static String VerifiableSecretSharingComposite_param_set_all;
+	
+	//errors for setting the coefficients
+	public static String VerifiableSecretSharingComposite_coefficient_positive;
+	public static String VerifiableSecretSharingComposite_coefficient_smaller_n;
+	public static String VerifiableSecretSharingComposite_coefficient_set_all;
+	
+	//
+	
+	
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
