@@ -35,7 +35,26 @@ public class VerifiableSecretSharing {
 		setCommitments(commitments);
 	}
 	
-	
+	public boolean check(int g, int p, int playerId){
+		int[] commitments = getCommitments();
+		int[] shares = getShares();
+		
+		boolean checked = false;
+		
+		int lValue = (power(g,shares[playerId - 1])) % p;
+		int rValue = 1;
+		
+		for(int j=0; j<commitments.length; j++){
+			rValue *= (power(power(commitments[j], playerId), j)) % p;
+		}
+		
+		if(lValue == rValue){
+			checked = true;
+		}
+
+		return checked;
+		
+	}
 	
 	
 	public int[] getShares() {
