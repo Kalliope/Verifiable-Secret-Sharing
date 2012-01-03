@@ -60,6 +60,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 			SWT.COLOR_WHITE);
 	private static final Color CYAN = Display.getDefault().getSystemColor(
 			SWT.COLOR_CYAN);
+	private static final Color GREEN = Display.getDefault().getSystemColor(
+			SWT.COLOR_GREEN);
+	private static final Color RED = Display.getDefault().getSystemColor(
+			SWT.COLOR_RED);
 
 	/* number of players for reconstruction t */
 	private static int playersRecon;
@@ -71,7 +75,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	/* instance for calculating shares */
 	private static VerifiableSecretSharing vss = new VerifiableSecretSharing();
 
-	private static int playerID;
+	private static int[] playerID;
 
 	StyledText stDescription;
 	private Composite inputBody;
@@ -724,8 +728,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 			isModShares = new Label[shares];
 			shareModNTextShares = new Text[shares];
 			checkButtonShares = new Button[shares];
+			playerID = new int[shares];
 			for (int i = 0; i < shares; i++) {
-				playerID = i + 1;
+				playerID[i] = i+1;
 				indexLabelShares[i] = new Label(scrolledSharesGroupContent,
 						SWT.NONE);
 				indexLabelShares[i]
@@ -757,16 +762,20 @@ public class VerifiableSecretSharingComposite extends Composite {
 						SWT.FILL, true, true));
 				checkButtonShares[i]
 						.setText(Messages.VerifiableSecretSharingComposite_shares_check_button);
+				checkButtonShares[i].setData(i);
 				checkButtonShares[i]
 						.addSelectionListener(new SelectionAdapter() {
-							public void widgetSelected(final SelectionEvent e) {
+							@Override
+							public void widgetSelected(SelectionEvent e) {
 								if (vss.check(Integer
 										.parseInt(primitiveRootText.getText()),
 										Integer.parseInt(moduleText.getText()),
-										playerID) == true) {
-									// TODO: border color green
+										playerID[(Integer) e.widget.getData()]) == true) {
+									shareModNTextShares[(Integer) e.widget
+											.getData()].setBackground(GREEN);
 								} else {
-									// TODO: border color red
+									shareModNTextShares[(Integer) e.widget
+											.getData()].setBackground(RED);
 								}
 							}
 						});
