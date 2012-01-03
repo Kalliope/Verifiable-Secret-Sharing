@@ -208,7 +208,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		createSharesGroup(inputBody);
 		showSharesGroup(false, 0);
 		createReconstructionGroup(inputBody);
-		showRecontructionGroup(false, 0);
+		showReconstructionGroup(false, 0);
 	}
 
 	private void createParametersGroup(Composite parent) {
@@ -428,6 +428,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 							.getSharesModP()[i]));
 					shareNTextShares[i].setText(String.valueOf(vss.getShares()[i]));
 				}
+				showReconstructionGroup(true,players);
 			}
 		});
 	}
@@ -716,7 +717,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		reconstruct.setLayoutData(new RowData(120, -1));
 	}
 
-	private void showRecontructionGroup(boolean showGroup, int player) {
+	private void showReconstructionGroup(boolean showGroup, int player) {
 		if (showGroup) {
 			reconstructionGroup.setVisible(true);
 			for (Control control : scrolledReconstructionGroupContent
@@ -738,7 +739,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				playerCheckboxReconstructions[i] = new Button(
 						scrolledReconstructionGroupContent, SWT.CHECK);
 				playerCheckboxReconstructions[i].setLayoutData(new GridData(
-						SWT.FILL, SWT.FILL, true, false));
+						SWT.CENTER, SWT.FILL, true, false));
 			}
 
 			scrolledReconstructionGroup
