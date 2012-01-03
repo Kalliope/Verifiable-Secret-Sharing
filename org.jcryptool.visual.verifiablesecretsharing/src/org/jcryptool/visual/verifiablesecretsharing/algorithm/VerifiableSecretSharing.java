@@ -67,7 +67,7 @@ public class VerifiableSecretSharing {
 		int[] commitments = new int[coefficients.length];
 		
 		for(int i=1, y=0; i<coefficients.length; i++,y++){
-			commitments[y] = (power(g,coefficients[i])) % p;
+			commitments[y] = (int)((power(g,coefficients[i])) % p);
 		}
 		setCommitments(commitments);
 		return commitments;
@@ -79,7 +79,7 @@ public class VerifiableSecretSharing {
 		
 		boolean checked = false;
 		
-		int lValue = (power(g,shares[playerId - 1])) % p;
+		int lValue = (int)((power(g,shares[playerId - 1])) % p);
 		int rValue = 1;
 		
 		for(int j=0; j<commitments.length; j++){
@@ -94,8 +94,8 @@ public class VerifiableSecretSharing {
 		
 	}
 
-	private int power(double x, double j){
-		return (int)Math.pow(x,j);
+	private double power(double x, double j){
+		return Math.pow(x,j);
 	}
 	
 }
