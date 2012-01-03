@@ -17,9 +17,12 @@ import java.util.Random;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -57,7 +60,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 			SWT.COLOR_WHITE);
 	private static final Color CYAN = Display.getDefault().getSystemColor(
 			SWT.COLOR_CYAN);
-
+	private static final Color GREEN = Display.getDefault().getSystemColor(
+			SWT.COLOR_GREEN);
+	private static final Color RED = Display.getDefault().getSystemColor(
+			SWT.COLOR_RED);
+	
 	/* number of players for reconstruction t */
 	private static int playersRecon;
 	private static int players;
@@ -69,6 +76,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private static VerifiableSecretSharing vss = new VerifiableSecretSharing();
 
 	private static int playerID;
+	private static int  id; //id for marking checked shares
 
 	StyledText stDescription;
 	private Composite inputBody;
@@ -654,6 +662,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				shareModNTextShares[i] = new Text(shareNCompositeShares[i],
 						SWT.BORDER);
 				shareModNTextShares[i].setLayoutData(new RowData(30, -1));
+				shareModNTextShares[i].setBounds(new org.eclipse.swt.graphics.Rectangle(200, 50, 300, 30));
 
 				checkButtonShares[i] = new Button(scrolledSharesGroupContent,
 						SWT.NONE);
@@ -661,19 +670,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 						SWT.FILL, true, true));
 				checkButtonShares[i]
 						.setText(Messages.VerifiableSecretSharingComposite_shares_check_button);
-				checkButtonShares[i]
-						.addSelectionListener(new SelectionAdapter() {
-							public void widgetSelected(final SelectionEvent e) {
-								if (vss.check(Integer
-										.parseInt(primitiveRootText.getText()),
-										Integer.parseInt(moduleText.getText()),
-										playerID) == true) {
-									// TODO: border color green
-								} else {
-									// TODO: border color red
-								}
-							}
-						});
+				checkButtonShares[i].addSelectionListener(new SelectionAdapter(){
+					@Override
+					public void widgetSelected(SelectionEvent e) {
+						if(vss.check(Integer.parseInt(primitiveRootText.getText()), Integer.parseInt(moduleText.getText()), 1)==false);
+						shareModNTextShares[1].setBackground(RED);
+					}
+				});
 			}
 
 			scrolledSharesGroup.setContent(scrolledSharesGroupContent);
