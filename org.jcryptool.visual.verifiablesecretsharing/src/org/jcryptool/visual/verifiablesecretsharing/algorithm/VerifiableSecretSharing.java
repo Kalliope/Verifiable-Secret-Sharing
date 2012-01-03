@@ -91,13 +91,26 @@ public class VerifiableSecretSharing {
 		
 	}
 	
-	public void reconstruct(int[] shares, int[] playerID, int t, int p){
-		
-		for(int i=1;i<=5;i++){
-			
-		}
-		
-	}
+//	public int reconstruct(int[] shares, int[] playerID, int t, int p){
+//		
+//		int help1=0;
+//		
+//		
+//		for(int i=0;i<t;i++){
+//			int help2=1;	
+//			
+//				for(int j=0;j<t;j++){
+//					if(j==i) continue;
+//				
+//				help2 *=(x-playerID[j])/playerID[i]-playerID[j];
+//				}
+//			help1 += help2;
+//			
+//		}
+//		
+//	return help1;
+//		
+//	}
 
 	private double power(double x, double j){
 		return Math.pow(x,j);
