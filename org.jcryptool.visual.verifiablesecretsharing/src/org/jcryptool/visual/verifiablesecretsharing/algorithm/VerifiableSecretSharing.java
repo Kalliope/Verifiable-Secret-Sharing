@@ -40,7 +40,7 @@ public class VerifiableSecretSharing {
 		int y = s;
 		
 		for(int i=1; i<coefficients.length; i++){
-			y += (coefficients[i] * power(x,i));
+			y += (int)(coefficients[i] * power(x,i));
 		}
 		
 		return y;
@@ -83,7 +83,7 @@ public class VerifiableSecretSharing {
 		int rValue = 1;
 		
 		for(int j=0; j<commitments.length; j++){
-			rValue *= (power(power(commitments[j], playerId), j)) % p;
+			rValue *= (int)((power(power(commitments[j], playerId), j)) % p);
 		}
 		
 		if(lValue == rValue){
