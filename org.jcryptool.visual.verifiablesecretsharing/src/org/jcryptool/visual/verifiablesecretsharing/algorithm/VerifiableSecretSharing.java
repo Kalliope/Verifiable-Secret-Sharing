@@ -65,8 +65,8 @@ public class VerifiableSecretSharing {
 		
 		int[] commitments = new int[coefficients.length];
 		
-		for(int i=1, y=0; i<coefficients.length; i++,y++){
-			commitments[y] = (int)((power(g,coefficients[i])) % p);
+		for(int i=0; i<coefficients.length; i++){
+			commitments[i] = (int)((power(g,coefficients[i])) % p);
 		}
 		setCommitments(commitments);
 		return commitments;
