@@ -268,9 +268,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		secretText.addListener(SWT.Verify, new Listener() {
 			public void handleEvent(Event e) {
 				String string = e.text;
-				BigInteger nextPrime;
-				Random prng = new SecureRandom();
-				String text = "";
+
 				char[] chars = new char[string.length()];
 				string.getChars(0, chars.length, chars, 0);
 				for (int i = 0; i < chars.length; i++) {
@@ -280,16 +278,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 					}
 				}
 
-				if (string != "") {
-					text = secretText.getText() + string;
-				} else {
-					if (secretText.getText().length() == 1) {
-						text = "";
-					} else {
-						text = secretText.getText().substring(0,
-								secretText.getText().length() - 1);
-					}
-				}
+			}
+		});
+		secretText.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event e) {
+				BigInteger nextPrime;
+				Random prng = new SecureRandom();
+				String text = secretText.getText();
 				if (text != "") {
 					nextPrime = BigInteger.probablePrime(
 							new BigInteger(text).bitLength() + 1, prng);
@@ -297,7 +292,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 				} else {
 					moduleText.setText(text);
 				}
-
 			}
 		});
 
@@ -311,7 +305,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 			public void handleEvent(Event ev) {
 				String string = ev.text;
 				char[] chars = new char[string.length()];
-				int primitiveRoot;
 				string.getChars(0, chars.length, chars, 0);
 				for (int i = 0; i < chars.length; i++) {
 					if (!('0' <= chars[i] && chars[i] <= '9')) {
@@ -319,20 +312,27 @@ public class VerifiableSecretSharingComposite extends Composite {
 						return;
 					}
 				}
-				if(string!="") {
-					primitiveRoot=generatePrimitiveRoot(string);
-					primitiveRootText.setText(primitiveRoot+"");
-				}
-				else {
-					if (moduleText.getText().length() == 1) {
+
+			}
+
+		});
+		moduleText.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event event) {
+				int primitiveRoot;
+				if (moduleText.getText().compareTo("") != 0 && new BigInteger(moduleText.getText()).isProbablePrime(3)) {
+					primitiveRoot = generatePrimitiveRoot(moduleText.getText());
+					if (primitiveRoot != -1) {
+						primitiveRootText.setText(primitiveRoot + "");
+					}
+					else {
 						primitiveRootText.setText("");
-					} else {
-						primitiveRoot=generatePrimitiveRoot(string.substring(0,string.length()-1));
-						primitiveRootText.setText(primitiveRoot+"");
 					}
 				}
+				else {
+					primitiveRootText.setText("");
+				}
 			}
-			
+
 			private int generatePrimitiveRoot(String p) {
 				int pInt = Integer.parseInt(p);
 				for (int i = 2; i < pInt; i++) {
@@ -617,12 +617,14 @@ public class VerifiableSecretSharingComposite extends Composite {
 				false, true));
 		coefficientLabel
 				.setText(Messages.VerifiableSecretSharingComposite_commitments_coefficient_subtitle);
+		coefficientLabel.setData(false);
 
 		commitmentLabel = new Label(scrolledCommitmentsGroupContent, SWT.NONE);
 		commitmentLabel.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false,
 				true));
 		commitmentLabel
 				.setText(Messages.VerifiableSecretSharingComposite_commitments_commitment_subtitle);
+		commitmentLabel.setData(false);
 
 		seperatorData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		seperatorData.horizontalSpan = 2;
@@ -630,6 +632,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		horizontalSeperator = new Label(scrolledCommitmentsGroupContent,
 				SWT.SEPARATOR | SWT.HORIZONTAL);
 		horizontalSeperator.setLayoutData(seperatorData);
+		horizontalSeperator.setData(false);
 
 	}
 
@@ -638,7 +641,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 			commitmentsGroup.setVisible(true);
 			for (Control control : scrolledCommitmentsGroupContent
 					.getChildren()) {
-				control.dispose();
+
+				if ((Boolean) control.getData() != false) {
+					control.dispose();
+				}
 			}
 
 			coefficientsLabelsCommitment = new Label[commitments];
@@ -697,14 +703,17 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, false, true));
 		indexLabel.setText(Messages.VerifiableSecretSharingComposite_playerX
 				+ " i");
+		indexLabel.setData(false);
 
 		shareNLabel = new Label(scrolledSharesGroupContent, SWT.NONE);
 		shareNLabel
 				.setLayoutData(new GridData(SWT.CENTER, SWT.FILL, true, true));
 		shareNLabel
 				.setText(Messages.VerifiableSecretSharingComposite_shares_shareNModP_subtitle);
+		shareNLabel.setData(false);
 
 		spaceLabel = new Label(scrolledSharesGroupContent, SWT.NONE);
+		spaceLabel.setData(false);
 
 		seperatorData = new GridData(SWT.FILL, SWT.FILL, true, false);
 		seperatorData.horizontalSpan = 4;
@@ -712,17 +721,17 @@ public class VerifiableSecretSharingComposite extends Composite {
 		horizontalSeperator = new Label(scrolledSharesGroupContent,
 				SWT.SEPARATOR | SWT.HORIZONTAL);
 		horizontalSeperator.setLayoutData(seperatorData);
+		horizontalSeperator.setData(false);
 
-		shareModNRowLayout = new RowLayout();
-		shareModNRowLayout.type = SWT.HORIZONTAL;
-		shareModNRowLayout.wrap = false;
 	}
 
 	private void showSharesGroup(boolean showGroup, int shares) {
 		if (showGroup) {
 			sharesGroup.setVisible(true);
 			for (Control control : scrolledSharesGroupContent.getChildren()) {
-				control.dispose();
+				if ((Boolean) control.getData() != false) {
+					control.dispose();
+				}
 			}
 			playerLabelShares = new Label[shares];
 			indexLabelShares = new Label[shares];
@@ -732,8 +741,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 			shareModNTextShares = new Text[shares];
 			checkButtonShares = new Button[shares];
 			playerID = new int[shares];
+
+			shareModNRowLayout = new RowLayout();
+			shareModNRowLayout.type = SWT.HORIZONTAL;
+			shareModNRowLayout.wrap = false;
 			for (int i = 0; i < shares; i++) {
-				playerID[i] = i+1;
+				playerID[i] = i + 1;
 				indexLabelShares[i] = new Label(scrolledSharesGroupContent,
 						SWT.NONE);
 				indexLabelShares[i]
@@ -972,8 +985,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		}
 		return false;
 	}
-	
-
 
 	private void generatePolynom() {
 		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + ";
