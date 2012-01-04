@@ -18,8 +18,6 @@ import java.util.Random;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -52,14 +50,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 	public final String uEight = ("\u2088"); //$NON-NLS-1$
 	public final String uNine = ("\u2089"); //$NON-NLS-1$
 
-	private static final int RESTARTBUTTONHEIGHT = 30;
-	private static final int RESTARTBUTTONWIDTH = 120;
 
 	/* colors for backgrounds. */
 	private static final Color WHITE = Display.getDefault().getSystemColor(
 			SWT.COLOR_WHITE);
-	private static final Color CYAN = Display.getDefault().getSystemColor(
-			SWT.COLOR_CYAN);
 	private static final Color GREEN = Display.getDefault().getSystemColor(
 			SWT.COLOR_GREEN);
 	private static final Color RED = Display.getDefault().getSystemColor(
@@ -132,7 +126,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private Label indexLabel;
 	private Label shareNLabel;
 	private Label[] playerLabelShares;
-	private Label[] indexLabelShares;
 	private Composite[] shareNCompositeShares;
 	private Text[] shareNTextShares;
 	private Label[] isModShares;
@@ -201,21 +194,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 		body.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		body.setLayout(new GridLayout());
 
-		final Button restart = new Button(body, SWT.PUSH);
-		restart.setText(Messages.VerifiableSecretSharingComposite_restart_button);
-		restart.setForeground(CYAN);
-		restart.setLayoutData(new GridData(RESTARTBUTTONWIDTH,
-				RESTARTBUTTONHEIGHT));
-
-		final Group bodyGroup = new Group(body, SWT.FILL);
-		bodyGroup.setLayout(new GridLayout());
-		bodyGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		createInputBody(bodyGroup);
-		createDescriptionGroup(bodyGroup);
+		createInputBody(body);
+		createDescriptionGroup(body);
 	}
 
-	private void createInputBody(Group parent) {
+	private void createInputBody(Composite parent) {
 		inputBody = new Composite(parent, SWT.NONE);
 		inputBodyLayout = new GridLayout(5, false);
 		inputBodyLayout.marginWidth = 0;
@@ -385,6 +368,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		determineCoefficients.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
+				String errorText=Messages.VerifiableSecretSharingComposite_error_start;
 				if (playerSpinner.getText().compareTo(
 						reconstructorSpinner.getText()) >= 0) {
 					if (moduleText.getText().compareTo(secretText.getText()) > 0) {
@@ -407,8 +391,20 @@ public class VerifiableSecretSharingComposite extends Composite {
 								coefficientsSpinnersCoefficients[0].setSelection(Integer
 										.parseInt(secretText.getText()));
 							}
+							else {
+								errorText += "\r\n"+Messages.VerifiableSecretSharingComposite_param_primitive_g;
+							}
+						}
+						else {
+							errorText += "\r\n"+Messages.VerifiableSecretSharingComposite_param_module_p_isPrime;
 						}
 					}
+					else {
+						errorText+= "\r\n"+Messages.VerifiableSecretSharingComposite_param_module_p_bigger_s;
+					}
+				}
+				else {
+					errorText += "\r\n"+Messages.VerifiableSecretSharingComposite_param_player_t_smaller_n;
 				}
 			}
 		});
@@ -731,12 +727,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 		if (showGroup) {
 			sharesGroup.setVisible(true);
 			for (Control control : scrolledSharesGroupContent.getChildren()) {
-				if (control.getData() == null || (control.getData() != null && (control.getData() instanceof Boolean)==false)) {
+				if (control.getData() == null
+						|| (control.getData() != null && (control.getData() instanceof Boolean) == false)) {
 					control.dispose();
 				}
 			}
 			playerLabelShares = new Label[shares];
-			indexLabelShares = new Label[shares];
 			shareNCompositeShares = new Composite[shares];
 			shareNTextShares = new Text[shares];
 			isModShares = new Label[shares];
@@ -749,12 +745,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 			shareModNRowLayout.wrap = false;
 			for (int i = 0; i < shares; i++) {
 				playerID[i] = i + 1;
-				indexLabelShares[i] = new Label(scrolledSharesGroupContent,
+				playerLabelShares[i] = new Label(scrolledSharesGroupContent,
 						SWT.NONE);
-				indexLabelShares[i]
+				playerLabelShares[i]
 						.setText(Messages.VerifiableSecretSharingComposite_playerX
 								+ " " + (i + 1));
-				indexLabelShares[i].setLayoutData(new GridData(SWT.CENTER,
+				playerLabelShares[i].setLayoutData(new GridData(SWT.CENTER,
 						SWT.FILL, true, true));
 
 				shareNCompositeShares[i] = new Composite(
@@ -879,14 +875,15 @@ public class VerifiableSecretSharingComposite extends Composite {
 		}
 	}
 
-	private void createDescriptionGroup(Group parent) {
-		descriptionGroup = new Group(parent, SWT.NONE);
+	private void createDescriptionGroup(Composite body) {
+		descriptionGroup = new Group(body, SWT.NONE);
 		descriptionGroup.setLayout(new GridLayout(2, false));
 		descriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true));
 		descriptionGroup
 				.setText(Messages.VerifiableSecretSharingComposite_description_title);
-		descriptionGroup.setToolTipText(Messages.VerifiableSecretSharingComposite_description_tooltip);
+		descriptionGroup
+				.setToolTipText(Messages.VerifiableSecretSharingComposite_description_tooltip);
 	}
 
 	private String convertIntegerToSubscript(int number) {
