@@ -33,8 +33,17 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_commitments_title;
 	public static String VerifiableSecretSharingComposite_shares_title;
 	public static String VerifiableSecretSharingComposite_reconstruction_title;
+
+	//texts for descriptions
 	public static String VerifiableSecretSharingComposite_description_title;
 	public static String VerifiableSecretSharingComposite_description_tooltip;
+	public static String VerifiableSecretSharingComposite_description_text_param;
+	public static String VerifiableSecretSharingComposite_description_text_coefficients;
+	public static String VerifiableSecretSharingComposite_description_text_comittments;
+	public static String VerifiableSecretSharingComposite_description_text_shares;
+	public static String VerifiableSecretSharingComposite_description_text_reconstruction;
+	
+	//texts for parameters
 	public static String VerifiableSecretSharingComposite_parameters_players;
 	public static String VerifiableSecretSharingComposite_parameters_reconstructors;
 	public static String VerifiableSecretSharingComposite_parameters_secret;
@@ -58,6 +67,10 @@ public class Messages extends NLS {
 	
 	public static String VerifiableSecretSharingComposite_reconstruction_reconstruct_button;
 		
+	//errors general
+	public static String VerifiableSecretSharingComposite_error_start;
+	
+	
 	//errors for setting parameters
 	public static String VerifiableSecretSharingComposite_param_player_n_positive;
 	public static String VerifiableSecretSharingComposite_param_player_n_bigger_2;
