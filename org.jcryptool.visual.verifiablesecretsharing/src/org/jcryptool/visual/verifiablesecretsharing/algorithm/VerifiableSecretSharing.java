@@ -1,5 +1,7 @@
 package org.jcryptool.visual.verifiablesecretsharing.algorithm;
 
+import java.math.BigInteger;
+
 public class VerifiableSecretSharing {
 	private double[] shares;
 	private int[] commitments;
@@ -76,15 +78,18 @@ public class VerifiableSecretSharing {
 		
 		boolean checked = false;
 		
-		int lValue = (int)((power(g,sharesModP[playerId - 1])) % p);
-		int rValue = 1;
+		BigInteger lValue = new BigInteger(g+"").pow(sharesModP[playerId - 1]).mod(new BigInteger(p+""));
+//				new BigInteger(power(g,sharesModP[playerId - 1])+"");
+//		lValue = lValue.mod(new BigInteger(p+""));
+		BigInteger rValue = new BigInteger("1");
 		
 		for(int j=0; j<commitments.length-1; j++){
-			rValue *= (int)(power(power(commitments[j], playerId), j));
-			rValue %= p;
+			rValue = rValue.multiply(new BigInteger(commitments[j]+"").pow(playerId).pow(j)).mod(new BigInteger(p+""));
+//			rValue *= (int)(power(power(commitments[j], playerId), j));
+//			rValue %= p;
 		}
 		
-		if(lValue == rValue){
+		if(lValue.compareTo(rValue) == 0){
 			checked = true;
 		}
 
