@@ -456,10 +456,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				showCommitmentsGroup(true, (playersRecon - 1));
+				showCommitmentsGroup(true, (playersRecon));
 				vss.commitment(Integer.parseInt(primitiveRootText.getText()),
 						coefficientsInt, Integer.parseInt(moduleText.getText()));
-				for (int i = 0; i < coefficientsSpinnersCoefficients.length - 1; i++) {
+				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
 					coefficientsTextCommitment[i].setText(String.valueOf(vss
 							.getCommitments()[i]));
 				}
@@ -539,8 +539,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 					.getChildren()) {
 				control.dispose();
 			}
-			coefficientsLabelsCoefficients = new Label[coefficients + 1];
-			coefficientsSpinnersCoefficients = new Spinner[coefficients + 1];
+			coefficientsLabelsCoefficients = new Label[coefficients+1];
+			coefficientsSpinnersCoefficients = new Spinner[coefficients+1];
 			coefficientsLabelsCoefficients[0] = new Label(
 					scrolledCoefficientsGroupContent, SWT.NONE);
 			coefficientsLabelsCoefficients[0].setText("a"
@@ -643,8 +643,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 			for (int i = 0; i < commitments; i++) {
 				coefficientsLabelsCommitment[i] = new Label(
 						scrolledCommitmentsGroupContent, SWT.NONE);
-				coefficientsLabelsCommitment[i].setText("a"
-						+ convertIntegerToSubscript(i + 1));
+				coefficientsLabelsCommitment[i].setText("bla"
+						+ convertIntegerToSubscript(i));
 				coefficientsLabelsCommitment[i].setLayoutData(new GridData(
 						SWT.CENTER, SWT.FILL, true, true));
 
