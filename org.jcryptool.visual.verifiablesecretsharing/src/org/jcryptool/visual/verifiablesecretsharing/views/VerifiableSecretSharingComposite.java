@@ -148,7 +148,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private GridData nextStepSpanData;
 	private GridLayout nextStepSpanLayout;
 	private Composite nextStepParametersComposite;
-	private Button reconstruct;
+	private Button reconstructButton;
 	private Listener onlyDigits;
 
 	public VerifiableSecretSharingComposite(final Composite parent,
@@ -396,6 +396,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 								playersRecon = Integer
 										.parseInt(reconstructorSpinner
 												.getText());
+								/* initiate array and set value for secret */
+								coefficientsInt = new int[playersRecon];
+								coefficientsInt[0]=Integer.parseInt(secretText.getText());
+								/* ************************ */
 								players = Integer.parseInt(playerSpinner
 										.getText());
 								showCoefficientsGroup(true, (playersRecon - 1));
@@ -475,7 +479,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		generateCoefficientsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
 				Random randomGenerator = new Random();
-				coefficientsInt = new int[playersRecon];
 				for (int i = 1; i < playersRecon; i++) {
 					coefficientsSpinnersCoefficients[i]
 							.setSelection(randomGenerator.nextInt(Integer
@@ -828,10 +831,17 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledReconstructionGroupContent.setLayoutData(new GridData(SWT.FILL,
 				SWT.FILL, true, false));
 
-		reconstruct = new Button(reconstructionGroup, SWT.NONE);
-		reconstruct
+		reconstructButton = new Button(reconstructionGroup, SWT.NONE);
+		reconstructButton
 				.setText(Messages.VerifiableSecretSharingComposite_reconstruction_reconstruct_button);
-		reconstruct.setLayoutData(new RowData(120, -1));
+		reconstructButton.setLayoutData(new RowData(120, -1));
+		reconstructButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				/* hier koennte ihre werbung stehen */
+				/* oder unsere reconstruct funktion */
+			}
+		});
 	}
 
 	private void showReconstructionGroup(boolean showGroup, int player) {
