@@ -600,6 +600,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				false));
 		commitmentsGroup
 				.setText(Messages.VerifiableSecretSharingComposite_commitments_title);
+		commitmentsGroup.setData(false);
 
 		scrolledCommitmentsGroup = new ScrolledComposite(commitmentsGroup,
 				SWT.V_SCROLL);
@@ -729,7 +730,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		if (showGroup) {
 			sharesGroup.setVisible(true);
 			for (Control control : scrolledSharesGroupContent.getChildren()) {
-				if ((Boolean) control.getData() != false) {
+				if (control.getData() == null) {
 					control.dispose();
 				}
 			}
