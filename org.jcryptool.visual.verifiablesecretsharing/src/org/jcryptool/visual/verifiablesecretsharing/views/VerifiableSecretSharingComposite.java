@@ -368,7 +368,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		determineCoefficients.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				String errorText="";//Messages.VerifiableSecretSharingComposite_error_start;
+				String errorText=Messages.VerifiableSecretSharingComposite_error_start;
 				if (playerSpinner.getText().compareTo(
 						reconstructorSpinner.getText()) >= 0) {
 					if (moduleText.getText().compareTo(secretText.getText()) > 0) {
