@@ -642,7 +642,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			for (Control control : scrolledCommitmentsGroupContent
 					.getChildren()) {
 
-				if ((Boolean) control.getData() != false) {
+				if (control.getData() == null) {
 					control.dispose();
 				}
 			}
