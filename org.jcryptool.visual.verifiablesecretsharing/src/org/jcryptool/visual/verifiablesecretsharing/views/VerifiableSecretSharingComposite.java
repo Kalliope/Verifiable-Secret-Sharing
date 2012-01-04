@@ -664,7 +664,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			for (int i = 0; i < commitments; i++) {
 				coefficientsLabelsCommitment[i] = new Label(
 						scrolledCommitmentsGroupContent, SWT.NONE);
-				coefficientsLabelsCommitment[i].setText("bla"
+				coefficientsLabelsCommitment[i].setText("a"
 						+ convertIntegerToSubscript(i));
 				coefficientsLabelsCommitment[i].setLayoutData(new GridData(
 						SWT.CENTER, SWT.FILL, true, true));
@@ -850,8 +850,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		reconstructButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				/* hier koennte ihre werbung stehen */
-				/* oder unsere reconstruct funktion */
+				/* unsere reconstruct funktion */
 			}
 		});
 	}
