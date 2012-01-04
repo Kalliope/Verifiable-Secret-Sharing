@@ -1,12 +1,29 @@
+//-----BEGIN DISCLAIMER-----
+/*******************************************************************************
+* Copyright (c) 2011 JCrypTool Team and Contributors
+*
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*******************************************************************************/
+//-----END DISCLAIMER-----
 package org.jcryptool.visual.verifiablesecretsharing.algorithm;
 
 import java.math.BigInteger;
 
+/**
+ * Implements the algorithms for the Verifiable Secret Sharing.
+ * 
+ * @author Dulghier Christoph, Reisinger Kerstin, Tiefenbacher Stefan, Wagner Thomas
+ *
+ */
 public class VerifiableSecretSharing {
-	private double[] shares;
 	private int[] commitments;
+	private double[] shares;
 	private int[] sharesModP;
 	private BigInteger[] sharesBig;
+	private BigInteger[] commitmentsBig;
 	
 	private BigInteger calculatePolynom(int[] coefficients, int x, int p){	
 		BigInteger y = new BigInteger(coefficients[0]+"");
@@ -38,27 +55,51 @@ public class VerifiableSecretSharing {
 		
 		int[] commitments = new int[coefficients.length];
 		
+		BigInteger[] commitmentsBig = new BigInteger[coefficients.length];
+		
 		for(int i=0; i<coefficients.length; i++){
-			commitments[i] = (int)((power(g,coefficients[i])) % p);
+			commitmentsBig[i] = new BigInteger(g+"").pow(coefficients[i]);
+			commitmentsBig[i] = commitmentsBig[i].mod(new BigInteger(p+""));
+			commitments[i] = commitmentsBig[i].intValue();
 		}
+		
 		setCommitments(commitments);
+		setCommitmentsBig(commitmentsBig);
 		return commitments;
 	}
 	
 	public boolean check(int g, int p, int playerId){
 		int[] commitments = getCommitments();
 		BigInteger[] sharesBig = getSharesBig();
+		BigInteger[] commitmentsBig = getCommitmentsBig();
 		
 		boolean checked = false;
+		
+		BigInteger lValue;
+		if(sharesBig[playerId-1].mod(new BigInteger(p+"")).compareTo(new BigInteger(0+"")) != 0){
+			BigInteger help = sharesBig[playerId-1].mod(new BigInteger((p-1)+""));
+			lValue = new BigInteger(g+"").modPow(help, new BigInteger(p+""));
+		}
+		else{
+			lValue = new BigInteger(g+"").modPow(sharesBig[playerId-1], new BigInteger(p+""));
+		}
 
-		BigInteger lValue = new BigInteger(g+"").modPow(sharesBig[playerId-1], new BigInteger(p+""));
+
 
 		BigInteger rValue = new BigInteger("1");
 		
 		for(int j=0; j<commitments.length; j++){
-			int help = (int)power(playerId,j);
-			rValue = rValue.multiply(new BigInteger(commitments[j]+"").pow(help));
-			rValue = rValue.mod(new BigInteger(p+""));
+			BigInteger help = new BigInteger(playerId+"").pow(j);
+			
+			if(help.mod(new BigInteger(p+"")).compareTo(new BigInteger(0+"")) != 0){
+				help = help.mod(new BigInteger((p-1)+""));
+				rValue = rValue.multiply(commitmentsBig[j].modPow(help, new BigInteger(p+"")));
+				rValue = rValue.mod(new BigInteger(p+""));
+			}
+			else{
+				rValue = rValue.multiply(commitmentsBig[j].modPow(help, new BigInteger(p+"")));
+				rValue = rValue.mod(new BigInteger(p+""));
+			}
 		}
 		
 		if(lValue.compareTo(rValue) == 0){
@@ -89,10 +130,6 @@ public class VerifiableSecretSharing {
 //		
 //	}
 
-	private double power(double x, double j){
-		return Math.pow(x,j);
-	}
-	
 	public BigInteger[] getSharesBig() {
 		return sharesBig;
 	}
@@ -135,4 +172,16 @@ public class VerifiableSecretSharing {
 	public void setCommitments(int[] commitments) {
 		this.commitments = commitments;
 	}
+
+
+	public BigInteger[] getCommitmentsBig() {
+		return commitmentsBig;
+	}
+
+
+	public void setCommitmentsBig(BigInteger[] commitmentsBig) {
+		this.commitmentsBig = commitmentsBig;
+	}
+	
+	
 }
