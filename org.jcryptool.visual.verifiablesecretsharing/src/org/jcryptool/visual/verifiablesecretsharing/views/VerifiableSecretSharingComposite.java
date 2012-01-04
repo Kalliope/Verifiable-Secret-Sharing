@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
@@ -49,7 +50,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 	public final String uSeven = ("\u2087"); //$NON-NLS-1$
 	public final String uEight = ("\u2088"); //$NON-NLS-1$
 	public final String uNine = ("\u2089"); //$NON-NLS-1$
-
 
 	/* colors for backgrounds. */
 	private static final Color WHITE = Display.getDefault().getSystemColor(
@@ -368,43 +368,55 @@ public class VerifiableSecretSharingComposite extends Composite {
 		determineCoefficients.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				String errorText=Messages.VerifiableSecretSharingComposite_error_start;
-				if (playerSpinner.getText().compareTo(
-						reconstructorSpinner.getText()) >= 0) {
-					if (moduleText.getText().compareTo(secretText.getText()) > 0) {
-						BigInteger moduleTextBI = new BigInteger(moduleText
-								.getText());
-						if (moduleTextBI.isProbablePrime(3) == true) {
-							if (isSubgroup(primitiveRootText.getText(),
-									moduleText.getText()) == true) {
-								playersRecon = Integer
-										.parseInt(reconstructorSpinner
-												.getText());
-								/* initiate array and set value for secret */
-								coefficientsInt = new int[playersRecon];
-								coefficientsInt[0] = Integer
-										.parseInt(secretText.getText());
-								/* ************************ */
-								players = Integer.parseInt(playerSpinner
-										.getText());
-								showCoefficientsGroup(true, (playersRecon - 1));
-								coefficientsSpinnersCoefficients[0].setSelection(Integer
-										.parseInt(secretText.getText()));
+				String errorText = Messages.VerifiableSecretSharingComposite_error_start;
+				if (secretText.getText().compareTo("") != 0
+						&& moduleText.getText().compareTo("") != 0
+						&& primitiveRootText.getText().compareTo("") != 0) {
+					if (Integer.parseInt(playerSpinner.getText()) >= Integer
+							.parseInt(reconstructorSpinner.getText())) {
+						if (Integer.parseInt(moduleText.getText()) > Integer
+								.parseInt(secretText.getText())) {
+							BigInteger moduleTextBI = new BigInteger(moduleText
+									.getText());
+							if (moduleTextBI.isProbablePrime(3) == true) {
+								if (isSubgroup(primitiveRootText.getText(),
+										moduleText.getText()) == true) {
+									playersRecon = Integer
+											.parseInt(reconstructorSpinner
+													.getText());
+									/* initiate array and set value for secret */
+									coefficientsInt = new int[playersRecon];
+									coefficientsInt[0] = Integer
+											.parseInt(secretText.getText());
+									/* ************************ */
+									players = Integer.parseInt(playerSpinner
+											.getText());
+									showCoefficientsGroup(true,
+											(playersRecon - 1));
+									coefficientsSpinnersCoefficients[0]
+											.setSelection(Integer
+													.parseInt(secretText
+															.getText()));
+								} else {
+									errorText += "\r\n"
+											+ Messages.VerifiableSecretSharingComposite_param_primitive_g;
+								}
+							} else {
+								errorText += "\r\n"
+										+ Messages.VerifiableSecretSharingComposite_param_module_p_isPrime;
 							}
-							else {
-								errorText += "\r\n"+Messages.VerifiableSecretSharingComposite_param_primitive_g;
-							}
+						} else {
+							errorText += "\r\n"
+									+ Messages.VerifiableSecretSharingComposite_param_module_p_bigger_s;
 						}
-						else {
-							errorText += "\r\n"+Messages.VerifiableSecretSharingComposite_param_module_p_isPrime;
-						}
-					}
-					else {
-						errorText+= "\r\n"+Messages.VerifiableSecretSharingComposite_param_module_p_bigger_s;
+					} else {
+						errorText += "\r\n"
+								+ Messages.VerifiableSecretSharingComposite_param_player_t_smaller_n;
 					}
 				}
-				else {
-					errorText += "\r\n"+Messages.VerifiableSecretSharingComposite_param_player_t_smaller_n;
+				if (errorText
+						.compareTo(Messages.VerifiableSecretSharingComposite_error_start) != 0) {
+					MessageDialog.openError(getShell(), "Error", errorText);
 				}
 			}
 		});
@@ -550,6 +562,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			coefficientsSpinnersCoefficients[0].setLayoutData(new GridData(
 					SWT.FILL, SWT.FILL, true, false));
 			coefficientsSpinnersCoefficients[0].setEnabled(false);
+			coefficientsSpinnersCoefficients[0].setMaximum(Integer.parseInt(moduleText.getText())-1);
 			for (int i = 1; i <= coefficients; i++) {
 				coefficientsLabelsCoefficients[i] = new Label(
 						scrolledCoefficientsGroupContent, SWT.NONE);
@@ -561,6 +574,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				coefficientsSpinnersCoefficients[i].setLayoutData(new GridData(
 						SWT.FILL, SWT.FILL, true, false));
 				coefficientsSpinnersCoefficients[i].setMinimum(1);
+				coefficientsSpinnersCoefficients[i].setMaximum(Integer.parseInt(moduleText.getText())-1);
 				coefficientsSpinnersCoefficients[i].addListener(SWT.CHANGED,
 						new Listener() {
 							@Override
