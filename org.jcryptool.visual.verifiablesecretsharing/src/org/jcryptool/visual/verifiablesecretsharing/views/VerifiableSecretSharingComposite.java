@@ -730,7 +730,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		if (showGroup) {
 			sharesGroup.setVisible(true);
 			for (Control control : scrolledSharesGroupContent.getChildren()) {
-				if (control.getData() == null) {
+				if (control.getData() == null || (control.getData() != null && (control.getData() instanceof Boolean)==false)) {
 					control.dispose();
 				}
 			}
