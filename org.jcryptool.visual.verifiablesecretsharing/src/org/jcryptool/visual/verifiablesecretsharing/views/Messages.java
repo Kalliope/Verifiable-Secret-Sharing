@@ -34,6 +34,7 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_shares_title;
 	public static String VerifiableSecretSharingComposite_reconstruction_title;
 	public static String VerifiableSecretSharingComposite_description_title;
+	public static String VerifiableSecretSharingComposite_description_tooltip;
 	public static String VerifiableSecretSharingComposite_parameters_players;
 	public static String VerifiableSecretSharingComposite_parameters_reconstructors;
 	public static String VerifiableSecretSharingComposite_parameters_secret;

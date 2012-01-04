@@ -319,16 +319,16 @@ public class VerifiableSecretSharingComposite extends Composite {
 		moduleText.addListener(SWT.Modify, new Listener() {
 			public void handleEvent(Event event) {
 				int primitiveRoot;
-				if (moduleText.getText().compareTo("") != 0 && new BigInteger(moduleText.getText()).isProbablePrime(3)) {
+				if (moduleText.getText().compareTo("") != 0
+						&& new BigInteger(moduleText.getText())
+								.isProbablePrime(3)) {
 					primitiveRoot = generatePrimitiveRoot(moduleText.getText());
 					if (primitiveRoot != -1) {
 						primitiveRootText.setText(primitiveRoot + "");
-					}
-					else {
+					} else {
 						primitiveRootText.setText("");
 					}
-				}
-				else {
+				} else {
 					primitiveRootText.setText("");
 				}
 			}
@@ -398,7 +398,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 												.getText());
 								/* initiate array and set value for secret */
 								coefficientsInt = new int[playersRecon];
-								coefficientsInt[0]=Integer.parseInt(secretText.getText());
+								coefficientsInt[0] = Integer
+										.parseInt(secretText.getText());
 								/* ************************ */
 								players = Integer.parseInt(playerSpinner
 										.getText());
@@ -542,8 +543,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 					.getChildren()) {
 				control.dispose();
 			}
-			coefficientsLabelsCoefficients = new Label[coefficients+1];
-			coefficientsSpinnersCoefficients = new Spinner[coefficients+1];
+			coefficientsLabelsCoefficients = new Label[coefficients + 1];
+			coefficientsSpinnersCoefficients = new Spinner[coefficients + 1];
 			coefficientsLabelsCoefficients[0] = new Label(
 					scrolledCoefficientsGroupContent, SWT.NONE);
 			coefficientsLabelsCoefficients[0].setText("a"
@@ -885,6 +886,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				true));
 		descriptionGroup
 				.setText(Messages.VerifiableSecretSharingComposite_description_title);
+		descriptionGroup.setToolTipText(Messages.VerifiableSecretSharingComposite_description_tooltip);
 	}
 
 	private String convertIntegerToSubscript(int number) {
