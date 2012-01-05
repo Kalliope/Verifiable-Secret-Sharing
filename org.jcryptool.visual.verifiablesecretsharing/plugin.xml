@@ -35,20 +35,20 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="toolbar:org.jcryptool.visual.verifiablesecretsharing.VerifiableSecretSharingView">
+            locationURI="menu:org.jcryptool.visual.verifiablesecretsharing.views.VerifiableSecretSharingView">
+         <command
+               commandId="org.jcryptool.visual.verifiablesecretsharing.restartCommand"
+               icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/new_wiz.gif"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.jcryptool.visual.verifiablesecretsharing.views.VerifiableSecretSharingView">
          <command
                commandId="org.jcryptool.visual.verifiablesecretsharing.restartCommand"
                icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/new_wiz.gif"
                style="push"
                tooltip="%restart.command.tooltip">
-         </command>
-      </menuContribution>
-      <menuContribution
-            locationURI="menu:org.jcryptool.visual.verifiablesecretsharing.VerifiableSecretSharingView">
-         <command
-               commandId="org.jcryptool.visual.verifiablesecretsharing.restartCommand"
-               icon="platform:/plugin/org.eclipse.ui/icons/full/etool16/new_wiz.gif"
-               style="push">
          </command>
       </menuContribution>
    </extension>

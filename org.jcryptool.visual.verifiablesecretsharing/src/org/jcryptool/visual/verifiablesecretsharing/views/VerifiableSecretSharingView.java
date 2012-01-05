@@ -46,8 +46,9 @@ public class VerifiableSecretSharingView extends ViewPart {
 		sc.setContent(vssc);
 		sc.setMinSize(vssc.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, VerifiableSecretSharingPlugin.PLUGIN_ID + ".view"); //$NON-NLS-1$
-
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, VerifiableSecretSharingPlugin.PLUGIN_ID + ".views"); //$NON-NLS-1$
+		
+		
         hookActionBar();
 	}
 
