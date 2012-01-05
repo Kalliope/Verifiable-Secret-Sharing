@@ -509,8 +509,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		polynomLabel = new Label(polynomContent, SWT.NONE);
 		polynomLabel.setText("P(x)    ");
 
-		polynomText = new Text(polynomContent, SWT.BORDER);
-		polynomText.setEnabled(false);
+		polynomText = new Text(polynomContent, SWT.BORDER | SWT.READ_ONLY);
 		polynomText
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 
@@ -664,13 +663,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 			for (int i = 0; i < commitments; i++) {
 				coefficientsLabelsCommitment[i] = new Label(
 						scrolledCommitmentsGroupContent, SWT.NONE);
-				coefficientsLabelsCommitment[i].setText("bla"
+				coefficientsLabelsCommitment[i].setText("a"
 						+ convertIntegerToSubscript(i));
 				coefficientsLabelsCommitment[i].setLayoutData(new GridData(
 						SWT.CENTER, SWT.FILL, true, true));
 
 				coefficientsTextCommitment[i] = new Text(
-						scrolledCommitmentsGroupContent, SWT.BORDER);
+						scrolledCommitmentsGroupContent, SWT.BORDER | SWT.READ_ONLY);
 				coefficientsTextCommitment[i].setLayoutData(new GridData(
 						SWT.FILL, SWT.FILL, true, false));
 			}
@@ -774,7 +773,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				shareNCompositeShares[i].setLayout(shareModNRowLayout);
 
 				shareNTextShares[i] = new Text(shareNCompositeShares[i],
-						SWT.BORDER);
+						SWT.BORDER | SWT.READ_ONLY);
 				shareNTextShares[i].setLayoutData(new RowData(50, -1));
 
 				isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
@@ -850,8 +849,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 		reconstructButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				/* hier koennte ihre werbung stehen */
-				/* oder unsere reconstruct funktion */
+				//Graph j;
+				/* unsere reconstruct funktion */
 			}
 		});
 	}
