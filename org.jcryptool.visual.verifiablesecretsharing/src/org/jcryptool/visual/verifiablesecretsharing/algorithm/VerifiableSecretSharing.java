@@ -181,16 +181,17 @@ public class VerifiableSecretSharing {
 				for(int j=0; j<t-1; j++){
 					if(j!=i){
 						helpCoef[0] = playerIds[j];
-						x = new Polynomial(helpCoef);
+						x = new Polynomial(helpCoef).mod(p);
 						inverse = new BigInteger(((playerIds[i])-(playerIds[j]))+"").modInverse(new BigInteger(p+"")).intValue();
-						x=x.times(inverse);
-						x=x.mod(p);
-						resMul = resMul.times(x).mod(p);
+						x=x.times(inverse).mod(p);
+						resMul = resMul.times(x);
+						resMul = resMul.mod(p);
 					}
 				}
 				//resMul = resMul.times(commitmentsBig[i].intValue());
-				resMul = resMul.times(sharesModP[playerIds[i]]).mod(p);
+				resMul = resMul.times(sharesModP[playerIds[i]-1]).mod(p);
 				resAdd = resAdd.add(resMul).mod(p);
+				resMul = new Polynomial(new int[]{1});
 			}
 			return resAdd.toString();
 		}
