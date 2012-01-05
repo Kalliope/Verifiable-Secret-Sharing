@@ -165,24 +165,33 @@ public class VerifiableSecretSharing {
 	}
 	
 	/**
-	 *Calculates and reconstructs the polynomial with the langrange interpolation
+	 *Calculates and reconstructs the polynomial with the Langrange Interpolation.
+	 *
+	 *		(t)			(t)
+	 *		 ---		_____
+	 *		 \			|   |	  x - x(j)	
+	 *f(x) = /	y(i) * 	|   |   ___________
+	 *		 ---	  	|	|	x(i) - x(j)
+	 *		(i=1)	  (1<=j<=t)
+	 * 				   (j!=i)
 	 * 
-	 * @param playerIds
-	 * @param p
-	 * @param t
-	 * @return
+	 * Result is the polynomial P and the coefficient a(0) is the secret.
+	 * 
+	 * @param playerIds --> from the players selected for the reconstruction
+	 * @param p --> prime
+	 * @param t --> number of players needed for the reconstruction
+	 * @return polynomial as String --> enough players selected; 
+	 * 		   false as String --> not enough players selected
 	 */
 	public String reconstruct(int[] playerIds, int p, int t){
-		//BigInteger[] commitmentsBig = getCommitmentsBig();
 		int[] sharesModP = getSharesModP();
-		//int t = commitmentsBig.length;
 		int[] helpCoef = {0,1};
 		Polynomial x = new Polynomial(helpCoef);
-		
 		Polynomial resMul = new Polynomial(new int[]{1});
 		Polynomial resAdd = new Polynomial(new int[]{0});
 		int inverse;
 		
+		/*checks the number of players selected for the reconstruction*/
 		if(playerIds.length >= t){
 			
 			for(int i=0; i<t; i++){
@@ -196,7 +205,6 @@ public class VerifiableSecretSharing {
 						resMul = resMul.mod(p);
 					}
 				}
-				//resMul = resMul.times(commitmentsBig[i].intValue());
 				resMul = resMul.times(sharesModP[playerIds[i]-1]).mod(p);
 				resAdd = resAdd.add(resMul).mod(p);
 				resMul = new Polynomial(new int[]{1});
