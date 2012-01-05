@@ -105,7 +105,6 @@ public class VerifiableSecretSharing {
 		if(lValue.compareTo(rValue) == 0){
 			checked = true;
 		}
-
 		return checked;	
 	}
 	
