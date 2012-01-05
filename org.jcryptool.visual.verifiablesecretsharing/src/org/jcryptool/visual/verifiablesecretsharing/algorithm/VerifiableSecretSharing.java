@@ -164,6 +164,14 @@ public class VerifiableSecretSharing {
 		return checked;	
 	}
 	
+	/**
+	 *Calculates and reconstructs the polynomial with the langrange interpolation
+	 * 
+	 * @param playerIds
+	 * @param p
+	 * @param t
+	 * @return
+	 */
 	public String reconstruct(int[] playerIds, int p, int t){
 		//BigInteger[] commitmentsBig = getCommitmentsBig();
 		int[] sharesModP = getSharesModP();
@@ -178,7 +186,7 @@ public class VerifiableSecretSharing {
 		if(playerIds.length >= t){
 			
 			for(int i=0; i<t; i++){
-				for(int j=0; j<t-1; j++){
+				for(int j=0; j<t; j++){
 					if(j!=i){
 						helpCoef[0] = playerIds[j];
 						x = new Polynomial(helpCoef).mod(p);
