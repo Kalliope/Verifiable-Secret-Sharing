@@ -13,19 +13,33 @@ Das <b >Verifiable Secret Sharing</b> Plug-in lässt sich über das Menü Visual
 <p>GRAFIK 1: Übersicht<img src="vss_plugin.jpg" width="640" height="480"></p>
 
 Das Plug-in gliedert sich in zwei Bereiche: Den <b>Header</b> und den Bereich in dem <b>Plug-In-Bereich</b>.
-Im <b>Header</b> ist eine kurze Beschreibung über das Plug-in angezeigt. Im eigentlichen <b>Plug-In-Bereich</b> können die
+Im <b>Header</b> ist eine kurze Beschreibung über das Plug-in angezeigt.
+</br>
+Im eigentlichen <b>Plug-In-Bereich</b> können die
 Parameter festgelegt werden und die Berechnungen für das <b>Verifiable Secret Sharing</b> durchgeführt werden.
 
 <h3>Festlegung der Parameter für die Berechnung</h3>
 Im Bereich <b>Parameter</b> werden die nötigen Parameter für den Ablauf des Algorithmus eingestellt.
-Man wählt die Anzahl der Personen aus, an die die <b>Shares</b> verteilt werden und die Anzahl der Personen, die für die Rekonstruktion nötig sind.
-Als nächstes wird das Geheimnis <b>s</b> festgelegt.
-Nachdem das Geheimnis gewählt wurde, wird automatisch der <b>Modul p</b> berechnet, da dieser eine Primzahl sein muss.
-Es kann jedoch auch selbst ein Modul gewählt werden. Auch in diesem Fall muss es wieder eine Primzahl sein.
-Der letzte Parameter ist die <b>Primitivwurzel g modulo p</b>. Als Primitivwurzeln werden in der Zahlentheorie bestimmte
+Man wählt die Anzahl der <b>Personen n</b> aus, an die die <b>Shares</b> verteilt werden und die
+</br>
+Anzahl der <b>Personen t</b>, die für die Rekonstruktion nötig sind. Dabei darf die Anzahl der Personen
+für die Rekonstruktion höchtens der Anzahl der gesamten Personen entsprechen und
+</br>
+beide müssen <b>mindestens 2</b> sein, da sonst die Idee des Secret Sharing ad absurdum geführt werden würde.
+<p></p>
+Nachdem als nächstes das <b>Geheimnis s</b> gewählt wurde, wird automatisch der <b>Modul p</b> berechnet,
+da dieser eine Primzahl sein muss. Es kann jedoch auch selbst ein Modul gewählt
+</br>
+werden. Auch in diesem Fall muss es wieder eine Primzahl sein. Der letzte Parameter ist die <b>Primitivwurzel g modulo p</b>.
+Als Primitivwurzeln werden in der Zahlentheorie bestimmte
+</br>
 Elemente von primen Restklassengruppen bezeichnet. Die definierende Eigenschaft einer Primitivwurzel ist, dass jedes Element
-der primen Restklassengruppe als Potenz der Primitivwurzel dargestellt werden kann. Hier wird von <b>JCrypTool</b> wieder ein Wert berechnet,
-der optional aber auch wieder selbst gewählt werden kann. Da jedoch die Berechnung einer Primitvwurzel etwas komplexer ist, ist es ratsam den
+der primen Restklassengruppe als Potenz der Primitivwurzel
+</br>
+dargestellt werden kann. Hier wird von <b>JCrypTool</b> wieder ein Wert berechnet,
+der optional aber auch wieder selbst gewählt werden kann. Da jedoch die Berechnung einer Primitvwurzel
+</br>
+etwas komplexer ist, ist es ratsam den
 zur Verfügung gestellten Wert zu verwenden.
 
 <p>GRAFIK 2: Parameter<img src="vss_parameter.jpg" width="640" height="480"></p>
@@ -36,25 +50,32 @@ fortzufahren.
 <h3>Festlegung der Koeffizienten für das Polynom</h3>
 
 Im Fenster <b>Koeffizienten</b> werden die Koeffizienten für das Polynom festgelegt. Diese können entweder von <b>JCrypTool</b> generiert werden lassen,
-oder wieder selbst gewählt werden. Die Koeffizienten müssen dabei natürliche Zahlen sein und kleiner als der <b>Modul p</b>.
+oder wieder selbst gewählt werden.
+</br>
+Die Koeffizienten müssen dabei natürliche Zahlen sein und kleiner als der <b>Modul p</b>. Der Koeffizient <i>a0</i> ist dabei das zuvor festgelegte <b>Geheimnis s</b>.
 
-<p>GRAFIK 3: Koeffizienten<img src="vss_coefficients.jpg" width="344" height="403"></p>
+<p>GRAFIK 3: Koeffizienten<img src="vss_coefficients.jpg" width="240" height="180"></p>
 
-Dabei wird der ungültige Wert in der Farbe <b>rot</b> dargestellt. Es gibt nun die Möglichkeit sich eine
-Primzahl, ausgehend von der Zahl die eingegeben wurde, generieren zulassen oder der Benutzer kann eine eigene Zahl
-eingeben. Falls man sich eine Zahl durch das Programm generieren läßt, wird der Button <b>Verify input</b> deaktiviert, da
-der vorgeschlagene Wert gültig und die Verifikation nicht nötig ist. Es können nun weitere Zahlen durch Drücken des
-<b>Generate next prime</b> Buttons berechnet werden. Falls der Benutzer eine Eingabe tätigt, wird die Zahl zuerst in der Farbe <b>schwarz</b>
-dargestellt. Der Benutzer muss nun die eingegebene Zahl durch das Programm verifizieren lassen. Dabei Drückt er den
-<b>Verify input</b> Button. Falls es sich um eine Primzahl handelt, wird die Zahl in <b>grün</b> dargestellt und der <b>Ok</b> Button aktiviert,
-andernfalls wird die Zahl <b>rot</b> gefärbt und der Benutzer muss entweder eine andere Zahl eingeben oder sich vom
-Programm eine gültige Primzahl generieren lassen. Sobald eine gültige Primzahl eingegeben wurde, kann der Benutzer
-den Dialog mit dem <b>Ok</b> Button verlassen.
+Weiters gibt es in diesem Schritt den Button <b>Commit</b>. Die Berechnung der <b>Commitments</b> ist notwendig,
+ wenn man im weiteren Verlauf die verteilten <b>Shares</b> überprüfen möchte.
+ </br>
+ Nach der Berechnung werden die Commitments in einem eigenen Fenster angezeigt.
+
+<p>GRAFIK 4: Commitments<img src="vss_commitments.jpg" width="240" height="180"></p>
+
+Die Berechnung der Commitments ist <b>optional</b>, da diese nur für die Überprüfung der Shares und nicht für die Rekonstruktion des Geheimnisses benötigt werden.
+</br>
+Falls man auf die Überprüfung verzichten möchte, kann man diesen Schritt überspringen.
 <p></p>
+Um die Shares zu berechnen und zum nächsten Schritt zu gelangen, klickt man auf <b>Shares berechnen</b>.
+
+<p>GRAFIK 5: Commitments<img src="vss_compute_shares.jpg" width="240" height="180"></p>
+
+
 
 Nun kann es sein, dass das Geheimnis s entweder schon vor dem Verifikationsdialog kleiner als das Modul <b>p</b> war oder
 währendessen durch die Eingabe des Benutzers kleiner als das Modul geworden ist. Für diesen Fall öffnet sich ein weiterer
-Dialog, um die Bedingung, dass das Geheimnis <b>s</b> echt kleiner als das Modul <b>p</b> sein muss, zuerfüllen. Der Benutzer
+Dialog, um die Bedingung, dass das Geheimnis <b>s</b> echt kleiner als das Modul <b>p</b> sein muss, zu erfüllen. Der Benutzer
 kann nun das Geheimnis <b>s</b> ändern, in dem er eine kleiner Zahl als das Modul <b>p</b> eingibt. Zur besseren Übersicht wird der
 Modul oben angezeigt. Die Eingabe des Benutzers muss verifiziert werden, dazu wird der <b>check input</b> Button gedrückt.
 Wenn der Wert für das Geheimnis <b>s</b> kleiner als das Modul <b>p</b> ist, wird der Wert in <b>grün</b> dargestellt, andernfalls in der
