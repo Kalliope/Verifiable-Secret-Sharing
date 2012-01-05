@@ -29,6 +29,46 @@ public class Polynomial {
         return c;
     }
     
+    public Polynomial times(int b){
+    	Polynomial a = this;
+    	Polynomial c = new Polynomial(new int[a.coef.length]);
+    	for(int i=0; i<c.coef.length; i++){
+    		c.coef[i] = (a.coef[i] * b);
+    	} 
+    	c.deg = c.degree();
+    	return c;
+    	
+    }
+    
+    public Polynomial add(Polynomial b){
+    	Polynomial a = this;
+    	Polynomial c = new Polynomial(new int[(Math.max(a.coef.length, b.coef.length))]);
+    	
+    	for(int i=0; i<a.coef.length; i++) c.coef[i] += a.coef[i];
+    	for(int i=0; i<b.coef.length; i++) c.coef[i] += b.coef[i];
+    	c.deg  = c.degree();
+    	return c;
+    }
+    
+    public Polynomial add(int b){
+    	Polynomial a = this;
+    	Polynomial c = new Polynomial(new int[a.coef.length]);
+    	for(int i=0; i<a.coef.length; i++)c.coef[i]=a.coef[i];
+    	c.coef[0] += b;
+    	c.deg = c.degree();
+    	return c;
+    }
+    
+    public Polynomial mod(int p){
+    	Polynomial a = this;
+    	Polynomial c = new Polynomial(new int[a.coef.length]);
+    	for(int i=0; i<a.coef.length; i++){
+    		c.coef[i] = a.coef[i]%p;
+    	}
+    	c.deg = c.degree();
+    	return c;
+    }
+    
     public String toString() {
         if (deg ==  0) return "" + coef[0];
         if (deg ==  1) return coef[1] + "x + " + coef[0];
@@ -43,4 +83,6 @@ public class Polynomial {
         return s;
     }
 }
+
+
 
