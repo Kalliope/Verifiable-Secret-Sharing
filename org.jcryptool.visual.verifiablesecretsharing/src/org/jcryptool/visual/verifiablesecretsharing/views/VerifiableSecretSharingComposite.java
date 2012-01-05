@@ -536,7 +536,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 				for (int i = 0; i < players; i++) {
 					shareModNTextShares[i].setText(String.valueOf(vss
 							.getSharesModP()[i]));
-					shareNTextShares[i].setText(vss.getSharesBig()[i].toString());
+					shareNTextShares[i].setText(vss.getSharesBig()[i]
+							.toString());
 				}
 				showReconstructionGroup(true, players);
 			}
@@ -561,7 +562,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 			coefficientsSpinnersCoefficients[0].setLayoutData(new GridData(
 					SWT.FILL, SWT.FILL, true, false));
 			coefficientsSpinnersCoefficients[0].setEnabled(false);
-			coefficientsSpinnersCoefficients[0].setMaximum(Integer.parseInt(moduleText.getText())-1);
+			coefficientsSpinnersCoefficients[0].setMaximum(Integer
+					.parseInt(moduleText.getText()) - 1);
 			for (int i = 1; i <= coefficients; i++) {
 				coefficientsLabelsCoefficients[i] = new Label(
 						scrolledCoefficientsGroupContent, SWT.NONE);
@@ -573,7 +575,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 				coefficientsSpinnersCoefficients[i].setLayoutData(new GridData(
 						SWT.FILL, SWT.FILL, true, false));
 				coefficientsSpinnersCoefficients[i].setMinimum(1);
-				coefficientsSpinnersCoefficients[i].setMaximum(Integer.parseInt(moduleText.getText())-1);
+				coefficientsSpinnersCoefficients[i].setMaximum(Integer
+						.parseInt(moduleText.getText()) - 1);
 				coefficientsSpinnersCoefficients[i].addListener(SWT.Modify,
 						new Listener() {
 							@Override
@@ -669,7 +672,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 						SWT.CENTER, SWT.FILL, true, true));
 
 				coefficientsTextCommitment[i] = new Text(
-						scrolledCommitmentsGroupContent, SWT.BORDER | SWT.READ_ONLY);
+						scrolledCommitmentsGroupContent, SWT.BORDER
+								| SWT.READ_ONLY);
 				coefficientsTextCommitment[i].setLayoutData(new GridData(
 						SWT.FILL, SWT.FILL, true, false));
 			}
@@ -776,14 +780,36 @@ public class VerifiableSecretSharingComposite extends Composite {
 						SWT.BORDER);
 				shareNTextShares[i].setLayoutData(new RowData(50, -1));
 				shareNTextShares[i].setData(i);
+				shareNTextShares[i].addListener(SWT.Verify, new Listener() {
+					public void handleEvent(Event e) {
+						String string = e.text;
+
+						char[] chars = new char[string.length()];
+						string.getChars(0, chars.length, chars, 0);
+						for (int i = 0; i < chars.length; i++) {
+							if (!('0' <= chars[i] && chars[i] <= '9')) {
+								e.doit = false;
+								return;
+							}
+						}
+
+					}
+				});
 				shareNTextShares[i].addListener(SWT.Modify, new Listener() {
 					public void handleEvent(Event e) {
-						BigInteger newShare = new BigInteger(shareNTextShares[(Integer)e.widget.getData()].getText());
-						int newShareModP = newShare.mod(new BigInteger(moduleText.getText())).intValue();
+						BigInteger newShare;
+						int newShareModP;
 						int i = (Integer) e.widget.getData();
-						vss.setSharesBig(i, newShare);
-						vss.setSharesModP(i, newShareModP);
-						shareModNTextShares[i].setText(newShareModP+"");
+						if (shareNTextShares[i].getText().compareTo("") != 0) {
+							newShare = new BigInteger(shareNTextShares[i]
+									.getText());
+							newShareModP = newShare.mod(
+									new BigInteger(moduleText.getText()))
+									.intValue();
+							vss.setSharesBig(i, newShare);
+							vss.setSharesModP(i, newShareModP);
+							shareModNTextShares[i].setText(newShareModP + "");
+						}
 					}
 				});
 
@@ -805,7 +831,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 						.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent e) {
-								
+
 								if (vss.check(Integer
 										.parseInt(primitiveRootText.getText()),
 										Integer.parseInt(moduleText.getText()),
@@ -861,7 +887,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		reconstructButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				//Graph j;
+				// Graph j;
 				/* unsere reconstruct funktion */
 			}
 		});

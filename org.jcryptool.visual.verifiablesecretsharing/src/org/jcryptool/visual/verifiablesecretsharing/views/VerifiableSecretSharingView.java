@@ -11,6 +11,8 @@
 package org.jcryptool.visual.verifiablesecretsharing.views;
 
 
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -28,6 +30,8 @@ import org.jcryptool.visual.verifiablesecretsharing.VerifiableSecretSharingPlugi
 public class VerifiableSecretSharingView extends ViewPart {
 
 	private Composite parent;
+	private VerifiableSecretSharingComposite vssc;
+	private ScrolledComposite sc;
 
 	/**
 	 * This is a callback that will allow us
@@ -35,27 +39,29 @@ public class VerifiableSecretSharingView extends ViewPart {
 	 */
 	public void createPartControl(final Composite parent) {
 		this.parent = parent;
-		final ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
+		sc = new ScrolledComposite(this.parent, SWT.H_SCROLL | SWT.V_SCROLL);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
-		VerifiableSecretSharingComposite vssc = new VerifiableSecretSharingComposite(sc, SWT.NONE, this);
+		vssc = new VerifiableSecretSharingComposite(sc, SWT.NONE, this);
 		sc.setContent(vssc);
 		sc.setMinSize(vssc.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 		
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, VerifiableSecretSharingPlugin.PLUGIN_ID + ".view"); //$NON-NLS-1$
-		/*text.addFocusListener(new FocusListener() {
 
-			@Override
-			public void focusGained(FocusEvent e) {
-				//do nothing
-			}
+        hookActionBar();
+	}
 
-			@Override
-			public void focusLost(FocusEvent e) {
-				text2.setText("Happens on focusLost");
-			}
-			
-		});*/
+    private void hookActionBar() {
+        IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+        mgr.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+        getViewSite().getActionBars().updateActionBars();
+    }
+	
+	public void restartVerifiableSecretSharing() {
+		vssc.dispose();
+		vssc = new VerifiableSecretSharingComposite(sc, SWT.NONE, this);
+		sc.setContent(vssc);
+		sc.setMinSize(vssc.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
 
 	@Override
