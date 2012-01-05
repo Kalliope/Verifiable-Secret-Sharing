@@ -164,26 +164,50 @@ public class VerifiableSecretSharing {
 		return checked;	
 	}
 	
-//	public int reconstruct(double[] shares, int[] playerID, int t, int p){
-//		
-//		int help1=0;
-//		
-//		
-//		for(int i=0;i<t;i++){
-//			int help2=1;	
-//			
-//				for(int j=0;j<t;j++){
-//					if(j==i) continue;
-//				
-//				help2 *=(x-playerID[j])/playerID[i]-playerID[j];
-//				}
-//			help1 += help2;
-//			
-//		}
-//		
-//	return help1;
-//		
-//	}
+	/**
+	 *Calculates and reconstructs the polynomial with the langrange interpolation
+	 * 
+	 * @param playerIds
+	 * @param p
+	 * @param t
+	 * @return
+	 */
+	public String reconstruct(int[] playerIds, int p, int t){
+		//BigInteger[] commitmentsBig = getCommitmentsBig();
+		int[] sharesModP = getSharesModP();
+		//int t = commitmentsBig.length;
+		int[] helpCoef = {0,1};
+		Polynomial x = new Polynomial(helpCoef);
+		
+		Polynomial resMul = new Polynomial(new int[]{1});
+		Polynomial resAdd = new Polynomial(new int[]{0});
+		int inverse;
+		
+		if(playerIds.length >= t){
+			
+			for(int i=0; i<t; i++){
+				for(int j=0; j<t; j++){
+					if(j!=i){
+						helpCoef[0] = playerIds[j];
+						x = new Polynomial(helpCoef).mod(p);
+						inverse = new BigInteger(((playerIds[i])-(playerIds[j]))+"").modInverse(new BigInteger(p+"")).intValue();
+						x=x.times(inverse).mod(p);
+						resMul = resMul.times(x);
+						resMul = resMul.mod(p);
+					}
+				}
+				//resMul = resMul.times(commitmentsBig[i].intValue());
+				resMul = resMul.times(sharesModP[playerIds[i]-1]).mod(p);
+				resAdd = resAdd.add(resMul).mod(p);
+				resMul = new Polynomial(new int[]{1});
+			}
+			return resAdd.toString();
+		}
+				
+		
+		return "false";
+	}
+	
 	/**
 	 * Getter for sharesBig.
 	 * @return  sharesBig --> BigInteger array including all shares without modulo p
