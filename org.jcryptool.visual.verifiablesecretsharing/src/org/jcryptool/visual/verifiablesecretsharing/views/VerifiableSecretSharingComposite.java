@@ -231,7 +231,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		playerSpinner = new Spinner(parametersGroup, SWT.BORDER);
 		playerSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
-		playerSpinner.setMinimum(1);
+		playerSpinner.setMinimum(2);
 
 		reconstructorLabel = new Label(parametersGroup, SWT.NONE);
 		reconstructorLabel
@@ -240,7 +240,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		reconstructorSpinner = new Spinner(parametersGroup, SWT.BORDER);
 		reconstructorSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
 				true, false));
-		reconstructorSpinner.setMinimum(1);
+		reconstructorSpinner.setMinimum(2);
 
 		secretLabel = new Label(parametersGroup, SWT.NONE);
 		secretLabel
@@ -536,7 +536,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				for (int i = 0; i < players; i++) {
 					shareModNTextShares[i].setText(String.valueOf(vss
 							.getSharesModP()[i]));
-					shareNTextShares[i].setText(String.valueOf(vss.getShares()[i]));
+					shareNTextShares[i].setText(vss.getSharesBig()[i].toString());
 				}
 				showReconstructionGroup(true, players);
 			}
@@ -574,7 +574,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 						SWT.FILL, SWT.FILL, true, false));
 				coefficientsSpinnersCoefficients[i].setMinimum(1);
 				coefficientsSpinnersCoefficients[i].setMaximum(Integer.parseInt(moduleText.getText())-1);
-				coefficientsSpinnersCoefficients[i].addListener(SWT.CHANGED,
+				coefficientsSpinnersCoefficients[i].addListener(SWT.Modify,
 						new Listener() {
 							@Override
 							public void handleEvent(Event event) {
@@ -773,14 +773,25 @@ public class VerifiableSecretSharingComposite extends Composite {
 				shareNCompositeShares[i].setLayout(shareModNRowLayout);
 
 				shareNTextShares[i] = new Text(shareNCompositeShares[i],
-						SWT.BORDER | SWT.READ_ONLY);
+						SWT.BORDER);
 				shareNTextShares[i].setLayoutData(new RowData(50, -1));
+				shareNTextShares[i].setData(i);
+				shareNTextShares[i].addListener(SWT.Modify, new Listener() {
+					public void handleEvent(Event e) {
+						BigInteger newShare = new BigInteger(shareNTextShares[(Integer)e.widget.getData()].getText());
+						int newShareModP = newShare.mod(new BigInteger(moduleText.getText())).intValue();
+						int i = (Integer) e.widget.getData();
+						vss.setSharesBig(i, newShare);
+						vss.setSharesModP(i, newShareModP);
+						shareModNTextShares[i].setText(newShareModP+"");
+					}
+				});
 
 				isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
 				isModShares[i].setText("\u2261");
 
 				shareModNTextShares[i] = new Text(shareNCompositeShares[i],
-						SWT.BORDER);
+						SWT.BORDER | SWT.READ_ONLY);
 				shareModNTextShares[i].setLayoutData(new RowData(30, -1));
 
 				checkButtonShares[i] = new Button(scrolledSharesGroupContent,
@@ -794,6 +805,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 						.addSelectionListener(new SelectionAdapter() {
 							@Override
 							public void widgetSelected(SelectionEvent e) {
+								
 								if (vss.check(Integer
 										.parseInt(primitiveRootText.getText()),
 										Integer.parseInt(moduleText.getText()),

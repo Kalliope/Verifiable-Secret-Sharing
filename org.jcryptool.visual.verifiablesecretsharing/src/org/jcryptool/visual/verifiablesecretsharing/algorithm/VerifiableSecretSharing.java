@@ -239,6 +239,15 @@ public class VerifiableSecretSharing {
 	public void setSharesModP(int[] sharesModP) {
 		this.sharesModP = sharesModP;
 	}
+	
+	/**
+	 * Setter resetting an element in sharesModP.
+	 * @param i --> index
+	 * @param x --> value of the element
+	 */
+	public void setSharesModP(int i, int x){
+		this.sharesModP[i] = x;
+	}
 
 	/**
 	 * Getter for shares.

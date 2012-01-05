@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+<body>
+<h1>Shamir's Secret Sharing</h1>
+
+<p>Die Demonstration soll die Funktionsweise des <b>Verifiable Secret Sharing</b> Plug-ins zeigen.</p>
+Das <b >Verifiable Secret Sharing</b> Plug-in lässt sich über das Menü Visualisierungen oder über die View
+<b >Algorithmen</b> im Tab <b >Visualisierungen</b> starten und in seiner Ansicht maximieren.
+
+<p><img src="vss_plugin.jpg" width="60%" height="60%"></p>
+
+Das Plug-in gliedert sich in drei Bereiche: Den <b>Header</b> und den Bereich in dem <b>Plug-In-Bereich</b>.
+Im <b>Header</b> ist eine kurze Beschreibung über das Plug-in angezeigt.
+</br>
+Im eigentlichen <b>Plug-In-Bereich</b> können die
+Parameter festgelegt werden und die Berechnungen für das <b>Verifiable Secret Sharing</b> durchgeführt werden.
+</br>
+Am unteren Bildschirmrand gibt es noch einen Bereich <b>Erklärungen</b> wo zusätliche Informationen zum aktuellen Arbeitsschritt angezeigt werden.
+
+<h3>Festlegung der Parameter für die Berechnung</h3>
+Im Bereich <b>Parameter</b> werden die nötigen Parameter für den Ablauf des Algorithmus eingestellt.
+Man wählt die Anzahl der <b>Personen n</b> aus, an die die <b>Shares</b> verteilt werden und die
+</br>
+Anzahl der <b>Personen t</b>, die für die Rekonstruktion nötig sind. Dabei darf die Anzahl der Personen
+für die Rekonstruktion höchtens der Anzahl der gesamten Personen entsprechen und
+</br>
+beide müssen <b>mindestens 2</b> sein, da sonst die Idee des Secret Sharing ad absurdum geführt werden würde.
+<p></p>
+Nachdem als nächstes das <b>Geheimnis s</b> gewählt wurde, wird automatisch der <b>Modul p</b> berechnet,
+da dieser eine Primzahl sein muss. Es kann jedoch auch selbst ein Modul gewählt
+</br>
+werden. Auch in diesem Fall muss es wieder eine Primzahl sein. Der letzte Parameter ist die <b>Primitivwurzel g modulo p</b>.
+Als Primitivwurzeln werden in der Zahlentheorie bestimmte
+</br>
+Elemente von primen Restklassengruppen bezeichnet. Die definierende Eigenschaft einer Primitivwurzel ist, dass jedes Element
+der primen Restklassengruppe als Potenz der Primitivwurzel
+</br>
+dargestellt werden kann. Hier wird von <b>JCrypTool</b> wieder ein Wert berechnet,
+der optional aber auch wieder selbst gewählt werden kann. Da jedoch die Berechnung einer Primitvwurzel
+</br>
+etwas komplexer ist, ist es ratsam den
+zur Verfügung gestellten Wert zu verwenden.
+
+<p><img src="vss_parameter.jpg"></p>
+<!--width="640" height="480"-->
+Sind alle Parameter korrekt gewählt, ist es möglich mit einem Klick auf <b>Koeffizienten bestimmen</b> zum nächsten Schritt
+fortzufahren.
+
+<h3>Festlegung der Koeffizienten für das Polynom</h3>
+<h3>und Berechnung der Commitments</h3>
+Im Fenster <b>Koeffizienten</b> werden die Koeffizienten für das Polynom festgelegt. Diese können entweder von <b>JCrypTool</b> generiert werden lassen,
+oder wieder selbst gewählt werden.
+</br>
+Die Koeffizienten müssen dabei natürliche Zahlen sein und kleiner als der <b>Modul p</b>. Der Koeffizient <i>a0</i> ist dabei das zuvor festgelegte <b>Geheimnis s</b>.
+
+<p><img src="vss_coefficients.jpg"></p>
+
+Weiters gibt es in diesem Schritt den Button <b>Commit</b>. Die Berechnung der <b>Commitments</b> ist notwendig,
+ wenn man im weiteren Verlauf die verteilten <b>Shares</b> überprüfen möchte.
+ </br>
+ Nach der Berechnung werden die Commitments in einem eigenen Fenster angezeigt.
+
+<p><img src="vss_commitments.jpg"></p>
+
+Die Berechnung der Commitments ist <b>optional</b>, da diese nur für die Überprüfung der Shares und nicht für die Rekonstruktion des Geheimnisses benötigt werden.
+</br>
+Falls man auf die Überprüfung verzichten möchte, kann man diesen Schritt überspringen.
+<p></p>
+Um die Shares zu berechnen und zum nächsten Schritt zu gelangen, klickt man auf <b>Shares berechnen</b>.
+
+<h3>Überprüfung der Shares und Rekonstruktion</h3>
+
+<p><img src="vss_shares.jpg"></p>
+
+
+</body>
+</html>
