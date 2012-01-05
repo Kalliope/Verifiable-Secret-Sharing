@@ -73,7 +73,27 @@ Um die Shares zu berechnen und zum nächsten Schritt zu gelangen, klickt man auf
 
 <h3>Überprüfung der Shares und Rekonstruktion</h3>
 
+Der letzte Schritt verteilt sich auf die beiden Fenster <b>Shares</b> und <b>Rekonstruktion</b>.
+</br>
+Im <b>Shares</b>-Fenster werden die Shares und die Shares modulo p angezeigt. Über die <b>Check</b>-Buttons
+können die Shares überprüft werden. Hierzu ist es notwendig,
+</br>
+dass zuvor die Commitments berechnet worden sind, da diese für die Berechnungen beim <b>Check</b> notwendig sind.
+Um nachvollziehen zu können, dass ein veränderter
+</br>
+Share bei der Rekonstruktion das Ergebnis verfälscht, ist es möglich
+die Shares zu verändern. Die Veränderung eines Shares zieht zwei Änderungen nach sich.
+</br>
+Zum einen bringt nun die Überprüfung
+ein negatives Ergebnis und weiters wird nun bei der Rekonstruktion ein verfälschtes Geheimnis berechnet,
+</br>
+falls der geänderte Share verwendet wird.
 <p><img src="vss_shares.jpg"></p>
+Die Rekonstruktion erfolgt über den Button <b>Rekonstruieren</b>. Zuvor müssen noch die für die Rekonstruktion
+gewünschten Shares ausgewählt werden.</br>Damit die Rekonstruktion möglich muss die Anzahl der gewählten Shares
+mindestens <b>t</b> sein.
+
+
 
 
 </body>
