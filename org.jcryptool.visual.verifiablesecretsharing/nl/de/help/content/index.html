@@ -14,33 +14,33 @@ Das <b >Verifiable Secret Sharing</b> Plug-in lässt sich über das Menü Visual
 
 Das Plug-in gliedert sich in drei Bereiche: Den <b>Header</b> und den Bereich in dem <b>Plug-In-Bereich</b>.
 Im <b>Header</b> ist eine kurze Beschreibung über das Plug-in angezeigt.
-</br>
+
 Im eigentlichen <b>Plug-In-Bereich</b> können die
 Parameter festgelegt werden und die Berechnungen für das <b>Verifiable Secret Sharing</b> durchgeführt werden.
-</br>
+
 Am unteren Bildschirmrand gibt es noch einen Bereich <b>Erklärungen</b> wo zusätliche Informationen zum aktuellen Arbeitsschritt angezeigt werden.
 
 <h3>Festlegung der Parameter für die Berechnung</h3>
 Im Bereich <b>Parameter</b> werden die nötigen Parameter für den Ablauf des Algorithmus eingestellt.
 Man wählt die Anzahl der <b>Personen n</b> aus, an die die <b>Shares</b> verteilt werden und die
-</br>
+
 Anzahl der <b>Personen t</b>, die für die Rekonstruktion nötig sind. Dabei darf die Anzahl der Personen
 für die Rekonstruktion höchtens der Anzahl der gesamten Personen entsprechen und
-</br>
+
 beide müssen <b>mindestens 2</b> sein, da sonst die Idee des Secret Sharing ad absurdum geführt werden würde.
 <p></p>
 Nachdem als nächstes das <b>Geheimnis s</b> gewählt wurde, wird automatisch der <b>Modul p</b> berechnet,
 da dieser eine Primzahl sein muss. Es kann jedoch auch selbst ein Modul gewählt
-</br>
+
 werden. Auch in diesem Fall muss es wieder eine Primzahl sein. Der letzte Parameter ist die <b>Primitivwurzel g modulo p</b>.
 Als Primitivwurzeln werden in der Zahlentheorie bestimmte
-</br>
+
 Elemente von primen Restklassengruppen bezeichnet. Die definierende Eigenschaft einer Primitivwurzel ist, dass jedes Element
 der primen Restklassengruppe als Potenz der Primitivwurzel
-</br>
+
 dargestellt werden kann. Hier wird von <b>JCrypTool</b> wieder ein Wert berechnet,
 der optional aber auch wieder selbst gewählt werden kann. Da jedoch die Berechnung einer Primitvwurzel
-</br>
+
 etwas komplexer ist, ist es ratsam den
 zur Verfügung gestellten Wert zu verwenden.
 
@@ -53,20 +53,20 @@ fortzufahren.
 <h3>und Berechnung der Commitments</h3>
 Im Fenster <b>Koeffizienten</b> werden die Koeffizienten für das Polynom festgelegt. Diese können entweder von <b>JCrypTool</b> generiert werden lassen,
 oder wieder selbst gewählt werden.
-</br>
+
 Die Koeffizienten müssen dabei natürliche Zahlen sein und kleiner als der <b>Modul p</b>. Der Koeffizient <i>a0</i> ist dabei das zuvor festgelegte <b>Geheimnis s</b>.
 
 <p><img src="vss_coefficients.jpg"></p>
 
 Weiters gibt es in diesem Schritt den Button <b>Commit</b>. Die Berechnung der <b>Commitments</b> ist notwendig,
  wenn man im weiteren Verlauf die verteilten <b>Shares</b> überprüfen möchte.
- </br>
+ 
  Nach der Berechnung werden die Commitments in einem eigenen Fenster angezeigt.
 
 <p><img src="vss_commitments.jpg"></p>
 
 Die Berechnung der Commitments ist <b>optional</b>, da diese nur für die Überprüfung der Shares und nicht für die Rekonstruktion des Geheimnisses benötigt werden.
-</br>
+
 Falls man auf die Überprüfung verzichten möchte, kann man diesen Schritt überspringen.
 <p></p>
 Um die Shares zu berechnen und zum nächsten Schritt zu gelangen, klickt man auf <b>Shares berechnen</b>.
@@ -74,23 +74,23 @@ Um die Shares zu berechnen und zum nächsten Schritt zu gelangen, klickt man auf
 <h3>Überprüfung der Shares und Rekonstruktion</h3>
 
 Der letzte Schritt verteilt sich auf die beiden Fenster <b>Shares</b> und <b>Rekonstruktion</b>.
-</br>
+
 Im <b>Shares</b>-Fenster werden die Shares und die Shares modulo p angezeigt. Über die <b>Check</b>-Buttons
 können die Shares überprüft werden. Hierzu ist es notwendig,
-</br>
+
 dass zuvor die Commitments berechnet worden sind, da diese für die Berechnungen beim <b>Check</b> notwendig sind.
 Um nachvollziehen zu können, dass ein veränderter
-</br>
+
 Share bei der Rekonstruktion das Ergebnis verfälscht, ist es möglich
 die Shares zu verändern. Die Veränderung eines Shares zieht zwei Änderungen nach sich.
-</br>
+
 Zum einen bringt nun die Überprüfung
 ein negatives Ergebnis und weiters wird nun bei der Rekonstruktion ein verfälschtes Geheimnis berechnet,
-</br>
+
 falls der geänderte Share verwendet wird.
 <p><img src="vss_shares.jpg"></p>
 Die Rekonstruktion erfolgt über den Button <b>Rekonstruieren</b>. Zuvor müssen noch die für die Rekonstruktion
-gewünschten Shares ausgewählt werden.</br>Damit die Rekonstruktion möglich muss die Anzahl der gewählten Shares
+gewünschten Shares ausgewählt werden.Damit die Rekonstruktion möglich muss die Anzahl der gewählten Shares
 mindestens <b>t</b> sein.
 
 
