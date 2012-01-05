@@ -122,6 +122,13 @@ public class VerifiableSecretSharing {
 	 */
 	public boolean check(int g, int p, int playerId){
 		BigInteger[] sharesBig = getSharesBig();
+		
+		/*int[] sharesModP = getSharesModP();
+		BigInteger[] sharesBig = new BigInteger[sharesModP.length];
+		for(int i=0; i<sharesModP.length; i++){
+			sharesBig[i] = getSharesBig()[i].mod(new BigInteger((p-1)+""));
+		}*/
+		
 		BigInteger[] commitmentsBig = getCommitmentsBig();
 		
 		boolean checked = false;
