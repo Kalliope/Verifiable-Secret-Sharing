@@ -63,7 +63,12 @@ public class Polynomial {
     	Polynomial a = this;
     	Polynomial c = new Polynomial(new int[a.coef.length]);
     	for(int i=0; i<a.coef.length; i++){
-    		c.coef[i] = a.coef[i]%p;
+    		if(a.coef[i]>0){
+    			c.coef[i] = a.coef[i]%p;
+    		}
+    		else{
+    			c.coef[i] = p+a.coef[i];
+    		}
     	}
     	c.deg = c.degree();
     	return c;
@@ -83,6 +88,8 @@ public class Polynomial {
         return s;
     }
 }
+
+
 
 
 

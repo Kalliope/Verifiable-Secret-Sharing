@@ -122,6 +122,13 @@ public class VerifiableSecretSharing {
 	 */
 	public boolean check(int g, int p, int playerId){
 		BigInteger[] sharesBig = getSharesBig();
+		
+		/*int[] sharesModP = getSharesModP();
+		BigInteger[] sharesBig = new BigInteger[sharesModP.length];
+		for(int i=0; i<sharesModP.length; i++){
+			sharesBig[i] = getSharesBig()[i].mod(new BigInteger((p-1)+""));
+		}*/
+		
 		BigInteger[] commitmentsBig = getCommitmentsBig();
 		
 		boolean checked = false;
@@ -164,33 +171,50 @@ public class VerifiableSecretSharing {
 		return checked;	
 	}
 	
+	/**
+	 *Calculates and reconstructs the polynomial with the Langrange Interpolation.
+	 *
+	 *		(t)			(t)
+	 *		 ---		_____
+	 *		 \			|   |	  x - x(j)	
+	 *f(x) = /	y(i) * 	|   |   ___________
+	 *		 ---	  	|	|	x(i) - x(j)
+	 *		(i=1)	  (1<=j<=t)
+	 * 				   (j!=i)
+	 * 
+	 * Result is the polynomial P and the coefficient a(0) is the secret.
+	 * 
+	 * @param playerIds --> from the players selected for the reconstruction
+	 * @param p --> prime
+	 * @param t --> number of players needed for the reconstruction
+	 * @return polynomial as String --> enough players selected; 
+	 * 		   false as String --> not enough players selected
+	 */
 	public String reconstruct(int[] playerIds, int p, int t){
-		//BigInteger[] commitmentsBig = getCommitmentsBig();
 		int[] sharesModP = getSharesModP();
-		//int t = commitmentsBig.length;
 		int[] helpCoef = {0,1};
 		Polynomial x = new Polynomial(helpCoef);
-		
 		Polynomial resMul = new Polynomial(new int[]{1});
 		Polynomial resAdd = new Polynomial(new int[]{0});
 		int inverse;
 		
+		/*checks the number of players selected for the reconstruction*/
 		if(playerIds.length >= t){
 			
 			for(int i=0; i<t; i++){
-				for(int j=0; j<t-1; j++){
+				for(int j=0; j<t; j++){
 					if(j!=i){
 						helpCoef[0] = playerIds[j];
-						x = new Polynomial(helpCoef);
+						x = new Polynomial(helpCoef).mod(p);
 						inverse = new BigInteger(((playerIds[i])-(playerIds[j]))+"").modInverse(new BigInteger(p+"")).intValue();
-						x=x.times(inverse);
-						x=x.mod(p);
-						resMul = resMul.times(x).mod(p);
+						x=x.times(inverse).mod(p);
+						resMul = resMul.times(x);
+						resMul = resMul.mod(p);
 					}
 				}
-				//resMul = resMul.times(commitmentsBig[i].intValue());
-				resMul = resMul.times(sharesModP[playerIds[i]]).mod(p);
+				resMul = resMul.times(sharesModP[playerIds[i]-1]).mod(p);
 				resAdd = resAdd.add(resMul).mod(p);
+				resMul = new Polynomial(new int[]{1});
 			}
 			return resAdd.toString();
 		}
