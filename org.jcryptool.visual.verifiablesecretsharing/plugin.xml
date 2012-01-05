@@ -11,6 +11,13 @@
             class="org.jcryptool.visual.verifiablesecretsharing.views.VerifiableSecretSharingView"
             id="org.jcryptool.visual.verifiablesecretsharing.views.VerifiableSecretSharingView">
       </view>
+      <view
+            name="Chart View"
+            icon="icons/view.gif"
+            category="org.jcryptool.visual"
+            class="org.jcryptool.visual.verifiablesecretsharing.views.ChartView"
+            id="org.jcryptool.visual.verifiablesecretsharing.views.ChartView">
+      </view>
    </extension>
    <extension
          point="org.eclipse.help.contexts">

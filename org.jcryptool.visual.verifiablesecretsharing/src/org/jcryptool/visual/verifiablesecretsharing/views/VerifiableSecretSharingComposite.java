@@ -11,17 +11,22 @@ package org.jcryptool.visual.verifiablesecretsharing.views;
 
 import org.jcryptool.visual.verifiablesecretsharing.algorithm.VerifiableSecretSharing;
 
+import java.awt.Font;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import javax.swing.text.View;
+
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -36,7 +41,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.ViewPart;
 import org.jcryptool.core.util.fonts.FontService;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.data.general.PieDataset;
+import org.jfree.experimental.chart.swt.ChartComposite;
 
 public class VerifiableSecretSharingComposite extends Composite {
 
@@ -143,12 +157,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private Composite nextStepParametersComposite;
 	private Button reconstructButton;
 	private Listener onlyDigits;
-
+	
 	public VerifiableSecretSharingComposite(final Composite parent,
 			final int style,
 			VerifiableSecretSharingView verifiableSecretSharingView) {
 		super(parent, style);
-
+		
 		onlyDigits = new Listener() {
 			public void handleEvent(Event e) {
 				String string = e.text;
@@ -193,7 +207,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 		final Composite body = new Composite(this, SWT.NONE);
 		body.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		body.setLayout(new GridLayout());
-
+		
+//		JFreeChart chart = createChart(createDataset());
+//		new ChartComposite(body, SWT.None,
+//				chart, true);
 		createInputBody(body);
 		createDescriptionGroup(body);
 	}
@@ -863,6 +880,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				//Graph j;
 				/* unsere reconstruct funktion */
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView("org.jcryptool.visual.verifiablesecretsharing.views.ChartView");
+				} catch (PartInitException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 	}
