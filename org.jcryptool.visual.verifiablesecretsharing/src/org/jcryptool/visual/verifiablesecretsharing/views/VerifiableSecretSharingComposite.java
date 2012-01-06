@@ -278,7 +278,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 						return;
 					}
 				}
-
 			}
 		});
 		secretText.addListener(SWT.Modify, new Listener() {
@@ -287,10 +286,14 @@ public class VerifiableSecretSharingComposite extends Composite {
 				Random prng = new SecureRandom();
 				String text = secretText.getText();
 				if (text != "") {
+					if(Integer.parseInt(text) > 2000000) {
+						secretText.setText("2000000");
+					}
 					nextPrime = BigInteger.probablePrime(
 							new BigInteger(text).bitLength() + 1, prng);
 					moduleText.setText(nextPrime.toString());
-				} else {
+				} 
+				else {
 					moduleText.setText(text);
 				}
 			}
@@ -313,13 +316,15 @@ public class VerifiableSecretSharingComposite extends Composite {
 						return;
 					}
 				}
-
 			}
 
 		});
 		moduleText.addListener(SWT.Modify, new Listener() {
 			public void handleEvent(Event event) {
 				int primitiveRoot;
+				if(Integer.parseInt(moduleText.getText()) > 2000003) {
+					moduleText.setText("2000003");
+				}
 				if (moduleText.getText().compareTo("") != 0
 						&& new BigInteger(moduleText.getText())
 								.isProbablePrime(3)) {
@@ -357,7 +362,27 @@ public class VerifiableSecretSharingComposite extends Composite {
 		primitiveRootText = new Text(parametersGroup, SWT.BORDER);
 		primitiveRootText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
-		primitiveRootText.addListener(SWT.Verify, onlyDigits);
+		primitiveRootText.addListener(SWT.Verify, new Listener() {
+			public void handleEvent(Event e) {
+				String string = e.text;
+
+				char[] chars = new char[string.length()];
+				string.getChars(0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++) {
+					if (!('0' <= chars[i] && chars[i] <= '9')) {
+						e.doit = false;
+						return;
+					}
+				}
+			}
+		});
+		primitiveRootText.addListener(SWT.Modify, new Listener() {
+			public void handleEvent(Event event) {
+				if (primitiveRootText.getText().compareTo("") != 0 && Integer.parseInt(primitiveRootText.getText()) > 2000000) {
+					primitiveRootText.setText("2000000");
+				}
+			}
+		});
 
 		spaceLabel = new Label(parametersGroup, SWT.NONE);
 		spaceLabel = new Label(parametersGroup, SWT.NONE);
