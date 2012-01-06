@@ -21,6 +21,9 @@ import org.jfree.experimental.chart.swt.ChartComposite;
 
 public class ChartView extends ViewPart{
 	
+	int[] playerID;
+	double[] shares;
+	
 	@Override
 	public void createPartControl(Composite parent) {	
 		JFreeChart floatChart = createChart(createDataset());
@@ -38,17 +41,10 @@ private XYDataset createDataset() {
         
         final XYSeries series1 = new XYSeries("P(x)");
         
-        series1.add(1.0, 1.0);
-        series1.add(2.0, 4.0);
-        series1.add(3.0, 3.0);
-        series1.add(4.0, 5.0);
-        series1.add(5.0, 5.0);
-        series1.add(6.0, 7.0);
-        series1.add(7.0, 7.0);
-        series1.add(8.0, 8.0);
-
-
-
+        for(int i = 0;i<playerID[i];i++){
+        	series1.add(playerID[i],shares[i]);
+        }
+        
         final XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series1);
                 
