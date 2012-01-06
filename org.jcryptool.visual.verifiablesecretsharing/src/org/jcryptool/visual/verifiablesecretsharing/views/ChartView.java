@@ -1,37 +1,30 @@
 package org.jcryptool.visual.verifiablesecretsharing.views;
 
-import java.awt.Font;
+
 import java.awt.Color;
 
+import org.jcryptool.visual.verifiablesecretsharing.*;
+import org.jcryptool.visual.verifiablesecretsharing.algorithm.VerifiableSecretSharing;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.ApplicationFrame;
-import org.jfree.ui.RefineryUtilities;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.experimental.chart.swt.ChartComposite;
+
+
 
 public class ChartView extends ViewPart{
 	
 	@Override
 	public void createPartControl(Composite parent) {	
 		JFreeChart floatChart = createChart(createDataset());
+		
 //        ChartPanel chartPanel = new ChartPanel(floatChart);
         
 //        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
@@ -43,7 +36,8 @@ public class ChartView extends ViewPart{
 	
 private XYDataset createDataset() {
         
-        final XYSeries series1 = new XYSeries("First");
+        final XYSeries series1 = new XYSeries("P(x)");
+        
         series1.add(1.0, 1.0);
         series1.add(2.0, 4.0);
         series1.add(3.0, 3.0);
@@ -53,30 +47,10 @@ private XYDataset createDataset() {
         series1.add(7.0, 7.0);
         series1.add(8.0, 8.0);
 
-        final XYSeries series2 = new XYSeries("Second");
-        series2.add(1.0, 5.0);
-        series2.add(2.0, 7.0);
-        series2.add(3.0, 6.0);
-        series2.add(4.0, 8.0);
-        series2.add(5.0, 4.0);
-        series2.add(6.0, 4.0);
-        series2.add(7.0, 2.0);
-        series2.add(8.0, 1.0);
 
-        final XYSeries series3 = new XYSeries("Third");
-        series3.add(3.0, 4.0);
-        series3.add(4.0, 3.0);
-        series3.add(5.0, 2.0);
-        series3.add(6.0, 3.0);
-        series3.add(7.0, 6.0);
-        series3.add(8.0, 3.0);
-        series3.add(9.0, 4.0);
-        series3.add(10.0, 3.0);
 
         final XYSeriesCollection dataset = new XYSeriesCollection();
         dataset.addSeries(series1);
-        dataset.addSeries(series2);
-        dataset.addSeries(series3);
                 
         return dataset;
         
