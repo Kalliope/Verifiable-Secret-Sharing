@@ -121,13 +121,13 @@ public class VerifiableSecretSharing {
 	 * 		   false --> check not OK;
 	 */
 	public boolean check(int g, int p, int playerId){
-		BigInteger[] sharesBig = getSharesBig();
+		//BigInteger[] sharesBig = getSharesBig();
 		
-		/*int[] sharesModP = getSharesModP();
+		int[] sharesModP = getSharesModP();
 		BigInteger[] sharesBig = new BigInteger[sharesModP.length];
 		for(int i=0; i<sharesModP.length; i++){
 			sharesBig[i] = getSharesBig()[i].mod(new BigInteger((p-1)+""));
-		}*/
+		}
 		
 		BigInteger[] commitmentsBig = getCommitmentsBig();
 		
@@ -199,28 +199,25 @@ public class VerifiableSecretSharing {
 		int inverse;
 		
 		/*checks the number of players selected for the reconstruction*/
-		if(playerIds.length >= t){
-			
-			for(int i=0; i<t; i++){
-				for(int j=0; j<t; j++){
-					if(j!=i){
-						helpCoef[0] = playerIds[j];
-						x = new Polynomial(helpCoef).mod(p);
-						inverse = new BigInteger(((playerIds[i])-(playerIds[j]))+"").modInverse(new BigInteger(p+"")).intValue();
-						x=x.times(inverse).mod(p);
-						resMul = resMul.times(x);
-						resMul = resMul.mod(p);
-					}
+
+		for (int i = 0; i < t; i++) {
+			for (int j = 0; j < t; j++) {
+				if (j != i) {
+					helpCoef[0] = playerIds[j];
+					x = new Polynomial(helpCoef).mod(p);
+					inverse = new BigInteger(((playerIds[i]) - (playerIds[j]))
+							+ "").modInverse(new BigInteger(p + "")).intValue();
+					x = x.times(inverse).mod(p);
+					resMul = resMul.times(x);
+					resMul = resMul.mod(p);
 				}
-				resMul = resMul.times(sharesModP[playerIds[i]-1]).mod(p);
-				resAdd = resAdd.add(resMul).mod(p);
-				resMul = new Polynomial(new int[]{1});
 			}
-			return resAdd.toString();
+			resMul = resMul.times(sharesModP[playerIds[i] - 1]).mod(p);
+			resAdd = resAdd.add(resMul).mod(p);
+			resMul = new Polynomial(new int[] { 1 });
 		}
-				
-		
-		return "false";
+		return resAdd.toString();
+
 	}
 	
 	/**
@@ -244,9 +241,9 @@ public class VerifiableSecretSharing {
 	 * @param i --> index
 	 * @param x --> value of the element
 	 */
-	public void setSharesBig(int i, BigInteger x){
+	/*public void setSharesBig(int i, BigInteger x){
 		this.sharesBig[i] = x;
-	}
+	}*/
 
 	/**
 	 * Getter for sharesModP.
