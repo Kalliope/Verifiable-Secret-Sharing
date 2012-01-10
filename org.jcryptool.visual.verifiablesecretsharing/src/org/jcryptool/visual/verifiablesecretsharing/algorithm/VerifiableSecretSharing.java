@@ -197,8 +197,6 @@ public class VerifiableSecretSharing {
 		Polynomial resMul = new Polynomial(new int[]{1});
 		Polynomial resAdd = new Polynomial(new int[]{0});
 		int inverse;
-		
-		/*checks the number of players selected for the reconstruction*/
 
 		for (int i = 0; i < t; i++) {
 			for (int j = 0; j < t; j++) {
