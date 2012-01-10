@@ -174,7 +174,7 @@ public class VerifiableSecretSharing {
 	/**
 	 *Calculates and reconstructs the polynomial with the Langrange Interpolation.
 	 *
-	 *		(t)			(t)
+	 *		(t)			
 	 *		 ---		_____
 	 *		 \			|   |	  x - x(j)	
 	 *f(x) = /	y(i) * 	|   |   ___________
@@ -235,15 +235,6 @@ public class VerifiableSecretSharing {
 	public void setSharesBig(BigInteger[] sharesBig) {
 		this.sharesBig = sharesBig;
 	}
-	
-	/**
-	 * Setter resetting an element in sharesBig.
-	 * @param i --> index
-	 * @param x --> value of the element
-	 */
-	/*public void setSharesBig(int i, BigInteger x){
-		this.sharesBig[i] = x;
-	}*/
 
 	/**
 	 * Getter for sharesModP.
