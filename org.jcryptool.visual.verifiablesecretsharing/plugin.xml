@@ -15,7 +15,7 @@
             name="Chart View"
             icon="icons/view.gif"
             category="org.jcryptool.visual"
-            class="org.jcryptool.visual.verifiablesecretsharing.views.ChartView"
+            class="org.jcryptool.visual.verifiablesecretsharing.views.ReconstructionChartComposite"
             id="org.jcryptool.visual.verifiablesecretsharing.views.ChartView">
       </view>
    </extension>
