@@ -866,7 +866,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 				shareNTextShares[i] = new Text(shareNCompositeShares[i],
 						SWT.BORDER | SWT.READ_ONLY);
 				shareNTextShares[i].setLayoutData(new RowData(50, -1));
-				shareNTextShares[i].setData(i);
 				shareNTextShares[i].addListener(SWT.Verify, new Listener() {
 					public void handleEvent(Event e) {
 						String string = e.text;
@@ -889,24 +888,22 @@ public class VerifiableSecretSharingComposite extends Composite {
 				shareModNTextShares[i] = new Text(shareNCompositeShares[i],
 						SWT.BORDER);
 				shareModNTextShares[i].setLayoutData(new RowData(30, -1));
+				shareModNTextShares[i].setData(i);
 				shareModNTextShares[i].addListener(SWT.Modify, new Listener() {
 					public void handleEvent(Event e) {
 						int newShareModP;
-						if (e.widget.getData() != null) {
-							int i = (Integer) e.widget.getData();
-							if (shareModNTextShares[i].getText().compareTo("") != 0) {
-								// newShareModP = new
-								// BigInteger(shareNTextShares[i]
-								// .getText());
-								newShareModP = Integer
-										.parseInt(shareModNTextShares[i]
-												.getText());
-								// vss.setSharesBig(i, newShare);
-								vss.setSharesModP(i, newShareModP);
-								shareModNTextShares[i].setText(newShareModP
-										+ "");
-							}
+						int i = (Integer) e.widget.getData();
+						if (shareModNTextShares[i].getText().compareTo("") != 0) {
+							// newShareModP = new
+							// BigInteger(shareNTextShares[i]
+							// .getText());
+							newShareModP = Integer
+									.parseInt(shareModNTextShares[i].getText());
+							// vss.setSharesBig(i, newShare);
+							vss.setSharesModP(i, newShareModP);
+//							shareModNTextShares[i].setText(newShareModP + "");
 						}
+
 					}
 				});
 
