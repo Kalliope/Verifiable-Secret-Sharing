@@ -71,7 +71,7 @@ public class VerifiableSecretSharing {
 		for(int i=0, y =1; i < n; i++,y++){
 			sharesBig[i] = calculatePolynom(coefficients,y,p);
 			shares[i] = sharesBig[i].doubleValue();
-			sharesModP[i] = (sharesBig[i].mod(new BigInteger(p+""))).intValue();
+			sharesModP[i] = (sharesBig[i].mod(new BigInteger((p-1)+""))).intValue();
 		}
 		setShares(shares);
 		setSharesModP(sharesModP);
@@ -111,7 +111,7 @@ public class VerifiableSecretSharing {
 	 * Calculates the check and compares: 
 	 *                  
 	 *             (t-1)__
-	 * g^Share[i] ?=    || g^(PlayerId^j)
+	 * g^Share[i] ?=    || y(j)^(PlayerId^j)
 	 *                (j=0) 
 	 *                
 	 * @param g --> primitive root of p
@@ -123,10 +123,16 @@ public class VerifiableSecretSharing {
 	public boolean check(int g, int p, int playerId){
 		//BigInteger[] sharesBig = getSharesBig();
 		
-		int[] sharesModP = getSharesModP();
+		/*int[] sharesModP = getSharesModP();
 		BigInteger[] sharesBig = new BigInteger[sharesModP.length];
 		for(int i=0; i<sharesModP.length; i++){
 			sharesBig[i] = getSharesBig()[i].mod(new BigInteger((p-1)+""));
+		}*/
+		
+		int[] sharesModP = getSharesModP();
+		BigInteger[] sharesBig = new BigInteger[sharesModP.length];
+		for(int i=0; i<sharesModP.length; i++){
+			sharesBig[i] = new BigInteger(sharesModP[i]+"");
 		}
 		
 		BigInteger[] commitmentsBig = getCommitmentsBig();
