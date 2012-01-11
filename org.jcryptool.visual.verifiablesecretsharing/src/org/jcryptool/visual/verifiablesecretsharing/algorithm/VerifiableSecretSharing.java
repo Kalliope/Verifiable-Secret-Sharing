@@ -125,6 +125,7 @@ public class VerifiableSecretSharing {
 		
 		/*int[] sharesModP = getSharesModP();
 		BigInteger[] sharesBig = new BigInteger[sharesModP.length];
+		//TODO: Berechnung überprüfen
 		for(int i=0; i<sharesModP.length; i++){
 			sharesBig[i] = getSharesBig()[i].mod(new BigInteger((p-1)+""));
 		}*/
