@@ -14,19 +14,16 @@ package org.jcryptool.visual.verifiablesecretsharing.views;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.ui.part.*;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.*;
 import org.eclipse.swt.SWT;
 import org.jcryptool.visual.verifiablesecretsharing.VerifiableSecretSharingPlugin;
 
 
 /**
- * This class ...
  *
  * @author Dulghier Christoph, Reisinger Kerstin, Tiefenbacher Stefan, Wagner Thomas
  */
@@ -108,6 +105,19 @@ public class VerifiableSecretSharingView extends ViewPart {
 		cc = new ReconstructionChartComposite(scCc, SWT.NONE, this);
 		scCc.setContent(cc);
 		scCc.setMinSize(cc.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	}
+	
+	public ReconstructionChartComposite getReconstructionChartComposite() {
+		return cc;
+	}
+	
+	public void setFocusOnReconstructionTab(boolean setFocus) {
+		if(setFocus) {
+			tf.setSelection(tiCc);
+		}
+		else {
+			tf.setSelection(tiVssc);
+		}
 	}
 
 	@Override

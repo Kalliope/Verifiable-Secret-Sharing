@@ -9,6 +9,7 @@
 // -----END DISCLAIMER-----
 package org.jcryptool.visual.verifiablesecretsharing.views;
 
+import org.jcryptool.visual.verifiablesecretsharing.algorithm.Polynomial;
 import org.jcryptool.visual.verifiablesecretsharing.algorithm.VerifiableSecretSharing;
 
 import java.math.BigInteger;
@@ -17,7 +18,6 @@ import java.util.Random;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.jcryptool.core.util.fonts.FontService;
 
@@ -885,21 +884,21 @@ public class VerifiableSecretSharingComposite extends Composite {
 			shareNTextShares[i] = new Text(shareNCompositeShares[i], SWT.BORDER
 					| SWT.READ_ONLY);
 			shareNTextShares[i].setLayoutData(new RowData(43, -1));
-			shareNTextShares[i].addListener(SWT.Verify, new Listener() {
-				public void handleEvent(Event e) {
-					String string = e.text;
-
-					char[] chars = new char[string.length()];
-					string.getChars(0, chars.length, chars, 0);
-					for (int i = 0; i < chars.length; i++) {
-						if (!('0' <= chars[i] && chars[i] <= '9')) {
-							e.doit = false;
-							return;
-						}
-					}
-
-				}
-			});
+			// shareNTextShares[i].addListener(SWT.Verify, new Listener() {
+			// public void handleEvent(Event e) {
+			// String string = e.text;
+			//
+			// char[] chars = new char[string.length()];
+			// string.getChars(0, chars.length, chars, 0);
+			// for (int i = 0; i < chars.length; i++) {
+			// if (!('0' <= chars[i] && chars[i] <= '9')) {
+			// e.doit = false;
+			// return;
+			// }
+			// }
+			//
+			// }
+			// });
 
 			isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
 			isModShares[i].setText("\u2261");
@@ -1013,28 +1012,48 @@ public class VerifiableSecretSharingComposite extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				// Graph j;
 				/* unsere reconstruct funktion */
+				ReconstructionChartComposite rcc;
+				Polynomial reconstruction;
+				int[] playerIdsHelp = new int[Integer.parseInt(playerSpinner.getText())];
+				int[] sharesHelp = new int[Integer.parseInt(playerSpinner.getText())];
+				int[] playerIds;
+				int[] shares;
+				int i=0;
 				try {
-					PlatformUI
-							.getWorkbench()
-							.getActiveWorkbenchWindow()
-							.getActivePage()
-							.showView(
-									"org.jcryptool.visual.verifiablesecretsharing.views.ChartView");
 					IViewReference[] platformParts = PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage()
 							.getViewReferences();
 					for (IViewReference platformPart : platformParts) {
-						if (platformPart.getPartName().compareTo("Chart View") == 0) {
-							((ReconstructionChartComposite) platformPart
-									.getView(false)).shares = new double[] {
-									10.0, 7.4, 10.2, 11.1, 12.2, 13.3, 14.4,
-									22.5 };
+						if (platformPart.getPartName().compareTo(
+								"Verifiable Secret Sharing") == 0) {
+
+							for (Control control : scrolledReconstructionGroupContent.getChildren()) {
+								if(control.getData() != null && ((Button)control).getSelection()) {
+									playerIdsHelp[i] = Integer.parseInt(control.getData().toString());
+									sharesHelp[i] = Integer.parseInt(shareNTextShares[playerIdsHelp[i]-1].getText());
+									i++;
+								}
+							}
+							playerIds = new int[i];
+							shares = new int[i];
+							for (int j=0; j<playerIds.length; j++) {
+								playerIds[j] = playerIdsHelp[j];
+								shares[j] = sharesHelp[j];
+							}
+							reconstruction = vss.reconstruct(playerIds, Integer.parseInt(moduleText.getText()), playerIds.length);
+							rcc = ((VerifiableSecretSharingView) platformPart
+									.getView(false))
+									.getReconstructionChartComposite();
+							rcc.setReconstructedPolynom(reconstruction);
+							rcc.setPlayerID(playerIds);
+							rcc.setShares(shares);
+							rcc.redrawChart();
+							((VerifiableSecretSharingView) platformPart
+									.getView(false))
+									.setFocusOnReconstructionTab(true);
 						}
 					}
-					// ((ChartView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getViewReferences()[0].getView(false)).shares
-					// = new double[] {10.0,7.4,10.2,11.1,12.2,13.3,14.4,22.5};
-				} catch (PartInitException e1) {
-					e1.printStackTrace();
+				} catch (Exception e1) {
 				}
 
 			}
@@ -1064,6 +1083,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			playerCheckboxReconstructions[i].setLayoutData(new GridData(
 					SWT.CENTER, SWT.FILL, true, false));
 			playerCheckboxReconstructions[i].setBackground(WHITE);
+			playerCheckboxReconstructions[i].setData(i+1+"");
 		}
 
 		scrolledReconstructionGroup
@@ -1169,7 +1189,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				result += "";
 			}
 		}
-		return result; // ich bin ein kommentar. was bist denn du?
+		return result;
 	}
 
 	private boolean isSubgroup(String proot, String p) {
