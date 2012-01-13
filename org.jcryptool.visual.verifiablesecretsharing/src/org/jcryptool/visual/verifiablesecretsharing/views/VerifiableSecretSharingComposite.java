@@ -446,8 +446,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 					/* ************************ */
 					players = Integer.parseInt(playerSpinner.getText());
 					enableCoefficientsGroup(true, (playersRecon - 1));
-					coefficientsSpinnersCoefficients[0].setSelection(Integer
-							.parseInt(secretText.getText()));
 					enableParametersGroupWithoutDispose(false);
 				} else {
 					MessageDialog.openError(getShell(), "Error", errorText);
@@ -609,12 +607,18 @@ public class VerifiableSecretSharingComposite extends Composite {
 				scrolledCoefficientsGroupContent, SWT.BORDER);
 		coefficientsSpinnersCoefficients[0].setLayoutData(new GridData(
 				SWT.FILL, SWT.FILL, true, false));
-		coefficientsSpinnersCoefficients[0].setEnabled(false);
 		if (enableGroup) {
+			coefficientsInt[0] = Integer.parseInt(secretText.getText());
 			coefficientsSpinnersCoefficients[0].setMaximum(Integer
 					.parseInt(moduleText.getText()) - 1);
+			coefficientsSpinnersCoefficients[0].setSelection(Integer
+					.parseInt(secretText.getText()));
 		}
 		for (int i = 1; i <= coefficients; i++) {
+			if(enableGroup) {
+				coefficientsInt[i] = 1;
+			}
+			
 			coefficientsLabelsCoefficients[i] = new Label(
 					scrolledCoefficientsGroupContent, SWT.NONE);
 			coefficientsLabelsCoefficients[i].setText("a"
@@ -643,6 +647,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 						}
 					});
 		}
+		generatePolynom();
 		scrolledCoefficientsGroup.setContent(scrolledCoefficientsGroupContent);
 		scrolledCoefficientsGroupContent.pack();
 
@@ -658,6 +663,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		for (Control control : nextStepContent.getChildren()) {
 			control.setEnabled(enableGroup);
 		}
+		coefficientsSpinnersCoefficients[0].setEnabled(false);
 	}
 
 	private void enableCoefficientsGroupWithoutDispose(boolean enableGroup) {
