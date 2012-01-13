@@ -413,6 +413,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 						|| primitiveRootText.getText().compareTo("") == 0) {
 					errorText += "\n\r"
 							+ Messages.VerifiableSecretSharingComposite_param_set_all;
+					
+					if(moduleText.getText().compareTo("")==0){
+						moduleText.setText("0");
+					}
+					
+					if(primitiveRootText.getText().compareTo("")==0){
+						primitiveRootText.setText("0");
+					}
+					
+					if(secretText.getText().compareTo("")==0){
+						secretText.setText("2");
+					}					
+					
 					everythingCorrect = false;
 				} else {
 					if (isSubgroup(primitiveRootText.getText(),
@@ -428,6 +441,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 							+ Messages.VerifiableSecretSharingComposite_param_player_t_smaller_n;
 					everythingCorrect = false;
 				}
+
 				if (Integer.parseInt(moduleText.getText()) < Integer
 						.parseInt(secretText.getText())) {
 					errorText += "\n\r"
