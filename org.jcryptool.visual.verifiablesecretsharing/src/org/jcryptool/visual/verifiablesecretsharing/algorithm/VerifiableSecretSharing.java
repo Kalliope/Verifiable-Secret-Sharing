@@ -194,10 +194,9 @@ public class VerifiableSecretSharing {
 	 * @param playerIds --> from the players selected for the reconstruction
 	 * @param p --> prime
 	 * @param t --> number of players needed for the reconstruction
-	 * @return polynomial as String --> enough players selected; 
-	 * 		   false as String --> not enough players selected
+	 * @return polynomial as String
 	 */
-	public String reconstruct(int[] playerIds, int p, int t){
+	public Polynomial reconstruct(int[] playerIds, int p, int t){
 		int[] sharesModP = getSharesModP();
 		int[] helpCoef = {0,1};
 		Polynomial x = new Polynomial(helpCoef);
@@ -221,7 +220,7 @@ public class VerifiableSecretSharing {
 			resAdd = resAdd.add(resMul).mod(p);
 			resMul = new Polynomial(new int[] { 1 });
 		}
-		return resAdd.toString();
+		return resAdd;
 
 	}
 	
