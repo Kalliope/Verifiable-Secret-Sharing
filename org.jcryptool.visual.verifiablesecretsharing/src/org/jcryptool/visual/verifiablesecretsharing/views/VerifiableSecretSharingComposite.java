@@ -214,13 +214,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		createParametersGroup(inputBody);
 		createCoefficientsGroup(inputBody);
-		showCoefficientsGroup(false, 0);
+		enableCoefficientsGroup(false, 1);
 		createCommitmentsGroup(inputBody);
-		showCommitmentsGroup(false, 0);
+		enableCommitmentsGroup(false, 2);
 		createSharesGroup(inputBody);
-		showSharesGroup(false, 0);
+		enableSharesGroup(false, 2);
 		createReconstructionGroup(inputBody);
-		showReconstructionGroup(false, 0);
+		enableReconstructionGroup(false, 2);
 	}
 
 	private void createParametersGroup(Composite parent) {
@@ -445,70 +445,28 @@ public class VerifiableSecretSharingComposite extends Composite {
 					coefficientsInt[0] = Integer.parseInt(secretText.getText());
 					/* ************************ */
 					players = Integer.parseInt(playerSpinner.getText());
-					showCoefficientsGroup(true, (playersRecon - 1));
+					enableCoefficientsGroup(true, (playersRecon - 1));
 					coefficientsSpinnersCoefficients[0].setSelection(Integer
 							.parseInt(secretText.getText()));
+					enableParametersGroupWithoutDispose(false);
 				} else {
 					MessageDialog.openError(getShell(), "Error", errorText);
 				}
-				// if (secretText.getText().compareTo("") != 0
-				// && moduleText.getText().compareTo("") != 0
-				// && primitiveRootText.getText().compareTo("") != 0) {
-				// if (Integer.parseInt(playerSpinner.getText()) >= Integer
-				// .parseInt(reconstructorSpinner.getText())) {
-				// if (Integer.parseInt(moduleText.getText()) > Integer
-				// .parseInt(secretText.getText())) {
-				// BigInteger moduleTextBI = new BigInteger(moduleText
-				// .getText());
-				// if (moduleTextBI.isProbablePrime(3) == true) {
-				// if (isSubgroup(primitiveRootText.getText(),
-				// moduleText.getText()) == true) {
-				// playersRecon = Integer
-				// .parseInt(reconstructorSpinner
-				// .getText());
-				// /* initiate array and set value for secret */
-				// coefficientsInt = new int[playersRecon];
-				// coefficientsInt[0] = Integer
-				// .parseInt(secretText.getText());
-				// /* ************************ */
-				// players = Integer.parseInt(playerSpinner
-				// .getText());
-				// showCoefficientsGroup(true,
-				// (playersRecon - 1));
-				// coefficientsSpinnersCoefficients[0]
-				// .setSelection(Integer
-				// .parseInt(secretText
-				// .getText()));
-				// } else {
-				// errorText += "\r\n"
-				// +
-				// Messages.VerifiableSecretSharingComposite_param_primitive_g;
-				// }
-				// } else {
-				// errorText += "\r\n"
-				// +
-				// Messages.VerifiableSecretSharingComposite_param_module_p_isPrime;
-				// }
-				// } else {
-				// errorText += "\r\n"
-				// +
-				// Messages.VerifiableSecretSharingComposite_param_module_p_bigger_s;
-				// }
-				// } else {
-				// errorText += "\r\n"
-				// +
-				// Messages.VerifiableSecretSharingComposite_param_player_t_smaller_n;
-				// }
-				// }
-				// if (errorText
-				// .compareTo(Messages.VerifiableSecretSharingComposite_error_start)
-				// != 0) {
-				// MessageDialog.openError(getShell(), "Error", errorText);
-				// }
 			}
 		});
 	}
 
+	private void enableParametersGroupWithoutDispose(boolean enableGroup) {
+
+		for (Control control : parametersGroup.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+
+		for (Control control : nextStepParametersComposite.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+	}
+	
 	private void createCoefficientsGroup(Composite parent) {
 		coefficientsGroupLayout = new RowLayout();
 		coefficientsGroupLayout.type = SWT.VERTICAL;
@@ -558,7 +516,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				showCommitmentsGroup(true, (playersRecon));
+				enableCommitmentsGroup(true, (playersRecon));
 				vss.commitment(Integer.parseInt(primitiveRootText.getText()),
 						coefficientsInt, Integer.parseInt(moduleText.getText()));
 				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
@@ -619,7 +577,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				false));
 		calculateShares.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(final SelectionEvent e) {
-				showSharesGroup(true, players);
+				enableSharesGroup(true, players);
 				vss.calculateShares(coefficientsInt,
 						Integer.parseInt(moduleText.getText()), players);
 				for (int i = 0; i < players; i++) {
@@ -628,68 +586,95 @@ public class VerifiableSecretSharingComposite extends Composite {
 					shareNTextShares[i].setText(vss.getSharesBig()[i]
 							.toString());
 				}
-				showReconstructionGroup(true, players);
+				enableReconstructionGroup(true, players);
+				enableCoefficientsGroupWithoutDispose(false);
 			}
 		});
 	}
 
-	private void showCoefficientsGroup(boolean showGroup, int coefficients) {
-		if (showGroup) {
-			coefficientsGroup.setVisible(true);
-			for (Control control : scrolledCoefficientsGroupContent
-					.getChildren()) {
-				control.dispose();
-			}
-			coefficientsLabelsCoefficients = new Label[coefficients + 1];
-			coefficientsSpinnersCoefficients = new Spinner[coefficients + 1];
-			coefficientsLabelsCoefficients[0] = new Label(
-					scrolledCoefficientsGroupContent, SWT.NONE);
-			coefficientsLabelsCoefficients[0].setBackground(WHITE);
-			coefficientsLabelsCoefficients[0].setText("a"
-					+ convertIntegerToSubscript(0) + " = s");
-			coefficientsSpinnersCoefficients[0] = new Spinner(
-					scrolledCoefficientsGroupContent, SWT.BORDER);
-			coefficientsSpinnersCoefficients[0].setLayoutData(new GridData(
-					SWT.FILL, SWT.FILL, true, false));
-			coefficientsSpinnersCoefficients[0].setEnabled(false);
+	private void enableCoefficientsGroup(boolean enableGroup, int coefficients) {
+		for (Control control : scrolledCoefficientsGroupContent.getChildren()) {
+			control.dispose();
+		}
+		coefficientsGroup.setEnabled(enableGroup);
+
+		coefficientsLabelsCoefficients = new Label[coefficients + 1];
+		coefficientsSpinnersCoefficients = new Spinner[coefficients + 1];
+		coefficientsLabelsCoefficients[0] = new Label(
+				scrolledCoefficientsGroupContent, SWT.NONE);
+		coefficientsLabelsCoefficients[0].setBackground(WHITE);
+		coefficientsLabelsCoefficients[0].setText("a"
+				+ convertIntegerToSubscript(0) + " = s");
+		coefficientsSpinnersCoefficients[0] = new Spinner(
+				scrolledCoefficientsGroupContent, SWT.BORDER);
+		coefficientsSpinnersCoefficients[0].setLayoutData(new GridData(
+				SWT.FILL, SWT.FILL, true, false));
+		coefficientsSpinnersCoefficients[0].setEnabled(false);
+		if (enableGroup) {
 			coefficientsSpinnersCoefficients[0].setMaximum(Integer
 					.parseInt(moduleText.getText()) - 1);
-			for (int i = 1; i <= coefficients; i++) {
-				coefficientsLabelsCoefficients[i] = new Label(
-						scrolledCoefficientsGroupContent, SWT.NONE);
-				coefficientsLabelsCoefficients[i].setText("a"
-						+ convertIntegerToSubscript(i));
-				coefficientsLabelsCoefficients[i].setBackground(WHITE);
+		}
+		for (int i = 1; i <= coefficients; i++) {
+			coefficientsLabelsCoefficients[i] = new Label(
+					scrolledCoefficientsGroupContent, SWT.NONE);
+			coefficientsLabelsCoefficients[i].setText("a"
+					+ convertIntegerToSubscript(i));
+			coefficientsLabelsCoefficients[i].setBackground(WHITE);
 
-				coefficientsSpinnersCoefficients[i] = new Spinner(
-						scrolledCoefficientsGroupContent, SWT.BORDER);
-				coefficientsSpinnersCoefficients[i].setLayoutData(new GridData(
-						SWT.FILL, SWT.FILL, true, false));
-				coefficientsSpinnersCoefficients[i].setMinimum(1);
+			coefficientsSpinnersCoefficients[i] = new Spinner(
+					scrolledCoefficientsGroupContent, SWT.BORDER);
+			coefficientsSpinnersCoefficients[i].setLayoutData(new GridData(
+					SWT.FILL, SWT.FILL, true, false));
+			coefficientsSpinnersCoefficients[i].setMinimum(1);
+			if (enableGroup) {
 				coefficientsSpinnersCoefficients[i].setMaximum(Integer
 						.parseInt(moduleText.getText()) - 1);
-				coefficientsSpinnersCoefficients[i].addListener(SWT.Modify,
-						new Listener() {
-							@Override
-							public void handleEvent(Event event) {
-								generatePolynom();
-								for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
-									coefficientsInt[i] = Integer
-											.parseInt(coefficientsSpinnersCoefficients[i]
-													.getText());
-								}
-							}
-						});
 			}
-			scrolledCoefficientsGroup
-					.setContent(scrolledCoefficientsGroupContent);
-			scrolledCoefficientsGroupContent.pack();
+			coefficientsSpinnersCoefficients[i].addListener(SWT.Modify,
+					new Listener() {
+						@Override
+						public void handleEvent(Event event) {
+							generatePolynom();
+							for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
+								coefficientsInt[i] = Integer
+										.parseInt(coefficientsSpinnersCoefficients[i]
+												.getText());
+							}
+						}
+					});
+		}
+		scrolledCoefficientsGroup.setContent(scrolledCoefficientsGroupContent);
+		scrolledCoefficientsGroupContent.pack();
 
-		} else {
-			coefficientsGroup.setVisible(false);
+		for (Control control : scrolledCoefficientsGroupContent.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+		for (Control control : commitGenerateButtonComposite.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+		for (Control control : polynomContent.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+		for (Control control : nextStepContent.getChildren()) {
+			control.setEnabled(enableGroup);
 		}
 	}
 
+	private void enableCoefficientsGroupWithoutDispose(boolean enableGroup) {
+		for (Control control : scrolledCoefficientsGroupContent.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+		for (Control control : commitGenerateButtonComposite.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+		for (Control control : polynomContent.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+		for (Control control : nextStepContent.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+	}
+	
 	private void createCommitmentsGroup(Composite parent) {
 		commitmentsGroupLayout = new RowLayout();
 		commitmentsGroupLayout.type = SWT.VERTICAL;
@@ -745,42 +730,36 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 	}
 
-	private void showCommitmentsGroup(boolean showGroup, int commitments) {
-		if (showGroup) {
-			commitmentsGroup.setVisible(true);
-			for (Control control : scrolledCommitmentsGroupContent
-					.getChildren()) {
+	private void enableCommitmentsGroup(boolean enableGroup, int commitments) {
+		commitmentsGroup.setEnabled(enableGroup);
+		for (Control control : scrolledCommitmentsGroupContent.getChildren()) {
 
-				if (control.getData() == null) {
-					control.dispose();
-				}
+			if (control.getData() == null) {
+				control.dispose();
 			}
+		}
 
-			coefficientsLabelsCommitment = new Label[commitments];
-			coefficientsTextCommitment = new Text[commitments];
-			for (int i = 0; i < commitments; i++) {
-				coefficientsLabelsCommitment[i] = new Label(
-						scrolledCommitmentsGroupContent, SWT.NONE);
-				coefficientsLabelsCommitment[i].setText("a"
-						+ convertIntegerToSubscript(i));
-				coefficientsLabelsCommitment[i].setLayoutData(new GridData(
-						SWT.CENTER, SWT.FILL, true, true));
-				coefficientsLabelsCommitment[i].setBackground(WHITE);
+		coefficientsLabelsCommitment = new Label[commitments];
+		coefficientsTextCommitment = new Text[commitments];
+		for (int i = 0; i < commitments; i++) {
+			coefficientsLabelsCommitment[i] = new Label(
+					scrolledCommitmentsGroupContent, SWT.NONE);
+			coefficientsLabelsCommitment[i].setText("a"
+					+ convertIntegerToSubscript(i));
+			coefficientsLabelsCommitment[i].setLayoutData(new GridData(
+					SWT.CENTER, SWT.FILL, true, true));
+			coefficientsLabelsCommitment[i].setBackground(WHITE);
 
-				coefficientsTextCommitment[i] = new Text(
-						scrolledCommitmentsGroupContent, SWT.BORDER
-								| SWT.READ_ONLY);
-				coefficientsTextCommitment[i].setLayoutData(new GridData(
-						SWT.FILL, SWT.FILL, true, false));
-			}
+			coefficientsTextCommitment[i] = new Text(
+					scrolledCommitmentsGroupContent, SWT.BORDER | SWT.READ_ONLY);
+			coefficientsTextCommitment[i].setLayoutData(new GridData(SWT.FILL,
+					SWT.FILL, true, false));
+		}
 
-			scrolledCommitmentsGroup
-					.setContent(scrolledCommitmentsGroupContent);
-			scrolledCommitmentsGroupContent.pack();
-
-		} else {
-			commitmentsGroup.setVisible(false);
-
+		scrolledCommitmentsGroup.setContent(scrolledCommitmentsGroupContent);
+		scrolledCommitmentsGroupContent.pack();
+		for (Control control : scrolledCommitmentsGroupContent.getChildren()) {
+			control.setEnabled(enableGroup);
 		}
 	}
 
@@ -840,120 +819,123 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 	}
 
-	private void showSharesGroup(boolean showGroup, int shares) {
-		if (showGroup) {
-			sharesGroup.setVisible(true);
-			for (Control control : scrolledSharesGroupContent.getChildren()) {
-				if (control.getData() == null
-						|| (control.getData() != null && (control.getData() instanceof Boolean) == false)) {
-					control.dispose();
+	private void enableSharesGroup(boolean enableGroup, int shares) {
+		sharesGroup.setEnabled(enableGroup);
+		for (Control control : scrolledSharesGroupContent.getChildren()) {
+			if (control.getData() == null
+					|| (control.getData() != null && (control.getData() instanceof Boolean) == false)) {
+				control.dispose();
+			}
+		}
+		playerLabelShares = new Label[shares];
+		shareNCompositeShares = new Composite[shares];
+		shareNTextShares = new Text[shares];
+		isModShares = new Label[shares];
+		shareModNTextShares = new Text[shares];
+		checkButtonShares = new Button[shares];
+		playerID = new int[shares];
+
+		shareModNRowLayout = new RowLayout();
+		shareModNRowLayout.type = SWT.HORIZONTAL;
+		shareModNRowLayout.wrap = false;
+
+		for (int i = 0; i < shares; i++) {
+			playerID[i] = i + 1;
+			playerLabelShares[i] = new Label(scrolledSharesGroupContent,
+					SWT.NONE);
+			playerLabelShares[i]
+					.setText(Messages.VerifiableSecretSharingComposite_playerX
+							+ " " + (i + 1));
+			playerLabelShares[i].setLayoutData(new GridData(SWT.CENTER,
+					SWT.FILL, true, true));
+			playerLabelShares[i].setBackground(WHITE);
+
+			shareNCompositeShares[i] = new Composite(
+					scrolledSharesGroupContent, SWT.NONE);
+			shareNCompositeShares[i].setLayoutData(new GridData(SWT.CENTER,
+					SWT.FILL, false, false));
+			shareNCompositeShares[i].setLayout(shareModNRowLayout);
+			shareNCompositeShares[i].setBackground(WHITE);
+
+			shareNTextShares[i] = new Text(shareNCompositeShares[i], SWT.BORDER
+					| SWT.READ_ONLY);
+			shareNTextShares[i].setLayoutData(new RowData(43, -1));
+			shareNTextShares[i].addListener(SWT.Verify, new Listener() {
+				public void handleEvent(Event e) {
+					String string = e.text;
+
+					char[] chars = new char[string.length()];
+					string.getChars(0, chars.length, chars, 0);
+					for (int i = 0; i < chars.length; i++) {
+						if (!('0' <= chars[i] && chars[i] <= '9')) {
+							e.doit = false;
+							return;
+						}
+					}
+
 				}
-			}
-			playerLabelShares = new Label[shares];
-			shareNCompositeShares = new Composite[shares];
-			shareNTextShares = new Text[shares];
-			isModShares = new Label[shares];
-			shareModNTextShares = new Text[shares];
-			checkButtonShares = new Button[shares];
-			playerID = new int[shares];
+			});
 
-			shareModNRowLayout = new RowLayout();
-			shareModNRowLayout.type = SWT.HORIZONTAL;
-			shareModNRowLayout.wrap = false;
-			
-			for (int i = 0; i < shares; i++) {
-				playerID[i] = i + 1;
-				playerLabelShares[i] = new Label(scrolledSharesGroupContent,
-						SWT.NONE);
-				playerLabelShares[i]
-						.setText(Messages.VerifiableSecretSharingComposite_playerX
-								+ " " + (i + 1));
-				playerLabelShares[i].setLayoutData(new GridData(SWT.CENTER,
-						SWT.FILL, true, true));
-				playerLabelShares[i].setBackground(WHITE);
+			isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
+			isModShares[i].setText("\u2261");
+			isModShares[i].setBackground(WHITE);
 
-				shareNCompositeShares[i] = new Composite(
-						scrolledSharesGroupContent, SWT.NONE);
-				shareNCompositeShares[i].setLayoutData(new GridData(SWT.CENTER,
-						SWT.FILL, false, false));
-				shareNCompositeShares[i].setLayout(shareModNRowLayout);
-				shareNCompositeShares[i].setBackground(WHITE);
-
-				shareNTextShares[i] = new Text(shareNCompositeShares[i],
-						SWT.BORDER | SWT.READ_ONLY);
-				shareNTextShares[i].setLayoutData(new RowData(50, -1));
-				shareNTextShares[i].addListener(SWT.Verify, new Listener() {
-					public void handleEvent(Event e) {
-						String string = e.text;
-
-						char[] chars = new char[string.length()];
-						string.getChars(0, chars.length, chars, 0);
-						for (int i = 0; i < chars.length; i++) {
-							if (!('0' <= chars[i] && chars[i] <= '9')) {
-								e.doit = false;
-								return;
-							}
-						}
-
+			shareModNTextShares[i] = new Text(shareNCompositeShares[i],
+					SWT.BORDER);
+			shareModNTextShares[i].setLayoutData(new RowData(43, -1));
+			shareModNTextShares[i].setData(i);
+			shareModNTextShares[i].addListener(SWT.Modify, new Listener() {
+				public void handleEvent(Event e) {
+					int newShareModP;
+					int i = (Integer) e.widget.getData();
+					if (shareModNTextShares[i].getText().compareTo("") != 0) {
+						// newShareModP = new
+						// BigInteger(shareNTextShares[i]
+						// .getText());
+						newShareModP = Integer.parseInt(shareModNTextShares[i]
+								.getText());
+						// vss.setSharesBig(i, newShare);
+						vss.setSharesModP(i, newShareModP);
+						// shareModNTextShares[i].setText(newShareModP +
+						// "");
 					}
-				});
 
-				isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
-				isModShares[i].setText("\u2261");
-				isModShares[i].setBackground(WHITE);
+				}
+			});
 
-				shareModNTextShares[i] = new Text(shareNCompositeShares[i],
-						SWT.BORDER);
-				shareModNTextShares[i].setLayoutData(new RowData(30, -1));
-				shareModNTextShares[i].setData(i);
-				shareModNTextShares[i].addListener(SWT.Modify, new Listener() {
-					public void handleEvent(Event e) {
-						int newShareModP;
-						int i = (Integer) e.widget.getData();
-						if (shareModNTextShares[i].getText().compareTo("") != 0) {
-							// newShareModP = new
-							// BigInteger(shareNTextShares[i]
-							// .getText());
-							newShareModP = Integer
-									.parseInt(shareModNTextShares[i].getText());
-							// vss.setSharesBig(i, newShare);
-							vss.setSharesModP(i, newShareModP);
-//							shareModNTextShares[i].setText(newShareModP + "");
-						}
+			checkButtonShares[i] = new Button(scrolledSharesGroupContent,
+					SWT.NONE);
+			checkButtonShares[i].setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+					true, true));
+			checkButtonShares[i]
+					.setText(Messages.VerifiableSecretSharingComposite_shares_check_button);
+			checkButtonShares[i].setData(i);
+			checkButtonShares[i].addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
 
+					if (vss.check(
+							Integer.parseInt(primitiveRootText.getText()),
+							Integer.parseInt(moduleText.getText()),
+							playerID[(Integer) e.widget.getData()]) == true) {
+						shareModNTextShares[(Integer) e.widget.getData()]
+								.setBackground(GREEN);
+					} else {
+						shareModNTextShares[(Integer) e.widget.getData()]
+								.setBackground(RED);
 					}
-				});
+				}
+			});
 
-				checkButtonShares[i] = new Button(scrolledSharesGroupContent,
-						SWT.NONE);
-				checkButtonShares[i].setLayoutData(new GridData(SWT.FILL,
-						SWT.FILL, true, true));
-				checkButtonShares[i]
-						.setText(Messages.VerifiableSecretSharingComposite_shares_check_button);
-				checkButtonShares[i].setData(i);
-				checkButtonShares[i]
-						.addSelectionListener(new SelectionAdapter() {
-							@Override
-							public void widgetSelected(SelectionEvent e) {
-
-								if (vss.check(Integer
-										.parseInt(primitiveRootText.getText()),
-										Integer.parseInt(moduleText.getText()),
-										playerID[(Integer) e.widget.getData()]) == true) {
-									shareModNTextShares[(Integer) e.widget
-											.getData()].setBackground(GREEN);
-								} else {
-									shareModNTextShares[(Integer) e.widget
-											.getData()].setBackground(RED);
-								}
-							}
-						});
+			for (Control control : shareNCompositeShares[i].getChildren()) {
+				control.setEnabled(enableGroup);
 			}
+		}
 
-			scrolledSharesGroup.setContent(scrolledSharesGroupContent);
-			scrolledSharesGroupContent.pack();
-		} else {
-			sharesGroup.setVisible(false);
+		scrolledSharesGroup.setContent(scrolledSharesGroupContent);
+		scrolledSharesGroupContent.pack();
+		for (Control control : scrolledSharesGroupContent.getChildren()) {
+			control.setEnabled(enableGroup);
 		}
 	}
 
@@ -1023,38 +1005,39 @@ public class VerifiableSecretSharingComposite extends Composite {
 		});
 	}
 
-	private void showReconstructionGroup(boolean showGroup, int player) {
-		if (showGroup) {
-			reconstructionGroup.setVisible(true);
-			for (Control control : scrolledReconstructionGroupContent
-					.getChildren()) {
-				control.dispose();
-			}
-			playerLabelReconstructions = new Label[player];
-			playerCheckboxReconstructions = new Button[player];
+	private void enableReconstructionGroup(boolean enableGroup, int player) {
+		reconstructionGroup.setEnabled(enableGroup);
+		for (Control control : scrolledReconstructionGroupContent.getChildren()) {
+			control.dispose();
+		}
+		playerLabelReconstructions = new Label[player];
+		playerCheckboxReconstructions = new Button[player];
 
-			for (int i = 0; i < player; i++) {
-				playerLabelReconstructions[i] = new Label(
-						scrolledReconstructionGroupContent, SWT.NONE);
-				playerLabelReconstructions[i]
-						.setText(Messages.VerifiableSecretSharingComposite_playerX
-								+ " " + (i + 1));
-				playerLabelReconstructions[i].setLayoutData(new GridData(
-						SWT.LEFT, SWT.FILL, true, true));
-				playerLabelReconstructions[i].setBackground(WHITE);
+		for (int i = 0; i < player; i++) {
+			playerLabelReconstructions[i] = new Label(
+					scrolledReconstructionGroupContent, SWT.NONE);
+			playerLabelReconstructions[i]
+					.setText(Messages.VerifiableSecretSharingComposite_playerX
+							+ " " + (i + 1));
+			playerLabelReconstructions[i].setLayoutData(new GridData(SWT.LEFT,
+					SWT.FILL, true, true));
+			playerLabelReconstructions[i].setBackground(WHITE);
 
-				playerCheckboxReconstructions[i] = new Button(
-						scrolledReconstructionGroupContent, SWT.CHECK);
-				playerCheckboxReconstructions[i].setLayoutData(new GridData(
-						SWT.CENTER, SWT.FILL, true, false));
-				playerCheckboxReconstructions[i].setBackground(WHITE);
-			}
+			playerCheckboxReconstructions[i] = new Button(
+					scrolledReconstructionGroupContent, SWT.CHECK);
+			playerCheckboxReconstructions[i].setLayoutData(new GridData(
+					SWT.CENTER, SWT.FILL, true, false));
+			playerCheckboxReconstructions[i].setBackground(WHITE);
+		}
 
-			scrolledReconstructionGroup
-					.setContent(scrolledReconstructionGroupContent);
-			scrolledReconstructionGroupContent.pack();
-		} else {
-			reconstructionGroup.setVisible(false);
+		scrolledReconstructionGroup
+				.setContent(scrolledReconstructionGroupContent);
+		scrolledReconstructionGroupContent.pack();
+		for (Control control : scrolledReconstructionGroupContent.getChildren()) {
+			control.setEnabled(enableGroup);
+		}
+		for (Control control : reconstructionGroup.getChildren()) {
+			control.setEnabled(enableGroup);
 		}
 	}
 
