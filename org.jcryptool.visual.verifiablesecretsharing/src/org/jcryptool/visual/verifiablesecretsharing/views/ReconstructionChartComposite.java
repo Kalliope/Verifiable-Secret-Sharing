@@ -16,6 +16,8 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+
 import org.jcryptool.core.util.fonts.FontService;
 import org.jcryptool.visual.verifiablesecretsharing.*;
 import org.jcryptool.visual.verifiablesecretsharing.algorithm.Polynomial;
@@ -26,12 +28,14 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.ui.part.ViewPart;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.annotations.XYAnnotation;
 import org.jfree.chart.axis.ValueAxis;
@@ -55,6 +59,8 @@ public class ReconstructionChartComposite extends Composite {
 	private Polynomial reconstructedPolynom = new Polynomial(new int[] { 123,
 			25 });
 	private JFreeChart chart;
+	private ChartPanel chartPanel;
+	private Composite body;
 
 	public int[] getPlayerID() {
 		return playerID;
@@ -70,18 +76,25 @@ public class ReconstructionChartComposite extends Composite {
 
 	public void setShares(int[] shares) {
 		this.shares = shares;
-		this.chart = createChart(createDataset());
-//		this.chart.plotChanged(new PlotChangeEvent(this.chart.getPlot()));
 	}
 
 	public void setReconstructedPolynom(Polynomial reconstructedPolynom) {
 		this.reconstructedPolynom = reconstructedPolynom;
-		this.chart = createChart(createDataset());
-//		this.chart.plotChanged(new PlotChangeEvent(this.chart.getPlot()));
 	}
-
+	
 	public void redrawChart() {
-
+        for(Control control : body.getChildren()) {
+        	if(control.getData() == null) {
+        		control.dispose();
+        	}
+        }
+		chartPanel = new ChartPanel(chart);
+        chartPanel.setBackground(Color.lightGray);
+		chart = createChart(createDataset());
+		chart.fireChartChanged();
+        chartPanel.setChart(this.chart);
+        chartPanel.updateUI();
+		new ChartComposite(body, SWT.None, chart, true);
 	}
 
 	public ReconstructionChartComposite(final Composite parent,
@@ -116,11 +129,15 @@ public class ReconstructionChartComposite extends Composite {
 	}
 
 	private void createBody() {
-		final Composite body = new Composite(this, SWT.NONE);
+		body = new Composite(this, SWT.NONE);
 		body.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		body.setLayout(new FillLayout());
-
+		chartPanel = new ChartPanel(chart);
+        chartPanel.setBackground(Color.lightGray);
 		chart = createChart(createDataset());
+		chart.fireChartChanged();
+        chartPanel.setChart(this.chart);
+        chartPanel.updateUI();
 		new ChartComposite(body, SWT.None, chart, true);
 		// createInputBody(body);
 		// createDescriptionGroup(body);

@@ -18,7 +18,6 @@ import java.util.Random;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -1017,7 +1016,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 							for (Control control : scrolledReconstructionGroupContent.getChildren()) {
 								if(control.getData() != null && ((Button)control).getSelection()) {
 									playerIdsHelp[i] = Integer.parseInt(control.getData().toString());
-									sharesHelp[i] = Integer.parseInt(shareNTextShares[playerIdsHelp[i]].getText());
+									sharesHelp[i] = Integer.parseInt(shareNTextShares[playerIdsHelp[i]-1].getText());
 									i++;
 								}
 							}
@@ -1034,6 +1033,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 							rcc.setReconstructedPolynom(reconstruction);
 							rcc.setPlayerID(playerIds);
 							rcc.setShares(shares);
+							rcc.redrawChart();
 							((VerifiableSecretSharingView) platformPart
 									.getView(false))
 									.setFocusOnReconstructionTab(true);
