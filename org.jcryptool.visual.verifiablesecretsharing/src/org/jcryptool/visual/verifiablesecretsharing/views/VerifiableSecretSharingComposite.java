@@ -18,6 +18,7 @@ import java.util.Random;
 
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -73,6 +74,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private static VerifiableSecretSharing vss = new VerifiableSecretSharing();
 
 	private static int[] playerID;
+
+	/* if true, commit-Button got clicked */
+	private static boolean commitmentsChecked = false;
 
 	StyledText stDescription;
 	private Composite inputBody;
@@ -521,6 +525,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 					coefficientsTextCommitment[i].setText(String.valueOf(vss
 							.getCommitments()[i]));
 				}
+				commitmentsChecked = true;
 			}
 		});
 
@@ -919,16 +924,27 @@ public class VerifiableSecretSharingComposite extends Composite {
 			checkButtonShares[i].addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-
-					if (vss.check(
-							Integer.parseInt(primitiveRootText.getText()),
-							Integer.parseInt(moduleText.getText()),
-							playerID[(Integer) e.widget.getData()]) == true) {
-						shareModNTextShares[(Integer) e.widget.getData()]
-								.setBackground(GREEN);
-					} else {
-						shareModNTextShares[(Integer) e.widget.getData()]
-								.setBackground(RED);
+					if (commitmentsChecked == true) {
+						enableCoefficientsGroupWithoutDispose(false);
+						if (vss.check(
+								Integer.parseInt(primitiveRootText.getText()),
+								Integer.parseInt(moduleText.getText()),
+								playerID[(Integer) e.widget.getData()]) == true) {
+							shareModNTextShares[(Integer) e.widget.getData()]
+									.setBackground(GREEN);
+						} else {
+							shareModNTextShares[(Integer) e.widget.getData()]
+									.setBackground(RED);
+						}
+					}else{
+						//TODO: fehlermeldung
+						String errorText = Messages.VerifiableSecretSharingComposite_commitment_not_calculated;
+						MessageDialog.openError(getShell(), "Error", errorText);
+						enableCoefficientsGroupWithoutDispose(true);
+						enableSharesGroup(false, players);
+						enableReconstructionGroup(false, players);
+						
+						;
 					}
 				}
 			});
