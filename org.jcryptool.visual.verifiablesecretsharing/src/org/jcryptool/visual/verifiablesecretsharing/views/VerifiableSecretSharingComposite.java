@@ -169,7 +169,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 		// }
 		// }
 		// };
-
+		
+		//default-values
+		playersRecon=2;
+		players=2;
+		commitmentsChecked = false;
+		
 		setLayout(new GridLayout());
 		createHead();
 		createBody();
