@@ -1012,10 +1012,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				ReconstructionChartComposite rcc;
 				Polynomial reconstruction;
-				int[] playerIdsHelp = new int[Integer.parseInt(playerSpinner.getText())];
-				int[] sharesHelp = new int[Integer.parseInt(playerSpinner.getText())];
+				int[] playerIdsHelp = new int[Integer.parseInt(reconstructorSpinner.getText())];
+				BigInteger[] sharesHelp = new BigInteger[Integer.parseInt(reconstructorSpinner.getText())];
 				int[] playerIds;
-				int[] shares;
+				BigInteger[] shares;
 				int i=0;
 				try {
 					IViewReference[] platformParts = PlatformUI.getWorkbench()
@@ -1026,14 +1026,18 @@ public class VerifiableSecretSharingComposite extends Composite {
 								"Verifiable Secret Sharing") == 0) {
 
 							for (Control control : scrolledReconstructionGroupContent.getChildren()) {
+								if(i==playerIdsHelp.length) {
+									break;
+								}
 								if(control.getData() != null && ((Button)control).getSelection()) {
 									playerIdsHelp[i] = Integer.parseInt(control.getData().toString());
-									sharesHelp[i] = Integer.parseInt(shareNTextShares[playerIdsHelp[i]-1].getText());
+//									sharesHelp[i] = Integer.parseInt(shareNTextShares[playerIdsHelp[i]-1].getText());
+									sharesHelp[i] = new BigInteger(shareNTextShares[playerIdsHelp[i]-1].getText());
 									i++;
 								}
 							}
 							playerIds = new int[i];
-							shares = new int[i];
+							shares = new BigInteger[i];
 							for (int j=0; j<playerIds.length; j++) {
 								playerIds[j] = playerIdsHelp[j];
 								shares[j] = sharesHelp[j];
@@ -1052,6 +1056,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 						}
 					}
 				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
 
 			}

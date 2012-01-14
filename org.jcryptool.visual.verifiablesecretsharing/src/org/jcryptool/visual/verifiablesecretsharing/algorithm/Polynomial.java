@@ -1,15 +1,17 @@
 package org.jcryptool.visual.verifiablesecretsharing.algorithm;
 
+import java.math.BigInteger;
+
 public class Polynomial {
 	int deg;
-	private int[] coef;
+	private BigInteger[] coef;
 
-	public int[] getCoef() {
+	public BigInteger[] getCoef() {
 		return coef;
 	}
 
 	// coef[i]*x^i
-	public Polynomial(int[] coef) {
+	public Polynomial(BigInteger[] coef) {
 		this.coef = coef;
 		deg = degree();
 	}
@@ -17,17 +19,22 @@ public class Polynomial {
 	public int degree() {
 		int d = 0;
 		for (int i = 0; i < coef.length; i++)
-			if (coef[i] != 0)
+			if (coef[i].compareTo(BigInteger.ZERO) != 0)
 				d = i;
 		return d;
 	}
 
 	public Polynomial times(Polynomial b) {
 		Polynomial a = this;
-		Polynomial c = new Polynomial(new int[a.deg + b.deg + 1]);
+		BigInteger[] help = new BigInteger[a.deg + b.deg + 1];
+		Polynomial c;
+		for (int i = 0; i< help.length; i++) {
+			help[i] = BigInteger.ZERO;
+		}
+		c = new Polynomial(help);
 		for (int i = 0; i <= a.deg; i++) {
 			for (int j = 0; j <= b.deg; j++) {
-				c.coef[i + j] += (a.coef[i] * b.coef[j]);
+				c.coef[i + j] = c.coef[i+j].add(a.coef[i].multiply(b.coef[j]));
 			}
 		}
 		c.deg = c.degree();
@@ -36,9 +43,14 @@ public class Polynomial {
 
 	public Polynomial times(int b) {
 		Polynomial a = this;
-		Polynomial c = new Polynomial(new int[a.coef.length]);
+		BigInteger[] help = new BigInteger[a.coef.length];
+		Polynomial c;
+		for (int i = 0; i< help.length; i++) {
+			help[i] = BigInteger.ZERO;
+		}
+		c = new Polynomial(help);
 		for (int i = 0; i < c.coef.length; i++) {
-			c.coef[i] = (a.coef[i] * b);
+			c.coef[i] = a.coef[i].multiply(new BigInteger(""+b));
 		}
 		c.deg = c.degree();
 		return c;
@@ -47,36 +59,50 @@ public class Polynomial {
 
 	public Polynomial add(Polynomial b) {
 		Polynomial a = this;
-		Polynomial c = new Polynomial(new int[(Math.max(a.coef.length,
-				b.coef.length))]);
+		BigInteger[] help = new BigInteger[(Math.max(a.coef.length, b.coef.length))];
+		Polynomial c;
+		for (int i = 0; i< help.length; i++) {
+			help[i] = BigInteger.ZERO;
+		}
+		c = new Polynomial(help);
 
 		for (int i = 0; i < a.coef.length; i++)
-			c.coef[i] += a.coef[i];
+			c.coef[i] = c.coef[i].add(a.coef[i]);
 		for (int i = 0; i < b.coef.length; i++)
-			c.coef[i] += b.coef[i];
+			c.coef[i] = c.coef[i].add(b.coef[i]);
 		c.deg = c.degree();
 		return c;
 	}
 
 	public Polynomial add(int b) {
 		Polynomial a = this;
-		Polynomial c = new Polynomial(new int[a.coef.length]);
+		BigInteger[] help = new BigInteger[a.coef.length];
+		Polynomial c;
+		for (int i = 0; i< help.length; i++) {
+			help[i] = BigInteger.ZERO;
+		}
+		c = new Polynomial(help);
 		for (int i = 0; i < a.coef.length; i++)
 			c.coef[i] = a.coef[i];
-		c.coef[0] += b;
+		c.coef[0] = c.coef[0].add(new BigInteger(""+b));
 		c.deg = c.degree();
 		return c;
 	}
 
 	public Polynomial mod(int p) {
 		Polynomial a = this;
-		Polynomial c = new Polynomial(new int[a.coef.length]);
+		BigInteger[] help = new BigInteger[a.coef.length];
+		Polynomial c;
+		for (int i = 0; i< help.length; i++) {
+			help[i] = BigInteger.ZERO;
+		}
+		c = new Polynomial(help);
 		for (int i = 0; i < a.coef.length; i++) {
-			if (a.coef[i] > 0) {
-				c.coef[i] = a.coef[i] % p;
-			} else {
-				c.coef[i] = p + a.coef[i];
-			}
+//			if (a.coef[i].compareTo(BigInteger.ZERO) > 0) {
+				c.coef[i] = a.coef[i].mod(new BigInteger(""+p));
+//			} else {
+//				c.coef[i] = p + a.coef[i];
+//			}
 		}
 		c.deg = c.degree();
 		return c;
@@ -89,12 +115,12 @@ public class Polynomial {
 			return coef[0] + " + " + coef[1] + "x";
 		String s = ""; // coef[deg] + "x" + convertIntegerToSuperscript(deg);
 		for (int i = 0; i <= deg; i++) {
-			if (coef[i] == 0)
+			if (coef[i].compareTo(BigInteger.ZERO) == 0)
 				continue;
-			else if (coef[i] > 0)
+			else if (coef[i].compareTo(BigInteger.ZERO) > 0)
 				s = s + " + " + (coef[i]);
-			else if (coef[i] < 0)
-				s = s + " - " + (-coef[i]);
+			else if (coef[i].compareTo(BigInteger.ZERO) < 0)
+				s = s + " - " + (coef[i]);
 			if (i == 1)
 				s = s + "x";
 			else if (i > 1)
