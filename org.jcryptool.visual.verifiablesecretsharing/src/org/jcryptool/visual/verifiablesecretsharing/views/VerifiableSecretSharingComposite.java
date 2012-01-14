@@ -679,6 +679,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 		generatePolynom();
 		scrolledCoefficientsGroup.setContent(scrolledCoefficientsGroupContent);
 		scrolledCoefficientsGroupContent.pack();
+		for (Control control : scrolledCoefficientsGroupContent.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(2);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
 
 		for (Control control : scrolledCoefficientsGroupContent.getChildren()) {
 			control.setEnabled(enableGroup);
@@ -793,6 +806,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		scrolledCommitmentsGroup.setContent(scrolledCommitmentsGroupContent);
 		scrolledCommitmentsGroupContent.pack();
+		for (Control control : scrolledCommitmentsGroupContent.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(3);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
 		for (Control control : scrolledCommitmentsGroupContent.getChildren()) {
 			control.setEnabled(enableGroup);
 		}
@@ -981,6 +1007,34 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledSharesGroup.setContent(scrolledSharesGroupContent);
 		scrolledSharesGroupContent.pack();
 		for (Control control : scrolledSharesGroupContent.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(4);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
+		for (Composite composite : shareNCompositeShares) {
+			for (Control control : composite.getChildren()) {
+				control.addFocusListener(new FocusListener() {
+
+					@Override
+					public void focusGained(FocusEvent e) {
+						showDescription(4);
+					}
+
+					@Override
+					public void focusLost(FocusEvent e) {
+					}
+				});
+			}
+		}
+		for (Control control : scrolledSharesGroupContent.getChildren()) {
 			control.setEnabled(enableGroup);
 		}
 	}
@@ -1123,6 +1177,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setContent(scrolledReconstructionGroupContent);
 		scrolledReconstructionGroupContent.pack();
 		for (Control control : scrolledReconstructionGroupContent.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(5);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
+		for (Control control : scrolledReconstructionGroupContent.getChildren()) {
 			control.setEnabled(enableGroup);
 		}
 		for (Control control : reconstructionGroup.getChildren()) {
@@ -1185,8 +1252,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 		default:
 
 		}
-//		descriptionLeft.redraw();
-//		descriptionRight.redraw();
+		// descriptionLeft.redraw();
+		// descriptionRight.redraw();
 		descriptionGroup.layout();
 	}
 
@@ -1217,6 +1284,45 @@ public class VerifiableSecretSharingComposite extends Composite {
 				}
 			});
 		}
+		for (Control control : commitGenerateButtonComposite.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(2);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
+		for (Control control : polynomContent.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(2);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
+		for (Control control : nextStepContent.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(2);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
 		for (Control control : commitmentsGroup.getChildren()) {
 			control.addFocusListener(new FocusListener() {
 
@@ -1230,6 +1336,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				}
 			});
 		}
+
 		for (Control control : sharesGroup.getChildren()) {
 			control.addFocusListener(new FocusListener() {
 
