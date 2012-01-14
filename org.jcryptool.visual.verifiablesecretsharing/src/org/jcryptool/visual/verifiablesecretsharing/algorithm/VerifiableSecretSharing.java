@@ -198,16 +198,16 @@ public class VerifiableSecretSharing {
 	 */
 	public Polynomial reconstruct(int[] playerIds, int p, int t){
 		int[] sharesModP = getSharesModP();
-		int[] helpCoef = {0,1};
+		BigInteger[] helpCoef = {BigInteger.ZERO,BigInteger.ONE};
 		Polynomial x = new Polynomial(helpCoef);
-		Polynomial resMul = new Polynomial(new int[]{1});
-		Polynomial resAdd = new Polynomial(new int[]{0});
+		Polynomial resMul = new Polynomial(new BigInteger[]{BigInteger.ONE});
+		Polynomial resAdd = new Polynomial(new BigInteger[]{BigInteger.ZERO});
 		int inverse;
 
 		for (int i = 0; i < t; i++) {
 			for (int j = 0; j < t; j++) {
 				if (j != i) {
-					helpCoef[0] = playerIds[j];
+					helpCoef[0] = BigInteger.ZERO.subtract(new BigInteger(""+playerIds[j]));
 					x = new Polynomial(helpCoef).mod(p);
 					inverse = new BigInteger(((playerIds[i]) - (playerIds[j]))
 							+ "").modInverse(new BigInteger(p + "")).intValue();
@@ -218,7 +218,7 @@ public class VerifiableSecretSharing {
 			}
 			resMul = resMul.times(sharesModP[playerIds[i] - 1]).mod(p);
 			resAdd = resAdd.add(resMul).mod(p);
-			resMul = new Polynomial(new int[] { 1 });
+			resMul = new Polynomial(new BigInteger[]{BigInteger.ONE});
 		}
 		return resAdd;
 

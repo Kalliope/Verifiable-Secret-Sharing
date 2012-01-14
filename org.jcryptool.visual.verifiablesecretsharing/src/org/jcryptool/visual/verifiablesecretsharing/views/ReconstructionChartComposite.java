@@ -11,17 +11,9 @@
 package org.jcryptool.visual.verifiablesecretsharing.views;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-
+import java.math.BigInteger;
 import org.jcryptool.core.util.fonts.FontService;
-import org.jcryptool.visual.verifiablesecretsharing.*;
 import org.jcryptool.visual.verifiablesecretsharing.algorithm.Polynomial;
-import org.jcryptool.visual.verifiablesecretsharing.algorithm.VerifiableSecretSharing;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.layout.FillLayout;
@@ -29,38 +21,27 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.ui.part.ViewPart;
 import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.annotations.XYAnnotation;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.event.PlotChangeEvent;
-import org.jfree.chart.plot.Marker;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYRangeInfo;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
 public class ReconstructionChartComposite extends Composite {
-	private int[] playerID = { 0, 1, 2, 3, 4, 5, 6, 7 };
-	private int[] shares = { 4, 7, 10, 11, 12, 13, 14, 22 };
-	private Polynomial reconstructedPolynom = new Polynomial(new int[] { 123,
-			25 });
+	private int[] playerID = { 1, 2, 3, 4, 5, 6, 7, 8 };
+	private BigInteger[] shares = { new BigInteger("4"), new BigInteger("7"),
+			new BigInteger("10"), new BigInteger("11"), new BigInteger("12"),
+			new BigInteger("13"), new BigInteger("14"), new BigInteger("22") };
+	private Polynomial reconstructedPolynom = new Polynomial(new BigInteger[] {
+			new BigInteger("" + 123), new BigInteger("" + 25) });
 	private JFreeChart chart;
-	private ChartPanel chartPanel;
 	private Composite body;
+	private StyledText stDescription;
 
 	public int[] getPlayerID() {
 		return playerID;
@@ -70,31 +51,30 @@ public class ReconstructionChartComposite extends Composite {
 		this.playerID = playerID;
 	}
 
-	public int[] getShares() {
+	public BigInteger[] getShares() {
 		return shares;
 	}
 
-	public void setShares(int[] shares) {
+	public void setShares(BigInteger[] shares) {
 		this.shares = shares;
 	}
 
 	public void setReconstructedPolynom(Polynomial reconstructedPolynom) {
 		this.reconstructedPolynom = reconstructedPolynom;
 	}
-	
+
 	public void redrawChart() {
-        for(Control control : body.getChildren()) {
-        	if(control.getData() == null) {
-        		control.dispose();
-        	}
-        }
-		chartPanel = new ChartPanel(chart);
-        chartPanel.setBackground(Color.lightGray);
-		chart = createChart(createDataset());
-		chart.fireChartChanged();
-        chartPanel.setChart(this.chart);
-        chartPanel.updateUI();
-		new ChartComposite(body, SWT.None, chart, true);
+		// for (Control control : body.getChildren()) {
+		// if (control.getData() == null) {
+		// control.dispose();
+		// }
+		// }
+		// chart = createChart(createDataset());
+		// new ChartComposite(body, SWT.None, chart, true);
+		// body.redraw();
+		body.dispose();
+		createBody();
+		stDescription.setText(reconstructedPolynom.toString());
 	}
 
 	public ReconstructionChartComposite(final Composite parent,
@@ -120,24 +100,18 @@ public class ReconstructionChartComposite extends Composite {
 		label.setFont(FontService.getHeaderFont());
 		// label.setBackground(WHITE);
 		label.setText(Messages.VerifiableSecretSharingComposite_tab_title);
-		// stDescription = new StyledText(head, SWT.READ_ONLY | SWT.MULTI
-		// | SWT.WRAP);
-		// stDescription.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
-		// false));
-		// stDescription
-		// .setText(Messages.VerifiableSecretSharingComposite_description);
+		stDescription = new StyledText(head, SWT.READ_ONLY | SWT.MULTI
+				| SWT.WRAP);
+		stDescription.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false));
+		stDescription.setText(reconstructedPolynom.toString());
 	}
 
 	private void createBody() {
 		body = new Composite(this, SWT.NONE);
 		body.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		body.setLayout(new FillLayout());
-		chartPanel = new ChartPanel(chart);
-        chartPanel.setBackground(Color.lightGray);
 		chart = createChart(createDataset());
-		chart.fireChartChanged();
-        chartPanel.setChart(this.chart);
-        chartPanel.updateUI();
 		new ChartComposite(body, SWT.None, chart, true);
 		// createInputBody(body);
 		// createDescriptionGroup(body);
@@ -148,15 +122,16 @@ public class ReconstructionChartComposite extends Composite {
 		final XYSeries playerAndSharesSeries = new XYSeries("Shares");
 		final XYSeries reconstructionSeries = new XYSeries(
 				"Reconstructed Polynom");
-		int[] coef = reconstructedPolynom.getCoef();
-		double y = 0;
-		
+		BigInteger[] coef = reconstructedPolynom.getCoef();
+		BigInteger y = BigInteger.ZERO;
+
 		for (int i = 0; i < playerID.length && playerID[i] != 0; i++) {
 			playerAndSharesSeries.add(playerID[i], shares[i]);
 		}
-		for (double i = 0; i < playerID[playerID.length-1]; i+=0.5) {
-			for (int j=0; j<coef.length; j++) {
-				y += coef[j]*Math.pow(i, j);
+		for (int i = 0; i < playerID[playerID.length - 1]; i++) {
+			for (int j = 0; j < coef.length; j++) {
+				y = y.add(coef[j].multiply(new BigInteger(i + "").pow(j)));
+				// y += coef[j]*Math.pow(i, j);
 			}
 			reconstructionSeries.add(i, y);
 		}
