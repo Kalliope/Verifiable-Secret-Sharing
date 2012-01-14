@@ -189,13 +189,19 @@ public class ReconstructionChartComposite extends Composite {
 				false, // tooltips
 				false // urls
 				);
-		// XYSplineRenderer -- show data points
-		chart.getXYPlot().setRenderer(new XYSplineRenderer());
+		//XYSplineRenderer -- show data points
+		//chart.getXYPlot().setRenderer(new XYSplineRenderer());
 		XYPlot plot = (XYPlot) chart.getPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setDomainGridlinesVisible(true);
 		plot.setRangeGridlinePaint(Color.white);
+		
+		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+        renderer.setSeriesLinesVisible(0, false);
+        renderer.setSeriesShapesVisible(1, false);
+        plot.setRenderer(renderer);
+		
 
 		return chart;
 
