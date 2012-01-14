@@ -20,13 +20,13 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -65,22 +65,24 @@ public class ReconstructionChartComposite extends Composite {
 	}
 
 	public void redrawChart() {
-		// for (Control control : body.getChildren()) {
-		// if (control.getData() == null) {
-		// control.dispose();
-		// }
-		// }
-		// chart = createChart(createDataset());
-		// new ChartComposite(body, SWT.None, chart, true);
-		// body.redraw();
-		//body.dispose();
+		for (Control control : body.getChildren()) {
+			if (control.getData() == null) {
+				control.dispose();
+			}
+		}
 		
-		chartComposite.getChart().getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
-		//chart.getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
-		chart.fireChartChanged();
-		
-		//createBody();
+		chart = createChart(createDataset());
+		chartComposite = new ChartComposite(body, SWT.None, chart, true);
+		body.layout();
 		stDescription.setText(reconstructedPolynom.toString());
+//		body.dispose();
+//		
+//		chartComposite.getChart().getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
+//		chart.getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
+//		chart.fireChartChanged();
+//		
+//		createBody();
+//		stDescription.setText(reconstructedPolynom.toString());
 	}
 
 	public ReconstructionChartComposite(final Composite parent,
@@ -133,8 +135,8 @@ public class ReconstructionChartComposite extends Composite {
 
 		for (int i = 0; i < playerID.length && playerID[i] != 0; i++) {
 			playerAndSharesSeries.add(playerID[i], shares[i]);
-			System.out.println(playerID[i]);
-			System.out.println(shares[i]);
+//			System.out.println(playerID[i]);
+//			System.out.println(shares[i]);
 		}
 		for (int i = 0; i < playerID[playerID.length - 1]; i++) {
 			for (int j = 0; j < coef.length; j++) {
@@ -168,7 +170,7 @@ public class ReconstructionChartComposite extends Composite {
 				"", // x axis label
 				"", // y axis label
 				dataset, // data
-				PlotOrientation.VERTICAL, false, // include legend
+				PlotOrientation.VERTICAL, true, // include legend
 				false, // tooltips
 				false // urls
 				);

@@ -150,7 +150,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private GridLayout nextStepSpanLayout;
 	private Composite nextStepParametersComposite;
 	private Button reconstructButton;
-	private ScrolledComposite scrolledDescriptionGroup;
 	private Label descriptionLeft;
 	private Label descriptionRight;
 
@@ -1129,7 +1128,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 										.getView(false))
 										.getReconstructionChartComposite();
 								rcc.setReconstructedPolynom(reconstruction);
-								System.out.println(reconstruction);
+//								System.out.println(reconstruction);
 								rcc.setPlayerID(playerIds);
 								rcc.setShares(shares);
 								rcc.redrawChart();
