@@ -1039,6 +1039,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 							playerIds = new int[i];
 							shares = new BigInteger[i];
 							for (int j=0; j<playerIds.length; j++) {
+								//System.out.println(playerIds.length);
 								playerIds[j] = playerIdsHelp[j];
 								shares[j] = sharesHelp[j];
 							}
@@ -1047,6 +1048,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 									.getView(false))
 									.getReconstructionChartComposite();
 							rcc.setReconstructedPolynom(reconstruction);
+							System.out.println(reconstruction);
 							rcc.setPlayerID(playerIds);
 							rcc.setShares(shares);
 							rcc.redrawChart();
