@@ -412,19 +412,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 						|| primitiveRootText.getText().compareTo("") == 0) {
 					errorText += "\n\r"
 							+ Messages.VerifiableSecretSharingComposite_param_set_all;
-					
-					if(moduleText.getText().compareTo("")==0){
+
+					if (moduleText.getText().compareTo("") == 0) {
 						moduleText.setText("0");
 					}
-					
-					if(primitiveRootText.getText().compareTo("")==0){
+
+					if (primitiveRootText.getText().compareTo("") == 0) {
 						primitiveRootText.setText("0");
 					}
-					
-					if(secretText.getText().compareTo("")==0){
+
+					if (secretText.getText().compareTo("") == 0) {
 						secretText.setText("2");
-					}					
-					
+					}
+
 					everythingCorrect = false;
 				} else {
 					if (isSubgroup(primitiveRootText.getText(),
@@ -949,14 +949,14 @@ public class VerifiableSecretSharingComposite extends Composite {
 							shareModNTextShares[(Integer) e.widget.getData()]
 									.setBackground(RED);
 						}
-					}else{
-						//TODO: fehlermeldung
+					} else {
+						// TODO: fehlermeldung
 						String errorText = Messages.VerifiableSecretSharingComposite_commitment_not_calculated;
 						MessageDialog.openError(getShell(), "Error", errorText);
 						enableCoefficientsGroupWithoutDispose(true);
 						enableSharesGroup(false, players);
 						enableReconstructionGroup(false, players);
-						
+
 						;
 					}
 				}
@@ -1012,11 +1012,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 			public void widgetSelected(SelectionEvent e) {
 				ReconstructionChartComposite rcc;
 				Polynomial reconstruction;
-				int[] playerIdsHelp = new int[Integer.parseInt(reconstructorSpinner.getText())];
-				BigInteger[] sharesHelp = new BigInteger[Integer.parseInt(reconstructorSpinner.getText())];
+				int[] playerIdsHelp = new int[Integer
+						.parseInt(reconstructorSpinner.getText())];
+				BigInteger[] sharesHelp = new BigInteger[Integer
+						.parseInt(reconstructorSpinner.getText())];
 				int[] playerIds;
 				BigInteger[] shares;
-				int i=0;
+				int i = 0;
 				try {
 					IViewReference[] platformParts = PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage()
@@ -1025,36 +1027,50 @@ public class VerifiableSecretSharingComposite extends Composite {
 						if (platformPart.getPartName().compareTo(
 								"Verifiable Secret Sharing") == 0) {
 
-							for (Control control : scrolledReconstructionGroupContent.getChildren()) {
-								if(i==playerIdsHelp.length) {
+							for (Control control : scrolledReconstructionGroupContent
+									.getChildren()) {
+								if (i == playerIdsHelp.length) {
 									break;
 								}
-								if(control.getData() != null && ((Button)control).getSelection()) {
-									playerIdsHelp[i] = Integer.parseInt(control.getData().toString());
-//									sharesHelp[i] = Integer.parseInt(shareNTextShares[playerIdsHelp[i]-1].getText());
-									sharesHelp[i] = new BigInteger(shareNTextShares[playerIdsHelp[i]-1].getText());
+								if (control.getData() != null
+										&& ((Button) control).getSelection()) {
+									playerIdsHelp[i] = Integer.parseInt(control
+											.getData().toString());
+									// sharesHelp[i] =
+									// Integer.parseInt(shareNTextShares[playerIdsHelp[i]-1].getText());
+									sharesHelp[i] = new BigInteger(
+											shareNTextShares[playerIdsHelp[i] - 1]
+													.getText());
 									i++;
 								}
 							}
 							playerIds = new int[i];
 							shares = new BigInteger[i];
-							for (int j=0; j<playerIds.length; j++) {
-								//System.out.println(playerIds.length);
-								playerIds[j] = playerIdsHelp[j];
-								shares[j] = sharesHelp[j];
+							if (playerIds.length == 0) {
+								String errorText = Messages.VerifiableSecretSharingComposite_reconstruct_no_players;
+								MessageDialog.openError(getShell(), "Error", errorText);
+								break;
+							} else {
+								for (int j = 0; j < playerIds.length; j++) {
+									// System.out.println(playerIds.length);
+									playerIds[j] = playerIdsHelp[j];
+									shares[j] = sharesHelp[j];
+								}
+								reconstruction = vss.reconstruct(playerIds,
+										Integer.parseInt(moduleText.getText()),
+										playerIds.length);
+								rcc = ((VerifiableSecretSharingView) platformPart
+										.getView(false))
+										.getReconstructionChartComposite();
+								rcc.setReconstructedPolynom(reconstruction);
+								System.out.println(reconstruction);
+								rcc.setPlayerID(playerIds);
+								rcc.setShares(shares);
+								rcc.redrawChart();
+								((VerifiableSecretSharingView) platformPart
+										.getView(false))
+										.setFocusOnReconstructionTab(true);
 							}
-							reconstruction = vss.reconstruct(playerIds, Integer.parseInt(moduleText.getText()), playerIds.length);
-							rcc = ((VerifiableSecretSharingView) platformPart
-									.getView(false))
-									.getReconstructionChartComposite();
-							rcc.setReconstructedPolynom(reconstruction);
-							System.out.println(reconstruction);
-							rcc.setPlayerID(playerIds);
-							rcc.setShares(shares);
-							rcc.redrawChart();
-							((VerifiableSecretSharingView) platformPart
-									.getView(false))
-									.setFocusOnReconstructionTab(true);
 						}
 					}
 				} catch (Exception e1) {
@@ -1088,7 +1104,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			playerCheckboxReconstructions[i].setLayoutData(new GridData(
 					SWT.CENTER, SWT.FILL, true, false));
 			playerCheckboxReconstructions[i].setBackground(WHITE);
-			playerCheckboxReconstructions[i].setData(i+1+"");
+			playerCheckboxReconstructions[i].setData(i + 1 + "");
 		}
 
 		scrolledReconstructionGroup
