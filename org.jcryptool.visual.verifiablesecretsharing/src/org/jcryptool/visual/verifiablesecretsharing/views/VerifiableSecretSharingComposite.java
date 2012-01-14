@@ -20,6 +20,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -149,6 +151,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private Composite nextStepParametersComposite;
 	private Button reconstructButton;
 	private ScrolledComposite scrolledDescriptionGroup;
+	private Label descriptionLeft;
+	private Label descriptionRight;
 
 	// private Listener onlyDigits;
 
@@ -170,12 +174,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 		// }
 		// }
 		// };
-		
-		//default-values
-		playersRecon=2;
-		players=2;
+
+		// default-values
+		playersRecon = 2;
+		players = 2;
 		commitmentsChecked = false;
-		
+
 		setLayout(new GridLayout());
 		createHead();
 		createBody();
@@ -212,7 +216,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		// chart, true);
 		createInputBody(body);
 		createDescriptionGroup(body);
-		showDescription(1);
+		createFocusHandlers();
 	}
 
 	private void createInputBody(Composite parent) {
@@ -1055,7 +1059,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 							shares = new BigInteger[i];
 							if (playerIds.length == 0) {
 								String errorText = Messages.VerifiableSecretSharingComposite_reconstruct_no_players;
-								MessageDialog.openError(getShell(), "Error", errorText);
+								MessageDialog.openError(getShell(), "Error",
+										errorText);
 								break;
 							} else {
 								for (int j = 0; j < playerIds.length; j++) {
@@ -1127,37 +1132,132 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 	private void createDescriptionGroup(Composite body) {
 		descriptionGroup = new Group(body, SWT.NONE);
-		descriptionGroup.setLayout(new GridLayout(2,true));
+		descriptionGroup.setLayout(new GridLayout(2, true));
 		descriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true));
 		descriptionGroup
 				.setText(Messages.VerifiableSecretSharingComposite_description_title);
 		descriptionGroup
 				.setToolTipText(Messages.VerifiableSecretSharingComposite_description_tooltip);
+		descriptionLeft = new Label(descriptionGroup, SWT.NONE);
+		descriptionRight = new Label(descriptionGroup, SWT.NONE);
 	}
 
 	/**
 	 * 
-	 * @param group Description for this group
-	 * 				1: parameters-group
-	 * 				2: coefficients-group
-	 * 				3: commitments-group
-	 * 				4: shares-group
-	 * 				5: reconstruction-group
+	 * @param group
+	 *            Description for this group 1: parameters-group 2:
+	 *            coefficients-group 3: commitments-group 4: shares-group 5:
+	 *            reconstruction-group
 	 */
 	private void showDescription(int group) {
-		for (Control control : descriptionGroup.getChildren()) {
-			control.dispose();
-		}
-		Label descriptionLeft = new Label(descriptionGroup,SWT.NONE);
-		Label descriptionRight = new Label(descriptionGroup,SWT.NONE);
 		switch (group) {
 		case 1:
-			descriptionLeft.setText(Messages.VerifiableSecretSharingComposite_description_parameters_left);
-			descriptionRight.setText(Messages.VerifiableSecretSharingComposite_description_parameters_right);
+			descriptionLeft
+					.setText(Messages.VerifiableSecretSharingComposite_description_parameters_left);
+			descriptionRight
+					.setText(Messages.VerifiableSecretSharingComposite_description_parameters_right);
+			break;
+		case 2:
+			descriptionLeft
+					.setText(Messages.VerifiableSecretSharingComposite_description_coefficients_left);
+			descriptionRight
+					.setText(Messages.VerifiableSecretSharingComposite_description_coefficients_right);
+			break;
+		case 3:
+			descriptionLeft
+					.setText(Messages.VerifiableSecretSharingComposite_description_commitments_left);
+			descriptionRight
+					.setText(Messages.VerifiableSecretSharingComposite_description_commitments_right);
+			break;
+		case 4:
+			descriptionLeft
+					.setText(Messages.VerifiableSecretSharingComposite_description_shares_left);
+			descriptionRight
+					.setText(Messages.VerifiableSecretSharingComposite_description_shares_right);
+			break;
+		case 5:
+			descriptionLeft
+					.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_left);
+			descriptionRight
+					.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_right);
+			break;
+		default:
+
+		}
+//		descriptionLeft.redraw();
+//		descriptionRight.redraw();
+		descriptionGroup.layout();
+	}
+
+	private void createFocusHandlers() {
+		for (Control control : parametersGroup.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(1);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
+		for (Control control : coefficientsGroup.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(2);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
+		for (Control control : commitmentsGroup.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(3);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
+		for (Control control : sharesGroup.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(4);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
+		}
+		for (Control control : reconstructionGroup.getChildren()) {
+			control.addFocusListener(new FocusListener() {
+
+				@Override
+				public void focusGained(FocusEvent e) {
+					showDescription(5);
+				}
+
+				@Override
+				public void focusLost(FocusEvent e) {
+				}
+			});
 		}
 	}
-	
+
 	private String convertIntegerToSubscript(int number) {
 		String result = "";
 		String numberString = number + "";
