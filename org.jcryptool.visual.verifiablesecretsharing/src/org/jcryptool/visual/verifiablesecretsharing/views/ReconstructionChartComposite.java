@@ -20,7 +20,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -160,7 +159,7 @@ public class ReconstructionChartComposite extends Composite {
 				"", // x axis label
 				"", // y axis label
 				dataset, // data
-				PlotOrientation.VERTICAL, false, // include legend
+				PlotOrientation.VERTICAL, true, // include legend
 				false, // tooltips
 				false // urls
 				);
