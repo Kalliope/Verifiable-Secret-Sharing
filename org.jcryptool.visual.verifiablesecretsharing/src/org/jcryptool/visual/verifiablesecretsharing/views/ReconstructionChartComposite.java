@@ -25,7 +25,8 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYSplineRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.general.DatasetChangeEvent;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -41,6 +42,7 @@ public class ReconstructionChartComposite extends Composite {
 	private JFreeChart chart;
 	private Composite body;
 	private StyledText stDescription;
+	private ChartComposite chartComposite;
 
 	public int[] getPlayerID() {
 		return playerID;
@@ -71,8 +73,13 @@ public class ReconstructionChartComposite extends Composite {
 		// chart = createChart(createDataset());
 		// new ChartComposite(body, SWT.None, chart, true);
 		// body.redraw();
-		body.dispose();
-		createBody();
+		//body.dispose();
+		
+		chartComposite.getChart().getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
+		//chart.getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
+		chart.fireChartChanged();
+		
+		//createBody();
 		stDescription.setText(reconstructedPolynom.toString());
 	}
 
@@ -111,7 +118,7 @@ public class ReconstructionChartComposite extends Composite {
 		body.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		body.setLayout(new FillLayout());
 		chart = createChart(createDataset());
-		new ChartComposite(body, SWT.None, chart, true);
+		chartComposite = new ChartComposite(body, SWT.None, chart, true);
 		// createInputBody(body);
 		// createDescriptionGroup(body);
 	}
@@ -126,6 +133,8 @@ public class ReconstructionChartComposite extends Composite {
 
 		for (int i = 0; i < playerID.length && playerID[i] != 0; i++) {
 			playerAndSharesSeries.add(playerID[i], shares[i]);
+			System.out.println(playerID[i]);
+			System.out.println(shares[i]);
 		}
 		for (int i = 0; i < playerID[playerID.length - 1]; i++) {
 			for (int j = 0; j < coef.length; j++) {
@@ -159,7 +168,7 @@ public class ReconstructionChartComposite extends Composite {
 				"", // x axis label
 				"", // y axis label
 				dataset, // data
-				PlotOrientation.VERTICAL, true, // include legend
+				PlotOrientation.VERTICAL, false, // include legend
 				false, // tooltips
 				false // urls
 				);
@@ -172,8 +181,10 @@ public class ReconstructionChartComposite extends Composite {
 		plot.setRangeGridlinePaint(Color.white);
 		
 		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        renderer.setSeriesLinesVisible(0, false);
-        renderer.setSeriesShapesVisible(1, false);
+        //show no line
+		renderer.setSeriesLinesVisible(0, false);
+        //show no points
+		renderer.setSeriesShapesVisible(1, false);
         plot.setRenderer(renderer);
 		
 
