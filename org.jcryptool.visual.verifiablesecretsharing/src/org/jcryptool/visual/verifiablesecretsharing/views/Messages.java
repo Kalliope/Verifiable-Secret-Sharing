@@ -92,6 +92,21 @@ public class Messages extends NLS {
 	 
 	public static String VerifiableSecretSharingComposite_reconstruct_no_players;
 	
+	public static String VerifiableSecretSharingComposite_description_parameters_left;
+	public static String VerifiableSecretSharingComposite_description_parameters_right;
+
+	public static String VerifiableSecretSharingComposite_description_coefficients_left;
+	public static String VerifiableSecretSharingComposite_description_coefficients_right;
+	
+	public static String VerifiableSecretSharingComposite_description_commitments_left;
+	public static String VerifiableSecretSharingComposite_description_commitments_right;
+
+	public static String VerifiableSecretSharingComposite_description_shares_left;
+	public static String VerifiableSecretSharingComposite_description_shares_right;
+	
+	public static String VerifiableSecretSharingComposite_description_reconstruction_left;
+	public static String VerifiableSecretSharingComposite_description_reconstruction_right;
+	
 	
 	static {
 		// initialize resource bundle

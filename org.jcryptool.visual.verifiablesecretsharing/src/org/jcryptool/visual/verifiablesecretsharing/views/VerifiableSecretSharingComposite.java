@@ -148,6 +148,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private GridLayout nextStepSpanLayout;
 	private Composite nextStepParametersComposite;
 	private Button reconstructButton;
+	private ScrolledComposite scrolledDescriptionGroup;
 
 	// private Listener onlyDigits;
 
@@ -211,6 +212,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		// chart, true);
 		createInputBody(body);
 		createDescriptionGroup(body);
+		showDescription(1);
 	}
 
 	private void createInputBody(Composite parent) {
@@ -1125,7 +1127,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 	private void createDescriptionGroup(Composite body) {
 		descriptionGroup = new Group(body, SWT.NONE);
-		descriptionGroup.setLayout(new GridLayout(2, false));
+		descriptionGroup.setLayout(new GridLayout(2,true));
 		descriptionGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				true));
 		descriptionGroup
@@ -1134,6 +1136,28 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setToolTipText(Messages.VerifiableSecretSharingComposite_description_tooltip);
 	}
 
+	/**
+	 * 
+	 * @param group Description for this group
+	 * 				1: parameters-group
+	 * 				2: coefficients-group
+	 * 				3: commitments-group
+	 * 				4: shares-group
+	 * 				5: reconstruction-group
+	 */
+	private void showDescription(int group) {
+		for (Control control : descriptionGroup.getChildren()) {
+			control.dispose();
+		}
+		Label descriptionLeft = new Label(descriptionGroup,SWT.NONE);
+		Label descriptionRight = new Label(descriptionGroup,SWT.NONE);
+		switch (group) {
+		case 1:
+			descriptionLeft.setText(Messages.VerifiableSecretSharingComposite_description_parameters_left);
+			descriptionRight.setText(Messages.VerifiableSecretSharingComposite_description_parameters_right);
+		}
+	}
+	
 	private String convertIntegerToSubscript(int number) {
 		String result = "";
 		String numberString = number + "";
