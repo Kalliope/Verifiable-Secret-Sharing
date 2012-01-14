@@ -1010,8 +1010,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		reconstructButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// Graph j;
-				/* unsere reconstruct funktion */
 				ReconstructionChartComposite rcc;
 				Polynomial reconstruction;
 				int[] playerIdsHelp = new int[Integer.parseInt(reconstructorSpinner.getText())];
