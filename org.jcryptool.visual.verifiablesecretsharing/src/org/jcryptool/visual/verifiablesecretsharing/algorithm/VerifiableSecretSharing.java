@@ -25,7 +25,7 @@ public class VerifiableSecretSharing {
 	/*Shares for the output without modulo prime p*/
 	private double[] shares;
 	/*Shares for the output with modulo prime p*/
-	private int[] sharesModP;
+	private int[] sharesModQ;
 	/*Shares for the calculation*/
 	private BigInteger[] sharesBig;
 	/*Commitments for the calculation*/
@@ -65,15 +65,15 @@ public class VerifiableSecretSharing {
 		 */
 		double[] shares = new double[n];
 		BigInteger[] sharesBig = new BigInteger[n];
-		int[] sharesModP = new int[n];
+		int[] sharesModQ = new int[n];
 		
 		for(int i=0, y =1; i < n; i++,y++){
 			sharesBig[i] = calculatePolynom(coefficients,y);
 			shares[i] = sharesBig[i].doubleValue();
-			sharesModP[i] = (sharesBig[i].mod(new BigInteger((q)+""))).intValue();
+			sharesModQ[i] = (sharesBig[i].mod(new BigInteger((q)+""))).intValue();
 		}
 		setShares(shares);
-		setSharesModP(sharesModP);
+		setSharesModQ(sharesModQ);
 		setSharesBig(sharesBig);
 
 	}
@@ -129,10 +129,10 @@ public class VerifiableSecretSharing {
 			sharesBig[i] = getSharesBig()[i].mod(new BigInteger((p-1)+""));
 		}*/
 		
-		int[] sharesModP = getSharesModP();
-		BigInteger[] sharesBig = new BigInteger[sharesModP.length];
-		for(int i=0; i<sharesModP.length; i++){
-			sharesBig[i] = new BigInteger(sharesModP[i]+"");
+		int[] sharesModQ = getSharesModQ();
+		BigInteger[] sharesBig = new BigInteger[sharesModQ.length];
+		for(int i=0; i<sharesModQ.length; i++){
+			sharesBig[i] = new BigInteger(sharesModQ[i]+"");
 		}
 		
 		BigInteger[] commitmentsBig = getCommitmentsBig();
@@ -195,7 +195,7 @@ public class VerifiableSecretSharing {
 	 * @return polynomial as String
 	 */
 	public Polynomial reconstruct(int[] playerIds, int q){
-		int[] sharesModP = getSharesModP();
+		int[] sharesModQ = getSharesModQ();
 		int u = playerIds.length;
 		/*
 		 * Schummelcode für reconstruct mit shares mod p
@@ -203,9 +203,9 @@ public class VerifiableSecretSharing {
 		 */
 		/*
 		BigInteger[] sharesBig = getSharesBig();
-		int[] sharesModP = new int[sharesBig.length];
+		int[] sharesModQ = new int[sharesBig.length];
 		for(int i = 0; i<sharesBig.length; i++){
-			sharesModP[i] = (sharesBig[i].mod(new BigInteger((p)+""))).intValue();
+			sharesModQ[i] = (sharesBig[i].mod(new BigInteger((p)+""))).intValue();
 		}*/
 		
 		BigInteger[] helpCoef = {BigInteger.ZERO,BigInteger.ONE};
@@ -226,7 +226,7 @@ public class VerifiableSecretSharing {
 					resMul = resMul.mod(q);
 				}
 			}
-			resMul = resMul.times(sharesModP[playerIds[k] - 1]).mod(q);
+			resMul = resMul.times(sharesModQ[playerIds[k] - 1]).mod(q);
 			resAdd = resAdd.add(resMul).mod(q);
 			resMul = new Polynomial(new BigInteger[]{BigInteger.ONE});
 		}
@@ -254,16 +254,16 @@ public class VerifiableSecretSharing {
 	 * Getter for sharesModP.
 	 * @return  sharesModP --> int array including all shares with modulo p
 	 */
-	public int[] getSharesModP() {
-		return sharesModP;
+	public int[] getSharesModQ() {
+		return sharesModQ;
 	}
 
 	/**
 	 * Setter for sharesModP.
 	 * @param sharesModP --> int array including all shares with modulo p
 	 */
-	public void setSharesModP(int[] sharesModP) {
-		this.sharesModP = sharesModP;
+	public void setSharesModQ(int[] sharesModP) {
+		this.sharesModQ = sharesModP;
 	}
 	
 	/**
@@ -271,8 +271,8 @@ public class VerifiableSecretSharing {
 	 * @param i --> index
 	 * @param x --> value of the element
 	 */
-	public void setSharesModP(int i, int x){
-		this.sharesModP[i] = x;
+	public void setSharesModQ(int i, int x){
+		this.sharesModQ[i] = x;
 	}
 
 	/**

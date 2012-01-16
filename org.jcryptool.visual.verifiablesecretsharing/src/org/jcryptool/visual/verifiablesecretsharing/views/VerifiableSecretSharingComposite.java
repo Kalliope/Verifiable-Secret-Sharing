@@ -608,7 +608,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 						Integer.parseInt(moduleText.getText()), players);
 				for (int i = 0; i < players; i++) {
 					shareModNTextShares[i].setText(String.valueOf(vss
-							.getSharesModP()[i]));
+							.getSharesModQ()[i]));
 					shareNTextShares[i].setText(vss.getSharesBig()[i]
 							.toString());
 				}
@@ -955,7 +955,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 						newShareModP = Integer.parseInt(shareModNTextShares[i]
 								.getText());
 						// vss.setSharesBig(i, newShare);
-						vss.setSharesModP(i, newShareModP);
+						vss.setSharesModQ(i, newShareModP);
 						// shareModNTextShares[i].setText(newShareModP +
 						// "");
 					}
@@ -1122,8 +1122,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 									shares[j] = sharesHelp[j];
 								}
 								reconstruction = vss.reconstruct(playerIds,
-										Integer.parseInt(moduleText.getText()),
-										playerIds.length);
+										Integer.parseInt(moduleText.getText()));
 								rcc = ((VerifiableSecretSharingView) platformPart
 										.getView(false))
 										.getReconstructionChartComposite();
