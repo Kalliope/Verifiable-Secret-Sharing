@@ -36,10 +36,9 @@ public class VerifiableSecretSharing {
 	 * 
 	 * @param coefficients --> a, b, ..., i
 	 * @param x --> playerId
-	 * @param p --> prime module
 	 * @return y --> result of the function, for the chosen x
 	 */
-	private BigInteger calculatePolynom(int[] coefficients, int x, int p){	
+	private BigInteger calculatePolynom(int[] coefficients, int x){	
 		BigInteger y = new BigInteger(coefficients[0]+"");
 		
 		for(int i=1; i<coefficients.length;i++){
@@ -54,13 +53,13 @@ public class VerifiableSecretSharing {
 	 * double[] shares, int[] sharesModP and BigInteger[] sharesBig.
 	 * 
 	 * @param coefficients --> a, b, ..., i
-	 * @param p --> prime module
+	 * @param q --> biggest prime-factor of p-1
 	 * @param n --> number of players
 	 */
-	public void calculateShares(int[] coefficients, int p, int n){
+	public void calculateShares(int[] coefficients, int q, int n){
 		/*
-		 * shares is needed for the output without modulo prime p.
-		 * sharesModP is for the output with modulo prime p.
+		 * shares is needed for the output without modulo prime q.
+		 * sharesModP is for the output with modulo prime q.
 		 * sharesBig is needed for the calculation .
 		 * (BigInteger is used, because of the maxValue of double and int)
 		 */
@@ -69,9 +68,9 @@ public class VerifiableSecretSharing {
 		int[] sharesModP = new int[n];
 		
 		for(int i=0, y =1; i < n; i++,y++){
-			sharesBig[i] = calculatePolynom(coefficients,y,p);
+			sharesBig[i] = calculatePolynom(coefficients,y);
 			shares[i] = sharesBig[i].doubleValue();
-			sharesModP[i] = (sharesBig[i].mod(new BigInteger((p-1)+""))).intValue();
+			sharesModP[i] = (sharesBig[i].mod(new BigInteger((q)+""))).intValue();
 		}
 		setShares(shares);
 		setSharesModP(sharesModP);
@@ -181,24 +180,23 @@ public class VerifiableSecretSharing {
 	/**
 	 *Calculates and reconstructs the polynomial with the Langrange Interpolation.
 	 *
-	 *		(t)			
+	 *		(u)			
 	 *		 ---		_____
-	 *		 \			|   |	  x - x(j)	
-	 *f(x) = /	y(i) * 	|   |   ___________
-	 *		 ---	  	|	|	x(i) - x(j)
-	 *		(i=1)	  (1<=j<=t)
-	 * 				   (j!=i)
+	 *		 \			|   |	  x - x(l)	
+	 *f(x) = /	y(k) * 	|   |   ___________
+	 *		 ---	  	|	|	x(k) - x(l)
+	 *		(k=1)	  (1<=l<=u)
+	 * 				   (l!=k)
 	 * 
 	 * Result is the polynomial P and the coefficient a(0) is the secret.
 	 * 
 	 * @param playerIds --> from the players selected for the reconstruction
-	 * @param p --> prime
-	 * @param t --> number of players needed for the reconstruction
+	 * @param q --> biggest prime-factor of p-1
 	 * @return polynomial as String
 	 */
-	public Polynomial reconstruct(int[] playerIds, int p, int t){
+	public Polynomial reconstruct(int[] playerIds, int q){
 		int[] sharesModP = getSharesModP();
-		
+		int u = playerIds.length;
 		/*
 		 * Schummelcode für reconstruct mit shares mod p
 		 * statt mod p-1
@@ -216,20 +214,20 @@ public class VerifiableSecretSharing {
 		Polynomial resAdd = new Polynomial(new BigInteger[]{BigInteger.ZERO});
 		int inverse;
 
-		for (int i = 0; i < t; i++) {
-			for (int j = 0; j < t; j++) {
-				if (j != i) {
-					helpCoef[0] = BigInteger.ZERO.subtract(new BigInteger(""+playerIds[j]));
-					x = new Polynomial(helpCoef).mod(p);
-					inverse = new BigInteger(((playerIds[i]) - (playerIds[j]))
-							+ "").modInverse(new BigInteger(p + "")).intValue();
-					x = x.times(inverse).mod(p);
+		for (int k = 0; k < u; k++) {
+			for (int l = 0; l < u; l++) {
+				if (l != k) {
+					helpCoef[0] = BigInteger.ZERO.subtract(new BigInteger(""+playerIds[l]));
+					x = new Polynomial(helpCoef).mod(q);
+					inverse = new BigInteger(((playerIds[k]) - (playerIds[l]))
+							+ "").modInverse(new BigInteger(q + "")).intValue();
+					x = x.times(inverse).mod(q);
 					resMul = resMul.times(x);
-					resMul = resMul.mod(p);
+					resMul = resMul.mod(q);
 				}
 			}
-			resMul = resMul.times(sharesModP[playerIds[i] - 1]).mod(p);
-			resAdd = resAdd.add(resMul).mod(p);
+			resMul = resMul.times(sharesModP[playerIds[k] - 1]).mod(q);
+			resAdd = resAdd.add(resMul).mod(q);
 			resMul = new Polynomial(new BigInteger[]{BigInteger.ONE});
 		}
 		return resAdd;
