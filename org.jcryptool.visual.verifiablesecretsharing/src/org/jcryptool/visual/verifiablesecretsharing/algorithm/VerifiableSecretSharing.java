@@ -49,6 +49,9 @@ public class VerifiableSecretSharing {
 	
 	/**
 	 * Calculates the shares for all players.
+	 * 
+	 * share(i) = P(i) mod p [P(x) is the polynomial in calculatePolynom]
+	 * 
 	 * Sets the global arrays:
 	 * double[] shares, int[] sharesModP and BigInteger[] sharesBig.
 	 * 
@@ -79,11 +82,14 @@ public class VerifiableSecretSharing {
 	}
 	
 	/**
-	 * Calculates the commitments.
+	 * Calculates the commitments:
+	 * 
+	 * commitment(i) = g^coefficient(i) mod p
+	 * 
 	 * Sets the global arrays:
 	 * int[] commitments and BigInteger[] commitmentsBig.
 	 * 
-	 * @param g --> primitive root of p
+	 * @param g --> element of Zp* with oder q [q is the biggest primefactor of p]
 	 * @param coefficients --> a, b, ..., i
 	 * @param p --> prime module
 	 * @return commitments --> array including all commitments
@@ -113,7 +119,7 @@ public class VerifiableSecretSharing {
 	 * g^Share[i] ?=    || y(j)^(PlayerId^j)
 	 *                (j=0) 
 	 *                
-	 * @param g --> primitive root of p
+	 * @param g --> element of Zp* with oder q [q is the biggest primefactor of p]
 	 * @param p --> prime
 	 * @param playerId
 	 * @return true --> check OK; 
