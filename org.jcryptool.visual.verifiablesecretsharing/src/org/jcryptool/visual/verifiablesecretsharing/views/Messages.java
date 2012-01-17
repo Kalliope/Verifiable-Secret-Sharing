@@ -48,6 +48,7 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_parameters_reconstructors;
 	public static String VerifiableSecretSharingComposite_parameters_secret;
 	public static String VerifiableSecretSharingComposite_parameters_primeMod;
+	public static String VerifiableSecretSharingComposite_parameters_primeFactorMod;
 	public static String VerifiableSecretSharingComposite_parameters_primitiveRoot;
 	public static String VerifiableSecretSharingComposite_parameters_determineCoefficients;
 	

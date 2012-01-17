@@ -76,6 +76,15 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 	private static int[] playerID;
 
+	/*
+	 * list of safe primes, array-index is bit-length. value is biggest safe
+	 * prime for this bit-length if value is -1, there is no safe prime for this
+	 * bit-length
+	 */
+	private static int[] safePrimes = new int[] { -1, -1, -1, 7, 11, 23, 59,
+			107, 227, 503, 1019, 2039, 4079, 8147, 16223, 32603, 65267, 130787,
+			262127, 524243, 1048343, 2097143 };
+
 	/* if true, commit-Button got clicked */
 	private static boolean commitmentsChecked = false;
 
@@ -152,6 +161,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private Button reconstructButton;
 	private Label descriptionLeft;
 	private Label descriptionRight;
+	private Label primeFactorLabel;
+	private Text primeFactorText;
 
 	// private Listener onlyDigits;
 
@@ -284,16 +295,25 @@ public class VerifiableSecretSharingComposite extends Composite {
 		});
 		secretText.addListener(SWT.Modify, new Listener() {
 			public void handleEvent(Event e) {
-				BigInteger nextPrime;
-				Random prng = new SecureRandom();
+				int nextPrime;
 				String text = secretText.getText();
+				BigInteger secret;
+				int bitlength = 0;
 				if (text != "") {
 					if (Integer.parseInt(text) > 2000000) {
 						secretText.setText("2000000");
 					}
-					nextPrime = BigInteger.probablePrime(
-							new BigInteger(text).bitLength() + 1, prng);
-					moduleText.setText(nextPrime.toString());
+					secret = new BigInteger(text);
+					bitlength = secret.bitLength();
+					if (bitlength >= 3 && bitlength <= 21) {
+						nextPrime = safePrimes[bitlength];
+						if (nextPrime <= Integer.parseInt(text)) {
+							nextPrime = safePrimes[bitlength + 1];
+						}
+						moduleText.setText(nextPrime + "");
+					} else {
+						moduleText.setText("");
+					}
 				} else {
 					moduleText.setText(text);
 				}
@@ -324,36 +344,68 @@ public class VerifiableSecretSharingComposite extends Composite {
 			public void handleEvent(Event event) {
 				int primitiveRoot;
 				if (moduleText.getText().compareTo("") != 0
-						&& Integer.parseInt(moduleText.getText()) > 2000003) {
-					moduleText.setText("2000003");
+						&& Integer.parseInt(moduleText.getText()) > safePrimes[safePrimes.length - 1]) {
+					moduleText.setText(safePrimes[safePrimes.length - 1] + "");
 				}
 				if (moduleText.getText().compareTo("") != 0
 						&& new BigInteger(moduleText.getText())
+								.isProbablePrime(3)
+						&& new BigInteger(moduleText.getText())
+								.subtract(BigInteger.ONE)
+								.divide(new BigInteger("" + 2))
 								.isProbablePrime(3)) {
+					primeFactorText.setText(new BigInteger(moduleText.getText())
+							.subtract(BigInteger.ONE)
+							.divide(new BigInteger("" + 2)).toString());
 					primitiveRoot = generatePrimitiveRoot(moduleText.getText());
 					if (primitiveRoot != -1) {
 						primitiveRootText.setText(primitiveRoot + "");
 					} else {
+						primeFactorText.setText("");
 						primitiveRootText.setText("");
 					}
 				} else {
+					primeFactorText.setText("");
 					primitiveRootText.setText("");
 				}
 			}
 
 			private int generatePrimitiveRoot(String p) {
 				int pInt = Integer.parseInt(p);
+				int qInt = (pInt-1)/2;
 				for (int i = 2; i < pInt; i++) {
 					int j = i, o = 1;
 					do {
 						o++;
 						j = j * i % pInt;
 					} while (j != 1);
-					if (o == (pInt - 1)) {
+					if (o == qInt) {
 						return i;
 					}
 				}
 				return -1;
+			}
+		});
+
+		primeFactorLabel = new Label(parametersGroup, SWT.NONE);
+		primeFactorLabel
+				.setText(Messages.VerifiableSecretSharingComposite_parameters_primeFactorMod);
+
+		primeFactorText = new Text(parametersGroup, SWT.BORDER);
+		primeFactorText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
+				false));
+		primeFactorText.addListener(SWT.Verify, new Listener() {
+			public void handleEvent(Event e) {
+				String string = e.text;
+
+				char[] chars = new char[string.length()];
+				string.getChars(0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++) {
+					if (!('0' <= chars[i] && chars[i] <= '9')) {
+						e.doit = false;
+						return;
+					}
+				}
 			}
 		});
 
@@ -419,12 +471,17 @@ public class VerifiableSecretSharingComposite extends Composite {
 				BigInteger moduleTextBI;
 				if (secretText.getText().compareTo("") == 0
 						|| moduleText.getText().compareTo("") == 0
+						|| primeFactorText.getText().compareTo("") == 0
 						|| primitiveRootText.getText().compareTo("") == 0) {
 					errorText += "\n\r"
 							+ Messages.VerifiableSecretSharingComposite_param_set_all;
 
 					if (moduleText.getText().compareTo("") == 0) {
 						moduleText.setText("0");
+					}
+					
+					if (primeFactorText.getText().compareTo("") == 0) {
+						primeFactorText.setText("0");
 					}
 
 					if (primitiveRootText.getText().compareTo("") == 0) {
@@ -512,7 +569,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledCoefficientsGroup = new ScrolledComposite(coefficientsGroup,
 				SWT.V_SCROLL);
 		scrolledCoefficientsGroup.setExpandHorizontal(true);
-		scrolledCoefficientsGroup.setLayoutData(new RowData(200, 79));
+		scrolledCoefficientsGroup.setLayoutData(new RowData(200, 104));
 		scrolledCoefficientsGroup.setBackground(WHITE);
 
 		scrolledCoefficientsGroupContent = new Composite(
@@ -605,7 +662,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			public void widgetSelected(final SelectionEvent e) {
 				enableSharesGroup(true, players);
 				vss.calculateShares(coefficientsInt,
-						Integer.parseInt(moduleText.getText()), players);
+						Integer.parseInt(primeFactorText.getText()), players);
 				for (int i = 0; i < players; i++) {
 					shareModNTextShares[i].setText(String.valueOf(vss
 							.getSharesModQ()[i]));
@@ -638,7 +695,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		if (enableGroup) {
 			coefficientsInt[0] = Integer.parseInt(secretText.getText());
 			coefficientsSpinnersCoefficients[0].setMaximum(Integer
-					.parseInt(moduleText.getText()) - 1);
+					.parseInt(primeFactorText.getText()) - 1);
 			coefficientsSpinnersCoefficients[0].setSelection(Integer
 					.parseInt(secretText.getText()));
 		}
@@ -660,7 +717,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			coefficientsSpinnersCoefficients[i].setMinimum(1);
 			if (enableGroup) {
 				coefficientsSpinnersCoefficients[i].setMaximum(Integer
-						.parseInt(moduleText.getText()) - 1);
+						.parseInt(primeFactorText.getText()) - 1);
 			}
 			coefficientsSpinnersCoefficients[i].addListener(SWT.Modify,
 					new Listener() {
@@ -741,7 +798,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledCommitmentsGroup = new ScrolledComposite(commitmentsGroup,
 				SWT.V_SCROLL);
 		scrolledCommitmentsGroup.setExpandHorizontal(true);
-		scrolledCommitmentsGroup.setLayoutData(new RowData(150, 180));
+		scrolledCommitmentsGroup.setLayoutData(new RowData(150, 205));
 		scrolledCommitmentsGroup.setBackground(WHITE);
 
 		scrolledCommitmentsGroupContent = new Composite(
@@ -840,7 +897,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 		scrolledSharesGroup = new ScrolledComposite(sharesGroup, SWT.V_SCROLL);
 		scrolledSharesGroup.setExpandHorizontal(true);
-		scrolledSharesGroup.setLayoutData(new RowData(250, 180));
+		scrolledSharesGroup.setLayoutData(new RowData(250, 205));
 		scrolledSharesGroup.setBackground(WHITE);
 
 		scrolledSharesGroupContent = new Composite(scrolledSharesGroup,
@@ -1056,7 +1113,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		scrolledReconstructionGroup = new ScrolledComposite(
 				reconstructionGroup, SWT.V_SCROLL);
 		scrolledReconstructionGroup.setExpandHorizontal(true);
-		scrolledReconstructionGroup.setLayoutData(new RowData(100, 145));
+		scrolledReconstructionGroup.setLayoutData(new RowData(100, 170));
 		scrolledReconstructionGroup.setBackground(WHITE);
 
 		scrolledReconstructionGroupContent = new Composite(
@@ -1122,12 +1179,13 @@ public class VerifiableSecretSharingComposite extends Composite {
 									shares[j] = sharesHelp[j];
 								}
 								reconstruction = vss.reconstruct(playerIds,
-										Integer.parseInt(moduleText.getText()));
+										Integer.parseInt(primeFactorText
+												.getText()));
 								rcc = ((VerifiableSecretSharingView) platformPart
 										.getView(false))
 										.getReconstructionChartComposite();
 								rcc.setReconstructedPolynom(reconstruction);
-//								System.out.println(reconstruction);
+								// System.out.println(reconstruction);
 								rcc.setPlayerID(playerIds);
 								rcc.setShares(shares);
 								rcc.redrawChart();
@@ -1456,7 +1514,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				o++;
 				j = j * i % pInt;
 			} while (j != 1);
-			if (o == (pInt - 1) && prootInt == i) {
+			if (o == ((pInt - 1)/2) && prootInt == i) {
 				return true;
 			}
 		}
