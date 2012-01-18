@@ -1045,7 +1045,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 									.setBackground(RED);
 						}
 					} else {
-						// TODO: fehlermeldung
 						String errorText = Messages.VerifiableSecretSharingComposite_commitment_not_calculated;
 						MessageDialog.openError(getShell(), "Error", errorText);
 						enableCoefficientsGroupWithoutDispose(true);
@@ -1189,6 +1188,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 								rcc.setPlayerID(playerIds);
 								rcc.setShares(shares);
 								rcc.setPolynom(polynomText.getText());
+								rcc.setSecret(Integer.valueOf(secretText.getText()));
 								rcc.redrawChart();
 								((VerifiableSecretSharingView) platformPart
 										.getView(false))

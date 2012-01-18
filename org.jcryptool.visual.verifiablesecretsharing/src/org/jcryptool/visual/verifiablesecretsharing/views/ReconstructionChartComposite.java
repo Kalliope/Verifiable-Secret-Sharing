@@ -26,6 +26,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.XYItemLabelGenerator;
@@ -49,7 +51,15 @@ public class ReconstructionChartComposite extends Composite {
 	private StyledText stDescription;
 	private ChartComposite chartComposite;
 	private String generatedPolynom;
+	private int secret;
 	
+	public void setSecret(int secret){
+		this.secret = secret;
+	}
+	
+	public int getSecret(){
+		return secret;
+	}
 	
 	public String getPolynom(){
 		return generatedPolynom;
@@ -141,6 +151,7 @@ public class ReconstructionChartComposite extends Composite {
 		final XYSeries playerAndSharesSeries = new XYSeries("Shares");
 		final XYSeries reconstructionSeries = new XYSeries(
 				"Reconstructed Polynom");
+		final XYSeries secretSeries = new XYSeries("Secret");
 		BigInteger[] coef = reconstructedPolynom.getCoef();
 		BigInteger y = BigInteger.ZERO;
 
@@ -156,9 +167,12 @@ public class ReconstructionChartComposite extends Composite {
 			y = BigInteger.ZERO;
 		}
 
+		secretSeries.add(0, secret);
+		
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(playerAndSharesSeries);
 		dataset.addSeries(reconstructionSeries);
+		dataset.addSeries(secretSeries);
 
 		return dataset;
 	}
@@ -195,8 +209,17 @@ public class ReconstructionChartComposite extends Composite {
 		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         //show no line
 		renderer.setSeriesLinesVisible(0, false);
+		renderer.setSeriesLinesVisible(3,false);
         //show no points
 		renderer.setSeriesShapesVisible(1, false);
+		
+		//set range of axis
+		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
+        domain.setRange(-0.1, playerID.length+0.1);
+        domain.setTickUnit(new NumberTickUnit(1));
+        domain.setVerticalTickLabels(false);
+
+		
 
 		// display value 
 		NumberFormat format = NumberFormat.getNumberInstance();
