@@ -12,6 +12,8 @@ package org.jcryptool.visual.verifiablesecretsharing.views;
 
 import java.awt.Color;
 import java.math.BigInteger;
+import java.text.NumberFormat;
+
 import org.jcryptool.core.util.fonts.FontService;
 import org.jcryptool.visual.verifiablesecretsharing.algorithm.Polynomial;
 import org.eclipse.swt.SWT;
@@ -24,6 +26,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
+import org.jfree.chart.labels.StandardXYItemLabelGenerator;
+import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -43,6 +48,16 @@ public class ReconstructionChartComposite extends Composite {
 	private Composite body;
 	private StyledText stDescription;
 	private ChartComposite chartComposite;
+	private String generatedPolynom;
+	
+	
+	public String getPolynom(){
+		return generatedPolynom;
+	}
+	
+	public void setPolynom(String polynom){
+		this.generatedPolynom = polynom;
+	}
 
 	public int[] getPlayerID() {
 		return playerID;
@@ -74,7 +89,12 @@ public class ReconstructionChartComposite extends Composite {
 		chart = createChart(createDataset());
 		chartComposite = new ChartComposite(body, SWT.None, chart, true);
 		body.layout();
-		stDescription.setText(reconstructedPolynom.toString());
+		if(generatedPolynom.compareTo(reconstructedPolynom.toString())==0){
+			stDescription.setText(reconstructedPolynom.toString()+"\r\n"+Messages.VerifiableSecretSharingComposite_coefficient_positive);
+		}else{
+			stDescription.setText(reconstructedPolynom.toString()+"\r\n"+Messages.VerifiableSecretSharingComposite_coefficients_calculateShares_button);
+
+		}
 //		body.dispose();
 //		
 //		chartComposite.getChart().getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
@@ -183,11 +203,20 @@ public class ReconstructionChartComposite extends Composite {
 		plot.setDomainGridlinesVisible(true);
 		plot.setRangeGridlinePaint(Color.white);
 		
+		
 		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
         //show no line
 		renderer.setSeriesLinesVisible(0, false);
         //show no points
 		renderer.setSeriesShapesVisible(1, false);
+
+		// show value 
+		NumberFormat format = NumberFormat.getNumberInstance();
+		format.setMaximumFractionDigits(0);
+		XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT,format, format);
+		renderer.setBaseItemLabelGenerator(generator);
+        renderer.setBaseItemLabelsVisible(true);
+		
         plot.setRenderer(renderer);
 		
 
