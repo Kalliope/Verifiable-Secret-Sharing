@@ -1176,7 +1176,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 								break;
 							} else {
 								for (int j = 0; j < playerIds.length; j++) {
-									// System.out.println(playerIds.length);
 									playerIds[j] = playerIdsHelp[j];
 									shares[j] = sharesHelp[j];
 								}
@@ -1187,12 +1186,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 										.getView(false))
 										.getReconstructionChartComposite();
 								rcc.setReconstructedPolynom(reconstruction);
-								// System.out.println(reconstruction);
 								rcc.setPlayerID(playerIds);
 								rcc.setShares(shares);
 								rcc.setPolynom(polynomText.getText());
 								rcc.redrawChart();
-								System.out.println(rcc.getPolynom());
 								((VerifiableSecretSharingView) platformPart
 										.getView(false))
 										.setFocusOnReconstructionTab(true);
@@ -1526,7 +1523,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 	}
 
 	private void generatePolynom() {
-		//String polynom = coefficientsSpinnersCoefficients[0].getText() + " + ";
 		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + " + coefficientsSpinnersCoefficients[1].getText() + "x + ";
 
 
