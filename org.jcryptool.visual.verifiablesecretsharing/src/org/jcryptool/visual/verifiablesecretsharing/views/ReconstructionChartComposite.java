@@ -95,14 +95,7 @@ public class ReconstructionChartComposite extends Composite {
 			stDescription.setText(reconstructedPolynom.toString()+"\r\n"+Messages.VerifiableSecretSharingComposite_coefficients_calculateShares_button);
 
 		}
-//		body.dispose();
-//		
-//		chartComposite.getChart().getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
-//		chart.getPlot().datasetChanged(new DatasetChangeEvent(this, createDataset()));
-//		chart.fireChartChanged();
-//		
-//		createBody();
-//		stDescription.setText(reconstructedPolynom.toString());
+
 	}
 
 	public ReconstructionChartComposite(final Composite parent,
@@ -141,8 +134,6 @@ public class ReconstructionChartComposite extends Composite {
 		body.setLayout(new FillLayout());
 		chart = createChart(createDataset());
 		chartComposite = new ChartComposite(body, SWT.None, chart, true);
-		// createInputBody(body);
-		// createDescriptionGroup(body);
 	}
 
 	private XYDataset createDataset() {
@@ -155,8 +146,6 @@ public class ReconstructionChartComposite extends Composite {
 
 		for (int i = 0; i < playerID.length && playerID[i] != 0; i++) {
 			playerAndSharesSeries.add(playerID[i], shares[i]);
-//			System.out.println(playerID[i]);
-//			System.out.println(shares[i]);
 		}
 		for (int i = 0; i <= playerID[playerID.length - 1]; i++) {
 			for (int j = 0; j < coef.length; j++) {
@@ -196,7 +185,6 @@ public class ReconstructionChartComposite extends Composite {
 				false // urls
 				);
 		//XYSplineRenderer -- show data points
-		//chart.getXYPlot().setRenderer(new XYSplineRenderer());
 		XYPlot plot = (XYPlot) chart.getPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
@@ -210,7 +198,7 @@ public class ReconstructionChartComposite extends Composite {
         //show no points
 		renderer.setSeriesShapesVisible(1, false);
 
-		// show value 
+		// display value 
 		NumberFormat format = NumberFormat.getNumberInstance();
 		format.setMaximumFractionDigits(0);
 		XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT,format, format);
