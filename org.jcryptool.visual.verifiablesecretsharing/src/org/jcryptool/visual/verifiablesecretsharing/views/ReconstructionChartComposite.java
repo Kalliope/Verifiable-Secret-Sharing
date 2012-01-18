@@ -153,6 +153,7 @@ public class ReconstructionChartComposite extends Composite {
 				// y += coef[j]*Math.pow(i, j);
 			}
 			reconstructionSeries.add(i, y);
+			y = BigInteger.ZERO;
 		}
 
 		final XYSeriesCollection dataset = new XYSeriesCollection();
