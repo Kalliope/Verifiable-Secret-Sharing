@@ -394,7 +394,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		primeFactorLabel
 				.setText(Messages.VerifiableSecretSharingComposite_parameters_primeFactorMod);
 
-		primeFactorText = new Text(parametersGroup, SWT.BORDER);
+		primeFactorText = new Text(parametersGroup, SWT.BORDER | SWT.READ_ONLY);
 		primeFactorText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
 		primeFactorText.addListener(SWT.Verify, new Listener() {
