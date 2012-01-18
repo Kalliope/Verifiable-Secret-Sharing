@@ -13,7 +13,6 @@ import org.jcryptool.visual.verifiablesecretsharing.algorithm.Polynomial;
 import org.jcryptool.visual.verifiablesecretsharing.algorithm.VerifiableSecretSharing;
 
 import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.Random;
 
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -83,7 +82,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	 */
 	private static int[] safePrimes = new int[] { -1, -1, -1, 7, 11, 23, 59,
 			107, 227, 503, 1019, 2039, 4079, 8147, 16223, 32603, 65267, 130787,
-			262127, 524243, 1048343, 2097143 };
+			262127, 524243, 1048343, 2097143, 4194287 };
 
 	/* if true, commit-Button got clicked */
 	private static boolean commitmentsChecked = false;
@@ -307,8 +306,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 					bitlength = secret.bitLength();
 					if (bitlength >= 3 && bitlength <= 21) {
 						nextPrime = safePrimes[bitlength];
-						if (nextPrime <= Integer.parseInt(text)) {
+						if (nextPrime <= Integer.parseInt(text) || (nextPrime-1)/2 <= Integer.parseInt(text)) {
 							nextPrime = safePrimes[bitlength + 1];
+							if ((nextPrime-1)/2 <= Integer.parseInt(text)) {
+								nextPrime = safePrimes[bitlength + 2];
+							}
 						}
 						moduleText.setText(nextPrime + "");
 					} else {
@@ -621,7 +623,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				for (int i = 1; i < playersRecon; i++) {
 					coefficientsSpinnersCoefficients[i]
 							.setSelection(randomGenerator.nextInt(Integer
-									.parseInt(moduleText.getText())));
+									.parseInt(primeFactorText.getText())));
 				}
 				for (int i = 0; i < playersRecon; i++) {
 					coefficientsInt[i] = Integer

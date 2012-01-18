@@ -138,11 +138,12 @@ public class ReconstructionChartComposite extends Composite {
 //			System.out.println(playerID[i]);
 //			System.out.println(shares[i]);
 		}
-		for (int i = 0; i < playerID[playerID.length - 1]; i++) {
+		for (int i = 0; i <= playerID[playerID.length - 1]; i++) {
 			for (int j = 0; j < coef.length; j++) {
 				y = y.add(coef[j].multiply(new BigInteger(i + "").pow(j)));
 				// y += coef[j]*Math.pow(i, j);
 			}
+			System.out.println(y.toString());
 			reconstructionSeries.add(i, y);
 		}
 
