@@ -189,7 +189,7 @@ public class VerifiableSecretSharing {
 	 *		(u)			
 	 *		 ---		_____
 	 *		 \			|   |	  x - x(l)	
-	 *f(x) = /	y(k) * 	|   |   ___________
+	 *f(x) = /	N(k) * 	|   |   ___________
 	 *		 ---	  	|	|	x(k) - x(l)
 	 *		(k=1)	  (1<=l<=u)
 	 * 				   (l!=k)
