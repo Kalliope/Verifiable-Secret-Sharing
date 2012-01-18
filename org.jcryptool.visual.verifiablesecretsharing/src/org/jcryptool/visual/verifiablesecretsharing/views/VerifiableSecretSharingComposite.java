@@ -24,6 +24,7 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -1263,8 +1264,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setText(Messages.VerifiableSecretSharingComposite_description_title);
 		descriptionGroup
 				.setToolTipText(Messages.VerifiableSecretSharingComposite_description_tooltip);
-		descriptionLeft = new Label(descriptionGroup, SWT.NONE);
-		descriptionRight = new Label(descriptionGroup, SWT.NONE);
+//		descriptionLeft = new Label(descriptionGroup, SWT.NONE);
+//		descriptionRight = new Label(descriptionGroup, SWT.NONE);
 	}
 
 	/**
@@ -1275,6 +1276,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 	 *            reconstruction-group
 	 */
 	private void showDescription(int group) {
+		Image imageCheck = new Image(getDisplay(), 
+			     VerifiableSecretSharingComposite.class.getResourceAsStream(
+			       "check.png"));
+		Image imageReconstruct = new Image(getDisplay(), 
+				VerifiableSecretSharingComposite.class.getResourceAsStream(
+			       "reconstruction.png"));
+		Label image;
+		Label descPart2;
+		for (Control control : descriptionGroup.getChildren()) {
+			control.dispose();
+		}
+		descriptionLeft = new Label(descriptionGroup, SWT.NONE);
+		descriptionRight = new Label(descriptionGroup, SWT.NONE);
 		switch (group) {
 		case 1:
 			descriptionLeft
@@ -1299,12 +1313,19 @@ public class VerifiableSecretSharingComposite extends Composite {
 					.setText(Messages.VerifiableSecretSharingComposite_description_shares_left);
 			descriptionRight
 					.setText(Messages.VerifiableSecretSharingComposite_description_shares_right);
+			spaceLabel = new Label(descriptionGroup, SWT.NONE);
+			image = new Label(descriptionGroup,SWT.NONE);
+			image.setImage(imageCheck);
 			break;
 		case 5:
 			descriptionLeft
 					.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_left);
 			descriptionRight
 					.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_right);
+			image = new Label(descriptionGroup,SWT.NONE);
+			image.setImage(imageReconstruct);
+			descPart2 = new Label(descriptionGroup, SWT.NONE);
+			descPart2.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_right_part2);
 			break;
 		default:
 
@@ -1313,6 +1334,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		// descriptionRight.redraw();
 		descriptionGroup.layout();
 	}
+
 
 	private void createFocusHandlers() {
 		for (Control control : parametersGroup.getChildren()) {
