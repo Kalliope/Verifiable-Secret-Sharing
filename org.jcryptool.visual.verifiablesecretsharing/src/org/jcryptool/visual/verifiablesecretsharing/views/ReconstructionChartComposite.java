@@ -215,7 +215,7 @@ public class ReconstructionChartComposite extends Composite {
 		
 		//set range of axis
 		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-        domain.setRange(-0.1, playerID.length+0.1);
+        domain.setRange(-0.1, playerID[playerID.length-1]+0.1);
         domain.setTickUnit(new NumberTickUnit(1));
         domain.setVerticalTickLabels(false);
 

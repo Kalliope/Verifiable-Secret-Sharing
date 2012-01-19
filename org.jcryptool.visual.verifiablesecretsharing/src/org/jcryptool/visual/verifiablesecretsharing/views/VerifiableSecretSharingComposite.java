@@ -302,6 +302,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				if (text != "") {
 					if (Integer.parseInt(text) > 2000000) {
 						secretText.setText("2000000");
+						text = "2000000";
 					}
 					secret = new BigInteger(text);
 					bitlength = secret.bitLength();
