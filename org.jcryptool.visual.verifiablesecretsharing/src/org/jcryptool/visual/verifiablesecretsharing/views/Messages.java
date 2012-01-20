@@ -90,6 +90,8 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_commitment_not_calculated;
 	
 	public static String ChartComposite_tab_title;
+	public static String ChartComposite_reconstruct_success;
+	public static String ChartComposite_reconstruct_failure;
 	 
 	public static String VerifiableSecretSharingComposite_reconstruct_no_players;
 	

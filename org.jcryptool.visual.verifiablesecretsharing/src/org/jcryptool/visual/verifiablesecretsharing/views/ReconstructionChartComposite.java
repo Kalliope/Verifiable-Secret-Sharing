@@ -99,9 +99,9 @@ public class ReconstructionChartComposite extends Composite {
 		chartComposite = new ChartComposite(body, SWT.None, chart, true);
 		body.layout();
 		if(generatedPolynom.compareTo(reconstructedPolynom.toString())==0){
-			stDescription.setText(reconstructedPolynom.toString()+"\r\n"+Messages.VerifiableSecretSharingComposite_coefficient_positive);
+			stDescription.setText("P'(x) = "+reconstructedPolynom.toString()+"\r\n"+Messages.ChartComposite_reconstruct_success);
 		}else{
-			stDescription.setText(reconstructedPolynom.toString()+"\r\n"+Messages.VerifiableSecretSharingComposite_coefficients_calculateShares_button);
+			stDescription.setText("P'(x) = "+reconstructedPolynom.toString()+"\r\n"+Messages.ChartComposite_reconstruct_failure);
 
 		}
 
