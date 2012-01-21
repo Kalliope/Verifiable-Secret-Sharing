@@ -19,6 +19,8 @@
 
 <p>At the bottom of the screen you can find the area <b>explanations</b> where additional informations for the current step are shown.</p>
 
+<p>Additionally there is a tab <b>Reconstruction Chart</b> where the reconstruction is visualized.</p>
+
 <h3>Setting the parameters</h3>
 <p>The parameters, which are necessary for the algorithm, are set in the box <b>Parameters</b>.</p>
 <p>At first there will be chosen the number <b>persons n</b>, which are concerned to get a share of the secret.
@@ -26,12 +28,12 @@ Furthermore you have to decide about a number <b> persons t</b> how many persons
 The number of <b>persons t</b> may not be bigger than <b>persons n</b>. Both numbers have to be at least 2, as far
 as <b>Verifiable Secret Sharing</b> doesn't make sense for less involved people than 2.</p>
 
-<p>The next parameter to choose is the <b>secret s</b>. After that, the <b>module p</b>, which have to be a prime, is calculated automatically.
-If you don't like to use the proposed prime, you have the possibility to enter any other prime as long it is bigger than the <b>secret s</b>.
-The last parameter is the <b>primitive root g mod p</b>. In modular arithmetic, a branch of number theory, a primitive root modulo p is any 
-number g with the property that any number coprime to p is congruent to a power of g modulo p. In other words, g is a generator of the 
-multiplicative group of integers modulo p. The <b>primitive root g mod p</b> will be calculated automatically like <b>p</b>.
-As it is with <b>p</b>, you also can choose <b>g</b> yourself. Though to the quite complex calculation of a primitive root, it is highly recommended to work with the proposed number.
+<p>The next parameter to choose is the <b>secret s</b>. After that, the <b>module p</b>, which have to be a 
+safe prime, is calculated automatically. As far as the calculation of safe primes is quite complex, it is 
+highly recommended to use the given value. If you don't like to use the proposed safe prime, you still have 
+the possibility to enter any other safe prime as long it is at least twice as big than the <b>secret s</b>.
+The last parameter is the <b>generator g</b> and is calculated automatically and cannot be changed. 
+The <b>generator g</b> will be calculated automatically like <b>p</b>. The <b>generator g</b> is an element of the field Z_p* and has the order <b>q</b>.
 </p>
 
 <p><img src="vss_parameter.jpg"></p>

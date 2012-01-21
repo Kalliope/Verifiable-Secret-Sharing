@@ -4,6 +4,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
+
 <h1>Verifiable Secret Sharing</h1>
 
 <p>Die Demonstration soll die Funktionsweise des <b>Verifiable Secret Sharing</b> Plug-ins zeigen.</p>
@@ -20,6 +21,8 @@ Parameter festgelegt werden und die Berechnungen für das <b>Verifiable Secret S
 
 Am unteren Bildschirmrand gibt es noch einen Bereich <b>Erklärungen</b> wo zusätliche Informationen zum aktuellen Arbeitsschritt angezeigt werden.</p>
 
+<p>Weiters gibt es noch einen Tab <b>Rekonstruktionsgraph</b>, in dem die Rekonstruktion graphisch dargestellt wird.</p>
+
 <h3>Festlegung der Parameter für die Berechnung</h3>
 <p>Im Bereich <b>Parameter</b> werden die nötigen Parameter für den Ablauf des Algorithmus eingestellt.
 Man wählt die Anzahl der <b>Personen n</b> aus, an die die <b>Shares</b> verteilt werden und die
@@ -30,19 +33,11 @@ für die Rekonstruktion höchtens der Anzahl der gesamten Personen entsprechen u
 beide müssen <b>mindestens 2</b> sein, da sonst die Idee des Secret Sharing ad absurdum geführt werden würde.</p>
 
 <p>Nachdem als nächstes das <b>Geheimnis s</b> gewählt wurde, wird automatisch der <b>Modul p</b> berechnet,
-da dieser eine Primzahl sein muss. Es kann jedoch auch selbst ein Modul gewählt
-
-werden. Auch in diesem Fall muss es wieder eine Primzahl sein. Der letzte Parameter ist die <b>Primitivwurzel g modulo p</b>.
-Als Primitivwurzeln werden in der Zahlentheorie bestimmte
-
-Elemente von primen Restklassengruppen bezeichnet. Die definierende Eigenschaft einer Primitivwurzel ist, dass jedes Element
-der primen Restklassengruppe als Potenz der Primitivwurzel
-
-dargestellt werden kann. Hier wird von <b>JCrypTool</b> wieder ein Wert berechnet,
-der optional aber auch wieder selbst gewählt werden kann. Da jedoch die Berechnung einer Primitvwurzel
-
-etwas komplexer ist, ist es ratsam den
-zur Verfügung gestellten Wert zu verwenden.</p>
+da dieser eine Safe Prime sein muss. Da das Finden von Safe Primes relativ aufwendig ist, wird empfohlen die 
+vorgeschlagenen Werte zu verwenden. Es kann jedoch auch selbst ein Modul gewählt werden. Auch in diesem Fall 
+muss der Modul wieder eine Safe Prime sein und mindest doppelt so groß wie das <b>Geheimnis s</b>. Weiters wird ein <b>Primfaktor q</b> vom <b>Modul p</b>-1 benötigt. Der 
+letzte Parameter ist der <b>Generator g</b> und wird automatisch berechnet und kann nicht verändert werden. 
+<b>g</b> ist ein Element der Gruppe Z_p* und hat die Ordnung <b>q</b>.</p>
 
 <p><img src="vss_parameter.jpg"></p>
 <!--width="640" height="480"-->
