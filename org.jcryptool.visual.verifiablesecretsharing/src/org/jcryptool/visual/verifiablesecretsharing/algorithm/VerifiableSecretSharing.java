@@ -203,16 +203,6 @@ public class VerifiableSecretSharing {
 	public Polynomial reconstruct(int[] playerIds, int q){
 		int[] sharesModQ = getSharesModQ();
 		int u = playerIds.length;
-		/*
-		 * Schummelcode für reconstruct mit shares mod p
-		 * statt mod p-1
-		 */
-		/*
-		BigInteger[] sharesBig = getSharesBig();
-		int[] sharesModQ = new int[sharesBig.length];
-		for(int i = 0; i<sharesBig.length; i++){
-			sharesModQ[i] = (sharesBig[i].mod(new BigInteger((p)+""))).intValue();
-		}*/
 		
 		BigInteger[] helpCoef = {BigInteger.ZERO,BigInteger.ONE};
 		Polynomial x = new Polynomial(helpCoef);
