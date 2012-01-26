@@ -308,9 +308,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 					bitlength = secret.bitLength();
 					if (bitlength >= 3 && bitlength <= 21) {
 						nextPrime = safePrimes[bitlength];
-						if (nextPrime <= Integer.parseInt(text) || (nextPrime-1)/2 <= Integer.parseInt(text)) {
+						if (nextPrime <= Integer.parseInt(text)
+								|| (nextPrime - 1) / 2 <= Integer
+										.parseInt(text)) {
 							nextPrime = safePrimes[bitlength + 1];
-							if ((nextPrime-1)/2 <= Integer.parseInt(text)) {
+							if ((nextPrime - 1) / 2 <= Integer.parseInt(text)) {
 								nextPrime = safePrimes[bitlength + 2];
 							}
 						}
@@ -376,7 +378,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 
 			private int generatePrimitiveRoot(String p) {
 				int pInt = Integer.parseInt(p);
-				int qInt = (pInt-1)/2;
+				int qInt = (pInt - 1) / 2;
 				for (int i = 2; i < pInt; i++) {
 					int j = i, o = 1;
 					do {
@@ -480,21 +482,16 @@ public class VerifiableSecretSharingComposite extends Composite {
 					errorText += "\n\r"
 							+ Messages.VerifiableSecretSharingComposite_param_set_all;
 
-					if (moduleText.getText().compareTo("") == 0) {
-						moduleText.setText("0");
-					}
-					
-					if (primeFactorText.getText().compareTo("") == 0) {
-						primeFactorText.setText("0");
-					}
-
-					if (primitiveRootText.getText().compareTo("") == 0) {
-						primitiveRootText.setText("0");
-					}
-
-					if (secretText.getText().compareTo("") == 0) {
-						secretText.setText("2");
-					}
+					/*
+					 * if (moduleText.getText().compareTo("") == 0) {
+					 * moduleText.setText("0"); }
+					 * 
+					 * if (primeFactorText.getText().compareTo("") == 0) {
+					 * primeFactorText.setText("0"); }
+					 * 
+					 * if (primitiveRootText.getText().compareTo("") == 0) {
+					 * primitiveRootText.setText("0"); }
+					 */
 
 					everythingCorrect = false;
 				} else {
@@ -512,17 +509,20 @@ public class VerifiableSecretSharingComposite extends Composite {
 					everythingCorrect = false;
 				}
 
-				if (Integer.parseInt(moduleText.getText()) < Integer
-						.parseInt(secretText.getText())) {
+				if (moduleText.getText().compareTo("") != 0
+						&& Integer.parseInt(moduleText.getText()) < Integer
+								.parseInt(secretText.getText())) {
 					errorText += "\n\r"
 							+ Messages.VerifiableSecretSharingComposite_param_module_p_bigger_s;
 					everythingCorrect = false;
 				} else {
-					moduleTextBI = new BigInteger(moduleText.getText());
-					if (moduleTextBI.isProbablePrime(3) == false) {
-						errorText += "\n\r"
-								+ Messages.VerifiableSecretSharingComposite_param_module_p_isPrime;
-						everythingCorrect = false;
+					if (moduleText.getText().compareTo("") != 0) {
+						moduleTextBI = new BigInteger(moduleText.getText());
+						if (moduleTextBI.isProbablePrime(3) == false) {
+							errorText += "\n\r"
+									+ Messages.VerifiableSecretSharingComposite_param_module_p_isPrime;
+							everythingCorrect = false;
+						}
 					}
 				}
 				if (everythingCorrect) {
@@ -536,6 +536,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 					enableCoefficientsGroup(true, (playersRecon - 1));
 					enableParametersGroupWithoutDispose(false);
 				} else {
+					if (secretText.getText().compareTo("") == 0) {
+						do {
+						secretText.setText(new Random().nextInt(2000000)+"");
+						} while(Integer.parseInt(secretText.getText()) <= 3);
+					}
 					MessageDialog.openError(getShell(), "Error", errorText);
 				}
 			}
@@ -1190,7 +1195,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 								rcc.setPlayerID(playerIds);
 								rcc.setShares(shares);
 								rcc.setPolynom(polynomText.getText());
-								rcc.setSecret(Integer.valueOf(secretText.getText()));
+								rcc.setSecret(Integer.valueOf(secretText
+										.getText()));
 								rcc.redrawChart();
 								((VerifiableSecretSharingView) platformPart
 										.getView(false))
@@ -1265,8 +1271,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setText(Messages.VerifiableSecretSharingComposite_description_title);
 		descriptionGroup
 				.setToolTipText(Messages.VerifiableSecretSharingComposite_description_tooltip);
-//		descriptionLeft = new Label(descriptionGroup, SWT.NONE);
-//		descriptionRight = new Label(descriptionGroup, SWT.NONE);
+		// descriptionLeft = new Label(descriptionGroup, SWT.NONE);
+		// descriptionRight = new Label(descriptionGroup, SWT.NONE);
 	}
 
 	/**
@@ -1277,12 +1283,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 	 *            reconstruction-group
 	 */
 	private void showDescription(int group) {
-		Image imageCheck = new Image(getDisplay(), 
-			     VerifiableSecretSharingComposite.class.getResourceAsStream(
-			       "check.png"));
-		Image imageReconstruct = new Image(getDisplay(), 
-				VerifiableSecretSharingComposite.class.getResourceAsStream(
-			       "reconstruction.png"));
+		Image imageCheck = new Image(getDisplay(),
+				VerifiableSecretSharingComposite.class
+						.getResourceAsStream("check.png"));
+		Image imageReconstruct = new Image(getDisplay(),
+				VerifiableSecretSharingComposite.class
+						.getResourceAsStream("reconstruction.png"));
 		Label image;
 		Label descPart2;
 		for (Control control : descriptionGroup.getChildren()) {
@@ -1315,7 +1321,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 			descriptionRight
 					.setText(Messages.VerifiableSecretSharingComposite_description_shares_right);
 			spaceLabel = new Label(descriptionGroup, SWT.NONE);
-			image = new Label(descriptionGroup,SWT.NONE);
+			image = new Label(descriptionGroup, SWT.NONE);
 			image.setImage(imageCheck);
 			break;
 		case 5:
@@ -1323,10 +1329,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 					.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_left);
 			descriptionRight
 					.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_right);
-			image = new Label(descriptionGroup,SWT.NONE);
+			image = new Label(descriptionGroup, SWT.NONE);
 			image.setImage(imageReconstruct);
 			descPart2 = new Label(descriptionGroup, SWT.NONE);
-			descPart2.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_right_part2);
+			descPart2
+					.setText(Messages.VerifiableSecretSharingComposite_description_reconstruction_right_part2);
 			break;
 		default:
 
@@ -1335,7 +1342,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		// descriptionRight.redraw();
 		descriptionGroup.layout();
 	}
-
 
 	private void createFocusHandlers() {
 		for (Control control : parametersGroup.getChildren()) {
@@ -1538,7 +1544,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				o++;
 				j = j * i % pInt;
 			} while (j != 1);
-			if (o == ((pInt - 1)/2) && prootInt == i) {
+			if (o == ((pInt - 1) / 2) && prootInt == i) {
 				return true;
 			}
 		}
@@ -1546,8 +1552,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 	}
 
 	private void generatePolynom() {
-		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + " + coefficientsSpinnersCoefficients[1].getText() + "x + ";
-
+		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + "
+				+ coefficientsSpinnersCoefficients[1].getText() + "x + ";
 
 		for (int i = 2; i < playersRecon; i++) {
 			polynom += coefficientsSpinnersCoefficients[i].getText() + "x"
