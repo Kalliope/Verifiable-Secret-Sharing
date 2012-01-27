@@ -99,9 +99,9 @@ public class ReconstructionChartComposite extends Composite {
 		chartComposite = new ChartComposite(body, SWT.None, chart, true);
 		body.layout();
 		if(generatedPolynom.compareTo(reconstructedPolynom.toString())==0){
-			stDescription.setText(reconstructedPolynom.toString()+"\r\n"+Messages.VerifiableSecretSharingComposite_coefficient_positive);
+			stDescription.setText("P'(x) = "+reconstructedPolynom.toString()+"\r\n"+Messages.ChartComposite_reconstruct_success);
 		}else{
-			stDescription.setText(reconstructedPolynom.toString()+"\r\n"+Messages.VerifiableSecretSharingComposite_coefficients_calculateShares_button);
+			stDescription.setText("P'(x) = "+reconstructedPolynom.toString()+"\r\n"+Messages.ChartComposite_reconstruct_failure);
 
 		}
 
@@ -214,7 +214,7 @@ public class ReconstructionChartComposite extends Composite {
 		
 		//set range of axis
 		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-        domain.setRange(-0.1, playerID.length+0.1);
+        domain.setRange(-0.1, playerID[playerID.length-1]+0.1);
         domain.setTickUnit(new NumberTickUnit(1));
         domain.setVerticalTickLabels(false);
 
