@@ -263,6 +263,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		playerSpinner.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
 		playerSpinner.setMinimum(2);
+		playerSpinner.setMaximum(100);
 
 		reconstructorLabel = new Label(parametersGroup, SWT.NONE);
 		reconstructorLabel
@@ -282,19 +283,17 @@ public class VerifiableSecretSharingComposite extends Composite {
 		secretText.addListener(SWT.Verify, new Listener() {
 			public void handleEvent(Event e) {
 				String string = e.text;
-				if(secretText.getText().compareTo("0")==0){
-					Random randomGenerator = new Random();
-					secretText.setText(String.valueOf(randomGenerator.nextInt(2000000)));
-				}else{
+
 				char[] chars = new char[string.length()];
 				string.getChars(0, chars.length, chars, 0);
 				for (int i = 0; i < chars.length; i++) {
 					if (!('0' <= chars[i] && chars[i] <= '9')) {
 						e.doit = false;
 						return;
-					}}
+					}
 				}
 			}
+
 		});
 		secretText.addListener(SWT.Modify, new Listener() {
 			public void handleEvent(Event e) {
@@ -306,6 +305,11 @@ public class VerifiableSecretSharingComposite extends Composite {
 					if (Integer.parseInt(text) > 2000000) {
 						secretText.setText("2000000");
 						text = "2000000";
+					} else if (Integer.parseInt(text) == 0) {
+							Random randomGenerator = new Random();
+							String newSecret = String.valueOf(randomGenerator.nextInt(2000000));
+							secretText.setText(newSecret);
+							text=newSecret;
 					}
 					secret = new BigInteger(text);
 					bitlength = secret.bitLength();
@@ -541,8 +545,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 				} else {
 					if (secretText.getText().compareTo("") == 0) {
 						do {
-						secretText.setText(new Random().nextInt(2000000)+"");
-						} while(Integer.parseInt(secretText.getText()) <= 3);
+							secretText.setText(new Random().nextInt(2000000)
+									+ "");
+						} while (Integer.parseInt(secretText.getText()) <= 3);
 					}
 					MessageDialog.openError(getShell(), "Error", errorText);
 				}
@@ -1013,6 +1018,23 @@ public class VerifiableSecretSharingComposite extends Composite {
 					SWT.BORDER);
 			shareModNTextShares[i].setLayoutData(new RowData(43, -1));
 			shareModNTextShares[i].setData(i);
+			
+			shareModNTextShares[i].addListener(SWT.Verify, new Listener() {
+				public void handleEvent(Event e) {
+					String string = e.text;
+
+					char[] chars = new char[string.length()];
+					string.getChars(0, chars.length, chars, 0);
+					for (int i = 0; i < chars.length; i++) {
+						if (!('0' <= chars[i] && chars[i] <= '9')) {
+							e.doit = false;
+							return;
+						}
+					}
+				}
+
+			});
+			
 			shareModNTextShares[i].addListener(SWT.Modify, new Listener() {
 				public void handleEvent(Event e) {
 					int newShareModP;
