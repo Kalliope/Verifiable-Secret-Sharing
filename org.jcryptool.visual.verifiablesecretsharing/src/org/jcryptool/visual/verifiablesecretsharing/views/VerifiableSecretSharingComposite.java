@@ -606,26 +606,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		commitGenerateButtonComposite.setLayout(commitGenerateButtonLayout);
 		commitGenerateButtonComposite.setLayoutData(new RowData(220, -1));
 
-		commitCoefficientsButton = new Button(commitGenerateButtonComposite,
-				SWT.NONE);
-		commitCoefficientsButton
-				.setText(Messages.VerifiableSecretSharingComposite_coefficients_commit_button);
-		commitCoefficientsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
-				true, false));
-
-		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(final SelectionEvent e) {
-				enableCommitmentsGroup(true, (playersRecon));
-				vss.commitment(Integer.parseInt(primitiveRootText.getText()),
-						coefficientsInt, Integer.parseInt(moduleText.getText()));
-				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
-					coefficientsTextCommitment[i].setText(String.valueOf(vss
-							.getCommitments()[i]));
-				}
-				commitmentsChecked = true;
-			}
-		});
-
 		generateCoefficientsButton = new Button(commitGenerateButtonComposite,
 				SWT.PUSH);
 		generateCoefficientsButton
@@ -648,6 +628,27 @@ public class VerifiableSecretSharingComposite extends Composite {
 				generatePolynom();
 			}
 		});
+		
+		commitCoefficientsButton = new Button(commitGenerateButtonComposite,
+				SWT.NONE);
+		commitCoefficientsButton
+				.setText(Messages.VerifiableSecretSharingComposite_coefficients_commit_button);
+		commitCoefficientsButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL,
+				true, false));
+
+		commitCoefficientsButton.addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(final SelectionEvent e) {
+				enableCommitmentsGroup(true, (playersRecon));
+				vss.commitment(Integer.parseInt(primitiveRootText.getText()),
+						coefficientsInt, Integer.parseInt(moduleText.getText()));
+				for (int i = 0; i < coefficientsSpinnersCoefficients.length; i++) {
+					coefficientsTextCommitment[i].setText(String.valueOf(vss
+							.getCommitments()[i]));
+				}
+				commitmentsChecked = true;
+			}
+		});
+
 
 		polynomContent = new Composite(coefficientsGroup, SWT.NONE);
 		polynomContent.setLayout(coefficientsPolynomNextStepLayout);
