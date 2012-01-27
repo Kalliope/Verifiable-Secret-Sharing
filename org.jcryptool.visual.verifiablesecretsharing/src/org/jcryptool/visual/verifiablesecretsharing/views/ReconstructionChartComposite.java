@@ -28,7 +28,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardXYItemLabelGenerator;
 import org.jfree.chart.labels.XYItemLabelGenerator;
 import org.jfree.chart.plot.PlotOrientation;
@@ -219,8 +218,6 @@ public class ReconstructionChartComposite extends Composite {
         domain.setTickUnit(new NumberTickUnit(1));
         domain.setVerticalTickLabels(false);
 
-		
-
 		// display value 
 		NumberFormat format = NumberFormat.getNumberInstance();
 		format.setMaximumFractionDigits(0);
@@ -229,7 +226,6 @@ public class ReconstructionChartComposite extends Composite {
         renderer.setBaseItemLabelsVisible(true);
 		
         plot.setRenderer(renderer);
-		
 
 		return chart;
 

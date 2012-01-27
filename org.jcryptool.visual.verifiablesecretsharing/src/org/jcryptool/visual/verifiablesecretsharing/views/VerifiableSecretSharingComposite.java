@@ -281,14 +281,17 @@ public class VerifiableSecretSharingComposite extends Composite {
 		secretText.addListener(SWT.Verify, new Listener() {
 			public void handleEvent(Event e) {
 				String string = e.text;
-
+				if(secretText.getText().compareTo("0")==0){
+					Random randomGenerator = new Random();
+					secretText.setText(String.valueOf(randomGenerator.nextInt(2000000)));
+				}else{
 				char[] chars = new char[string.length()];
 				string.getChars(0, chars.length, chars, 0);
 				for (int i = 0; i < chars.length; i++) {
 					if (!('0' <= chars[i] && chars[i] <= '9')) {
 						e.doit = false;
 						return;
-					}
+					}}
 				}
 			}
 		});
@@ -1188,7 +1191,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 								rcc.setPlayerID(playerIds);
 								rcc.setShares(shares);
 								rcc.setPolynom(polynomText.getText());
-								rcc.setSecret(Integer.valueOf(secretText.getText()));
+								rcc.setSecret(Integer.valueOf(secretText
+										.getText()));
 								rcc.redrawChart();
 								((VerifiableSecretSharingView) platformPart
 										.getView(false))
@@ -1515,7 +1519,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 				o++;
 				j = j * i % pInt;
 			} while (j != 1);
-			if (o == ((pInt - 1)/2) && prootInt == i) {
+			if (o == ((pInt - 1) / 2) && prootInt == i) {
 				return true;
 			}
 		}
@@ -1523,8 +1527,8 @@ public class VerifiableSecretSharingComposite extends Composite {
 	}
 
 	private void generatePolynom() {
-		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + " + coefficientsSpinnersCoefficients[1].getText() + "x + ";
-
+		String polynom = coefficientsSpinnersCoefficients[0].getText() + " + "
+				+ coefficientsSpinnersCoefficients[1].getText() + "x + ";
 
 		for (int i = 2; i < playersRecon; i++) {
 			polynom += coefficientsSpinnersCoefficients[i].getText() + "x"
