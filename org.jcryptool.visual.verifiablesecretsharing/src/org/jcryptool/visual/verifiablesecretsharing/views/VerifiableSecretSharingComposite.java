@@ -81,7 +81,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	 * prime for this bit-length if value is -1, there is no safe prime for this
 	 * bit-length
 	 */
-	private static int[] safePrimes = new int[] { -1, -1, -1, 7, 11, 23, 59,
+	private static int[] safePrimes = new int[] { -1, -1, 5, 7, 11, 23, 59,
 			107, 227, 503, 1019, 2039, 4079, 8147, 16223, 32603, 65267, 130787,
 			262127, 524243, 1048343, 2097143, 4194287 };
 
@@ -482,13 +482,27 @@ public class VerifiableSecretSharingComposite extends Composite {
 				boolean everythingCorrect = true;
 				String errorText = Messages.VerifiableSecretSharingComposite_error_start;
 				BigInteger moduleTextBI;
+				int i = 0;
 				if (secretText.getText().compareTo("") == 0
 						|| moduleText.getText().compareTo("") == 0
 						|| primeFactorText.getText().compareTo("") == 0
 						|| primitiveRootText.getText().compareTo("") == 0) {
-					errorText += "\n\r"
-							+ Messages.VerifiableSecretSharingComposite_param_set_all;
-
+					
+					if(moduleText.getText().compareTo("") != 0 && primeFactorText.getText().compareTo("") == 0) {
+						errorText += "\n\r" + Messages.VerifiableSecretSharingComposite_param_p_not_safe_prime;
+						while (i<safePrimes.length) {
+							if(Integer.parseInt(moduleText.getText()) < safePrimes[i]) {
+								moduleText.setText(safePrimes[i]+"");
+								i = safePrimes.length;
+							}
+							i++;
+						}
+					}
+					else {
+						errorText += "\n\r"
+								+ Messages.VerifiableSecretSharingComposite_param_set_all;
+					}
+					
 					/*
 					 * if (moduleText.getText().compareTo("") == 0) {
 					 * moduleText.setText("0"); }
