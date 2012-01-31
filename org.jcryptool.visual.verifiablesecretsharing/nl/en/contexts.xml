@@ -1,12 +1,6 @@
 <contexts>
-	<context id="viewer" title="Verifiable Secret Sharing">
+	<context id="view" title="Verifiable Secret Sharing">
 		<description>Verifiable Secret Sharing is a secret sharing algorithm for sharing a secret. The secret is distributed in a way that every person receives a unique part of the secret. For the reconstruction of the secret are just a few parts necessary. The secret is reconstructed with the Lagrage polynomial. In comparison to Shamir&apos;s Secret Sharing it is possible to verify if all the participants provide a correct part of the secret.</description>
-		<topic href="nl/en/help/content/index.html" label="Verifiable Secret Sharing">
-			<enablement>
-				<with variable="platform">
-	            	<test property="org.eclipse.core.runtime.isBundleInstalled" args="org.eclipse.platform.doc.isv"/>
-	     		</with>
-			</enablement>
-		</topic>
+		<topic href="nl/en/help/content/index.html" label="Verifiable Secret Sharing" />
 	</context>
 </contexts>

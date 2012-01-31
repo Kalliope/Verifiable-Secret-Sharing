@@ -81,7 +81,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 	 * prime for this bit-length if value is -1, there is no safe prime for this
 	 * bit-length
 	 */
-	private static int[] safePrimes = new int[] { -1, -1, -1, 7, 11, 23, 59,
+	private static int[] safePrimes = new int[] { -1, -1, 5, 7, 11, 23, 59,
 			107, 227, 503, 1019, 2039, 4079, 8147, 16223, 32603, 65267, 130787,
 			262127, 524243, 1048343, 2097143, 4194287 };
 
@@ -426,7 +426,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		primitiveRootLabel
 				.setText(Messages.VerifiableSecretSharingComposite_parameters_primitiveRoot);
 
-		primitiveRootText = new Text(parametersGroup, SWT.BORDER);
+		primitiveRootText = new Text(parametersGroup, SWT.BORDER | SWT.READ_ONLY);
 		primitiveRootText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
 		primitiveRootText.addListener(SWT.Verify, new Listener() {
@@ -482,13 +482,27 @@ public class VerifiableSecretSharingComposite extends Composite {
 				boolean everythingCorrect = true;
 				String errorText = Messages.VerifiableSecretSharingComposite_error_start;
 				BigInteger moduleTextBI;
+				int i = 0;
 				if (secretText.getText().compareTo("") == 0
 						|| moduleText.getText().compareTo("") == 0
 						|| primeFactorText.getText().compareTo("") == 0
 						|| primitiveRootText.getText().compareTo("") == 0) {
-					errorText += "\n\r"
-							+ Messages.VerifiableSecretSharingComposite_param_set_all;
-
+					
+					if(moduleText.getText().compareTo("") != 0 && primeFactorText.getText().compareTo("") == 0) {
+						errorText += "\n\r" + Messages.VerifiableSecretSharingComposite_param_p_not_safe_prime;
+						while (i<safePrimes.length) {
+							if(Integer.parseInt(moduleText.getText()) < safePrimes[i]) {
+								moduleText.setText(safePrimes[i]+"");
+								i = safePrimes.length;
+							}
+							i++;
+						}
+					}
+					else {
+						errorText += "\n\r"
+								+ Messages.VerifiableSecretSharingComposite_param_set_all;
+					}
+					
 					/*
 					 * if (moduleText.getText().compareTo("") == 0) {
 					 * moduleText.setText("0"); }
@@ -1561,16 +1575,23 @@ public class VerifiableSecretSharingComposite extends Composite {
 		return result;
 	}
 
-	private boolean isSubgroup(String proot, String p) {
-		int pInt = Integer.parseInt(p);
-		int prootInt = Integer.parseInt(proot);
-		for (int i = 2; i < pInt; i++) {
-			int j = i, o = 1;
+	private boolean isSubgroup(String g, String p) {
+		BigInteger pBigInt = new BigInteger(p);
+		BigInteger gBigInt = new BigInteger(g);
+		BigInteger j;
+		BigInteger o;
+		for (int i = 2; new BigInteger(i+"").compareTo(pBigInt) < 0; i++) {
+//			int j = i, o = 1;
+			j = new BigInteger(i+"");
+			o = BigInteger.ONE;
 			do {
-				o++;
-				j = j * i % pInt;
-			} while (j != 1);
-			if (o == ((pInt - 1) / 2) && prootInt == i) {
+//				o++;
+				o = o.add(BigInteger.ONE);
+//				j = j * i % pBigInt;
+				j = j.multiply(new BigInteger(i+"")).mod(pBigInt);
+			} while (j.compareTo(BigInteger.ONE) != 0);
+//			if (o == ((pBigInt - 1) / 2) && gBigInt == i) {
+			if(o.compareTo(pBigInt.subtract(BigInteger.ONE).divide(new BigInteger("2"))) == 0 && gBigInt.compareTo(new BigInteger(i+"")) == 0) {
 				return true;
 			}
 		}
