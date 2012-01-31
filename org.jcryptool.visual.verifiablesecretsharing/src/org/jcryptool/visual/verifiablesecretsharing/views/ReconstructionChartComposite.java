@@ -122,13 +122,11 @@ public class ReconstructionChartComposite extends Composite {
 	 */
 	private void createHead() {
 		final Composite head = new Composite(this, SWT.NONE);
-		// head.setBackground(WHITE);
 		head.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		head.setLayout(new GridLayout());
 
 		final Label label = new Label(head, SWT.NONE);
 		label.setFont(FontService.getHeaderFont());
-		// label.setBackground(WHITE);
 		label.setText(Messages.VerifiableSecretSharingComposite_tab_title);
 		stDescription = new StyledText(head, SWT.READ_ONLY | SWT.MULTI
 				| SWT.WRAP);
@@ -160,7 +158,6 @@ public class ReconstructionChartComposite extends Composite {
 		for (int i = 0; i <= playerID[playerID.length - 1]; i++) {
 			for (int j = 0; j < coef.length; j++) {
 				y = y.add(coef[j].multiply(new BigInteger(i + "").pow(j)));
-				// y += coef[j]*Math.pow(i, j);
 			}
 			reconstructionSeries.add(i, y);
 			y = BigInteger.ZERO;

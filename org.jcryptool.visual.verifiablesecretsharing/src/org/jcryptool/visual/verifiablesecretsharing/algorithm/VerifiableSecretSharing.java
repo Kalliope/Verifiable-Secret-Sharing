@@ -126,15 +126,6 @@ public class VerifiableSecretSharing {
 	 * 		   false --> check not OK;
 	 */
 	public boolean check(int g, int p, int playerId){
-		//BigInteger[] sharesBig = getSharesBig();
-		
-		/*int[] sharesModP = getSharesModP();
-		BigInteger[] sharesBig = new BigInteger[sharesModP.length];
-		//TODO: Berechnung überprüfen
-		for(int i=0; i<sharesModP.length; i++){
-			sharesBig[i] = getSharesBig()[i].mod(new BigInteger((p-1)+""));
-		}*/
-		
 		int[] sharesModQ = getSharesModQ();
 		BigInteger[] sharesBig = new BigInteger[sharesModQ.length];
 		for(int i=0; i<sharesModQ.length; i++){

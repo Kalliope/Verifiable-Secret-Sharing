@@ -45,17 +45,6 @@ import org.jcryptool.core.util.fonts.FontService;
 
 public class VerifiableSecretSharingComposite extends Composite {
 
-	public final String uZero = ("\u2080"); //$NON-NLS-1$
-	public final String uOne = ("\u2081"); //$NON-NLS-1$
-	public final String uTwo = ("\u2082"); //$NON-NLS-1$
-	public final String uThree = ("\u2083"); //$NON-NLS-1$
-	public final String uFour = ("\u2084"); //$NON-NLS-1$
-	public final String uFive = ("\u2085"); //$NON-NLS-1$
-	public final String uSix = ("\u2086"); //$NON-NLS-1$
-	public final String uSeven = ("\u2087"); //$NON-NLS-1$
-	public final String uEight = ("\u2088"); //$NON-NLS-1$
-	public final String uNine = ("\u2089"); //$NON-NLS-1$
-
 	/* colors for backgrounds. */
 	private static final Color WHITE = Display.getDefault().getSystemColor(
 			SWT.COLOR_WHITE);
@@ -164,26 +153,10 @@ public class VerifiableSecretSharingComposite extends Composite {
 	private Label primeFactorLabel;
 	private Text primeFactorText;
 
-	// private Listener onlyDigits;
-
 	public VerifiableSecretSharingComposite(final Composite parent,
 			final int style,
 			VerifiableSecretSharingView verifiableSecretSharingView) {
 		super(parent, style);
-
-		// onlyDigits = new Listener() {
-		// public void handleEvent(Event e) {
-		// String string = e.text;
-		// char[] chars = new char[string.length()];
-		// string.getChars(0, chars.length, chars, 0);
-		// for (int i = 0; i < chars.length; i++) {
-		// if (!('0' <= chars[i] && chars[i] <= '9')) {
-		// e.doit = false;
-		// return;
-		// }
-		// }
-		// }
-		// };
 
 		// default-values
 		playersRecon = 2;
@@ -221,9 +194,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		body.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		body.setLayout(new GridLayout());
 
-		// JFreeChart chart = createChart(createDataset());
-		// new ChartComposite(body, SWT.None,
-		// chart, true);
 		createInputBody(body);
 		createDescriptionGroup(body);
 		createFocusHandlers();
@@ -1013,21 +983,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 			shareNTextShares[i] = new Text(shareNCompositeShares[i], SWT.BORDER
 					| SWT.READ_ONLY);
 			shareNTextShares[i].setLayoutData(new RowData(43, -1));
-			// shareNTextShares[i].addListener(SWT.Verify, new Listener() {
-			// public void handleEvent(Event e) {
-			// String string = e.text;
-			//
-			// char[] chars = new char[string.length()];
-			// string.getChars(0, chars.length, chars, 0);
-			// for (int i = 0; i < chars.length; i++) {
-			// if (!('0' <= chars[i] && chars[i] <= '9')) {
-			// e.doit = false;
-			// return;
-			// }
-			// }
-			//
-			// }
-			// });
 
 			isModShares[i] = new Label(shareNCompositeShares[i], SWT.NONE);
 			isModShares[i].setText("\u2261");
@@ -1059,15 +1014,9 @@ public class VerifiableSecretSharingComposite extends Composite {
 					int newShareModP;
 					int i = (Integer) e.widget.getData();
 					if (shareModNTextShares[i].getText().compareTo("") != 0) {
-						// newShareModP = new
-						// BigInteger(shareNTextShares[i]
-						// .getText());
 						newShareModP = Integer.parseInt(shareModNTextShares[i]
 								.getText());
-						// vss.setSharesBig(i, newShare);
 						vss.setSharesModQ(i, newShareModP);
-						// shareModNTextShares[i].setText(newShareModP +
-						// "");
 					}
 
 				}
@@ -1315,8 +1264,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 				.setText(Messages.VerifiableSecretSharingComposite_description_title);
 		descriptionGroup
 				.setToolTipText(Messages.VerifiableSecretSharingComposite_description_tooltip);
-		// descriptionLeft = new Label(descriptionGroup, SWT.NONE);
-		// descriptionRight = new Label(descriptionGroup, SWT.NONE);
 	}
 
 	/**
@@ -1382,8 +1329,6 @@ public class VerifiableSecretSharingComposite extends Composite {
 		default:
 
 		}
-		// descriptionLeft.redraw();
-		// descriptionRight.redraw();
 		descriptionGroup.layout();
 	}
 
@@ -1585,16 +1530,12 @@ public class VerifiableSecretSharingComposite extends Composite {
 		BigInteger j;
 		BigInteger o;
 		for (int i = 2; new BigInteger(i + "").compareTo(pBigInt) < 0; i++) {
-			// int j = i, o = 1;
 			j = new BigInteger(i + "");
 			o = BigInteger.ONE;
 			do {
-				// o++;
 				o = o.add(BigInteger.ONE);
-				// j = j * i % pBigInt;
 				j = j.multiply(new BigInteger(i + "")).mod(pBigInt);
 			} while (j.compareTo(BigInteger.ONE) != 0);
-			// if (o == ((pBigInt - 1) / 2) && gBigInt == i) {
 			if (o.compareTo(pBigInt.subtract(BigInteger.ONE).divide(
 					new BigInteger("2"))) == 0
 					&& gBigInt.compareTo(new BigInteger(i + "")) == 0) {

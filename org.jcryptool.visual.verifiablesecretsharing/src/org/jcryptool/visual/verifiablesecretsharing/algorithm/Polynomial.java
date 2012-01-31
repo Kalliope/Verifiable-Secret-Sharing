@@ -3,7 +3,7 @@ package org.jcryptool.visual.verifiablesecretsharing.algorithm;
 import java.math.BigInteger;
 
 public class Polynomial {
-	int deg;
+	private int deg;
 	private BigInteger[] coef;
 
 	public BigInteger[] getCoef() {
@@ -74,20 +74,6 @@ public class Polynomial {
 		return c;
 	}
 
-	public Polynomial add(int b) {
-		Polynomial a = this;
-		BigInteger[] help = new BigInteger[a.coef.length];
-		Polynomial c;
-		for (int i = 0; i< help.length; i++) {
-			help[i] = BigInteger.ZERO;
-		}
-		c = new Polynomial(help);
-		for (int i = 0; i < a.coef.length; i++)
-			c.coef[i] = a.coef[i];
-		c.coef[0] = c.coef[0].add(new BigInteger(""+b));
-		c.deg = c.degree();
-		return c;
-	}
 
 	public Polynomial mod(int p) {
 		Polynomial a = this;
