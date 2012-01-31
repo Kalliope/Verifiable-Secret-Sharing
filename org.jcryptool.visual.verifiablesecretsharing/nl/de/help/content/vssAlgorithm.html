@@ -1,47 +1,56 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
   "http://www.w3.org/TR/html4/loose.dtd">
-
-<head>
-
-</head>
+  
+<head></head>
 
 <body>
 
 <h1>Der Verifiable Secret Sharing Algorithmus nach dem Feldman-Schema</h1>
 
-<p>Der <b>Verifiable Secret Sharing</b> Algorithmus wurde 1987 von Paul Feldman entwickelt und 
-basiert auf dem von Adi Shamir 1979 entwickelten Secret Sharing Verfahren Shamir's Secret Sharing. Mit diesem Algorithmus ist es möglich, 
-ein Geheimnis auf mehrere Personen aufzuteilen, wobei eine gewisse Untermenge dieser Personen erforderlich ist, 
-um das Geheimnis zu rekonstruieren.</p>
-
-<p>Seien <i>n</i> und <i>t</i> natürliche Zahlen. In einem <i>(n,t)</i>-Secret Sharing Protokoll wird das
-Geheimnis auf <i>n</i> Personen aufgeteilt. Jede Person hat einen Share des Geheimnisses.
-Wenn sich <i>t</i> dieser Personen zusammentun, können sie das Geheimnis rekonstruieren.
-Wenn sich aber weniger als <i>t</i> dieser Teilgeheimnisträger zusammentun, können sie
-keine relevanten Informationen über das Geheimnis erhalten. Dieses Prinzip kann man
-mit einer Schatzkarte vergleichen, die auf mehrere Personen verteilt wird. Nur wenn
-alle Teile der Schatzkarte zusammengelegt werden, dann man den Schatz
-finden. Bedenkt man jetzt jedoch, dass jeder Teilgeheimnisträger seinen Teil der
-Schatzkarte verändern und dadurch die Bedeutung der gesamten Karte ändern könnte,
-ist es notwendig, das zu verhindern. Der Verifiable Secret Sharing-Algorithmus erweitert
-den Shamir's Secret Sharing Algorithmus um diese Funktionaliät.<br/>
+<p>
+	Der <b>Verifiable Secret Sharing</b> Algorithmus wurde 1987 von Paul Feldman entwickelt und 
+	basiert auf dem von Adi Shamir 1979 entwickelten Secret Sharing Verfahren Shamir's Secret Sharing. Mit diesem Algorithmus ist es möglich, 
+	ein Geheimnis auf mehrere Personen aufzuteilen, wobei eine gewisse Untermenge dieser Personen erforderlich ist, 
+	um das Geheimnis zu rekonstruieren.
+</p>
 
 <p>
-Der Algorithmus von Shamir basiert auf der Lagrange-Polynominterpolation und ist
-ein <i>(n,t)</i>-Secret-Sharing-Protokoll. Alle Berechnungen werden im Ganzzahlkörper
-<i>&#x2124;/p*</i> durchgeführt.
+	Seien <i>n</i> und <i>t</i> natürliche Zahlen. In einem <i>(n,t)</i>-Secret Sharing Protokoll wird das
+	Geheimnis auf <i>n</i> Personen aufgeteilt. Jede Person hat einen Share des Geheimnisses.
+	Wenn sich <i>t</i> dieser Personen zusammentun, können sie das Geheimnis rekonstruieren.
+	Wenn sich aber weniger als <i>t</i> dieser Teilgeheimnisträger zusammentun, können sie
+	keine relevanten Informationen über das Geheimnis erhalten. Dieses Prinzip kann man
+	mit einer Schatzkarte vergleichen, die auf mehrere Personen verteilt wird. Nur wenn
+	alle Teile der Schatzkarte zusammengelegt werden, dann man den Schatz
+	finden. Bedenkt man jetzt jedoch, dass jeder Teilgeheimnisträger seinen Teil der
+	Schatzkarte verändern und dadurch die Bedeutung der gesamten Karte ändern könnte,
+	ist es notwendig, das zu verhindern. Der Verifiable Secret Sharing-Algorithmus erweitert
+	den Shamir's Secret Sharing Algorithmus um diese Funktionaliät.
+</p>
+
+<p>
+	Der Algorithmus von Shamir basiert auf der Lagrange-Polynominterpolation und ist
+	ein <i>(n,t)</i>-Secret-Sharing-Protokoll. Alle Berechnungen werden im Ganzzahlkörper
+	<i>&#x2124;/p*</i> durchgeführt.
 </p>
 
 <h2>Domain-Parameter (Variablen)</h2>
+
 <p>
 	<ol>
-	<li>n: Anzahl der Player</li>
-	<li>t: Anzahl der Player zur Rekonstruktion</li>
-	<li>s: Geheimnis</li>
-	<li>p: Modul für die Überprüfung der Shares, ist eine Safe Prime</li>
+	<li>n: Anzahl der Player</br>
+	<i>n</i> muss eine natürliche Zahl sein, <i>2 &#x2264; n</i></li>
+	<li>t: Anzahl der Player zur Rekonstruktion</br>
+	<i>2 &#x2264; t &#x2264; n</i></li>
+	<li>s: Geheimnis</br>
+	<i>s</i> muss eine natürliche Zahl sein.</li>
+	<li>p: Modul für die Überprüfung der Shares, ist eine Safe Prime</br>
+	<i>p > 2s</i></li>
 	<li>q: Größter Primfaktor von (p-1)</li>
 	<li>g: Ist ein Element des Körpers <i>&#x2124;/p</i> mit der multiplikativen Ordnung <i>q</i></li>
 	</ol>
+	<p>Der Dealer legt alle Parameter fest. Bis auf <i>n</i> und <i>t</i> sind alle Parameter geheim und nur dem Dealer bekannt.</p>
+	
 </p>
 
 <h2>Ablauf des Algorithmus</h2>
@@ -53,55 +62,74 @@ Der Dealer will ein Geheimnis <i>s &#x2208; &#x2115;</i> verteilen.
 
 <p>
    <ol>
-     <li>Er wählt geheime Elemente <i>a<sub>j</sub> &#x2208; &#x2115;, 1 &#x2264; j &#x2264; (t-1)</i> und konstruiert
-     daraus das Polynom:
-	 <p><img src="vss_polynom.jpg"></p>
-	 
-	 <p>Das Polynom ist vom Grad <i>t-1.</i> Der Koeffizient <i>a<sub>0</sub></i> ist das Geheimnis <i>s</i></p>
-	 
+    <li>
+		Er wählt geheime Elemente <i>a<sub>j</sub> &#x2208; &#x2115;, 1 &#x2264; j &#x2264; (t-1), 1 &#x2264 a &#x2264; q</i> und konstruiert daraus das Polynom:
+		
+			<p><img src="vss_polynom.jpg"></p>
+			 
+			<p>Das Polynom ist vom Grad <i>t-1.</i> Der Koeffizient <i>a<sub>0</sub></i> ist das Geheimnis <i>s</i></p>
+			 
+	</li>
+    <li>
+	<p>
+		Der Dealer berechnet die Shares <i>N<sub>i</sub> = P(i) mod q, 1 &#x2264; i &#x2264; n</i></br>
+		i = ID des Shareholders</br>
+		Gleichzeitig mit den Shares werden auch die Commitments <i>Y<sub>e</sub> , 0 &#x2264; e &#x2264; (t-1)</i> für alle Koeffizienten <i>a<sub>e</sub></i> berechnet und an alle Shareholder verteilt.
+	</p>
+
+	<p>
+		<img src="vss_compute_commitments.jpg">
+	</p>
+
+	<p>
+		Die Commitments werden später zur Überprüfung der Shares benötigt.
+	</p>
+	
+	<p>
      </li>
-     <li>Der Dealer berechnet die Shares <i>N<sub>i</sub> = P(i) mod q, 1 &#x2264; i &#x2264; n</i>
-</br>i = ID des Shareholders
-</br>Gleichzeitig mit den Shares werden auch die Commitments <i>Y<sub>e</sub> , 0 &#x2264; e &#x2264; (t-1)</i> für alle Koeffizienten <i>a<sub>e</sub></i> berechnet und an alle Shareholder verteilt.
-</p>
-
-<p><img src="vss_compute_commitments.jpg"></p>
-
-Die Commitments werden später zur Überprüfung der Shares benötigt.
-<p>
-
-     </li>
-     <li>Der Dealer gibt dem <i>i</i>-ten Shareholder den Share <i>N<sub>i</sub> , 1 &#x2264; i &#x2264; n</i>.</li>
+     <li>
+		Der Dealer gibt dem <i>i</i>-ten Shareholder den Share <i>N<sub>i</sub> , 1 &#x2264; i &#x2264; n</i>.
+	 </li>
 	</ol>
+	</p>
 </p>
 
 <h3>Überprüfung der Shares</h3>
 
 <p>
-Vor der Rekonstruktion erfolgt noch die Überprüfung der Shares durch die Player. Der Check besteht aus 2 Schritten.
+	Vor der Rekonstruktion erfolgt noch die Überprüfung der Shares durch die Player. 
+	Jeder Player kann seinen eigen Share überprüfen, sowie die Shares der anderen Player 
+	die zur Rekonstruktion verwendet werden.
 </p>
+
+<p>Der Check besteht aus 2 Schritten.</p>
+
 <p>Schritt 1:</p>
+
 <p><img src="vss_check_1.jpg"></p>
+
 <p>Schritt 2:</p>
+
 <p><img src="vss_check_2.jpg"></p>
 
-<p>Stimmen die Ergebnisse dieser Berechnungen überein, ist der Share als korrekt verifiziert.
-</br>
-Diese Berechnung für jeden zu überprüfenden Share einzeln durchgeführt werden.
+<p>
+	Stimmen die Ergebnisse dieser Berechnungen überein, ist der Share als korrekt verifiziert. 
+	Diese Berechnung muss für jeden zu überprüfenden Share seperat durchgeführt werden.
+</p>
 
+<h3>Rekonstruktion</h3>
 
-Um das Geheimnis rekonstruieren zu können, nehmen wir an, dass <i>t</i> Shareholder
-zusammen arbeiten.</p>
+<p>
+	Um das Geheimnis rekonstruieren zu können, nehmen wir an, dass <i>t</i> Shareholder zusammen arbeiten.
+</p>
 
 <p><img src="vss_lagrange.jpg"></p>
 
-<p>Diese Formel wird von den Shareholdern benutzt, um das Geheimnis zu rekonstruieren. 
-Das Geheimnis ist der Koeffizient <i>a<sub>0</sub></i> des rekonstruierten Polynoms.</p>
-      
+<p>
+	Diese Formel wird von den Shareholdern benutzt, um das Geheimnis zu rekonstruieren. 
+	Das Geheimnis ist der Koeffizient <i>a<sub>0</sub></i> des rekonstruierten Polynoms.
+</p>
 
 </body>
 
 </html>
-
-
-
