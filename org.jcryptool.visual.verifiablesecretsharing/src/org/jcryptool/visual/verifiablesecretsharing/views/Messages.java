@@ -81,6 +81,7 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_param_module_p_isPrime;
 	public static String VerifiableSecretSharingComposite_param_primitive_g;
 	public static String VerifiableSecretSharingComposite_param_set_all;
+	public static String VerifiableSecretSharingComposite_param_p_not_safe_prime;
 	
 	//errors for setting the coefficients
 	public static String VerifiableSecretSharingComposite_coefficient_positive;
