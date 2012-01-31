@@ -426,7 +426,7 @@ public class VerifiableSecretSharingComposite extends Composite {
 		primitiveRootLabel
 				.setText(Messages.VerifiableSecretSharingComposite_parameters_primitiveRoot);
 
-		primitiveRootText = new Text(parametersGroup, SWT.BORDER);
+		primitiveRootText = new Text(parametersGroup, SWT.BORDER | SWT.READ_ONLY);
 		primitiveRootText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
 		primitiveRootText.addListener(SWT.Verify, new Listener() {
@@ -1561,16 +1561,23 @@ public class VerifiableSecretSharingComposite extends Composite {
 		return result;
 	}
 
-	private boolean isSubgroup(String proot, String p) {
-		int pInt = Integer.parseInt(p);
-		int prootInt = Integer.parseInt(proot);
-		for (int i = 2; i < pInt; i++) {
-			int j = i, o = 1;
+	private boolean isSubgroup(String g, String p) {
+		BigInteger pBigInt = new BigInteger(p);
+		BigInteger gBigInt = new BigInteger(g);
+		BigInteger j;
+		BigInteger o;
+		for (int i = 2; new BigInteger(i+"").compareTo(pBigInt) < 0; i++) {
+//			int j = i, o = 1;
+			j = new BigInteger(i+"");
+			o = BigInteger.ONE;
 			do {
-				o++;
-				j = j * i % pInt;
-			} while (j != 1);
-			if (o == ((pInt - 1) / 2) && prootInt == i) {
+//				o++;
+				o = o.add(BigInteger.ONE);
+//				j = j * i % pBigInt;
+				j = j.multiply(new BigInteger(i+"")).mod(pBigInt);
+			} while (j.compareTo(BigInteger.ONE) != 0);
+//			if (o == ((pBigInt - 1) / 2) && gBigInt == i) {
+			if(o.compareTo(pBigInt.subtract(BigInteger.ONE).divide(new BigInteger("2"))) == 0 && gBigInt.compareTo(new BigInteger(i+"")) == 0) {
 				return true;
 			}
 		}
