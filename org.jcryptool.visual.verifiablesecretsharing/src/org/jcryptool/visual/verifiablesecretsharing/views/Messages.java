@@ -67,6 +67,8 @@ public class Messages extends NLS {
 	public static String VerifiableSecretSharingComposite_shares_check_button;
 	
 	public static String VerifiableSecretSharingComposite_reconstruction_reconstruct_button;
+	public static String VerifiableSecretSharingComposite_reconstruction_reconstruct_dialog_title;
+	public static String VerifiableSecretSharingComposite_reconstruction_reconstruct_dialog_text;
 		
 	//errors general
 	public static String VerifiableSecretSharingComposite_error_start;
