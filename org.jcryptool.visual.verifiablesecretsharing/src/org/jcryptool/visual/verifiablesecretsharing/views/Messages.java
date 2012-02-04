@@ -60,8 +60,8 @@ public class Messages extends NLS {
 	
 	public static String VerifiableSecretSharingComposite_commitments_coefficient_subtitle;
 	public static String VerifiableSecretSharingComposite_commitments_commitment_subtitle;
-	
 	public static String VerifiableSecretSharingComposite_shares_shareNModP_subtitle;
+
 	//playerX for Shares and Reconstruction
 	public static String VerifiableSecretSharingComposite_playerX;
 	public static String VerifiableSecretSharingComposite_shares_check_button;
@@ -92,12 +92,16 @@ public class Messages extends NLS {
 	
 	public static String VerifiableSecretSharingComposite_commitment_not_calculated;
 	
+	
+	//reconstruction chart
 	public static String ChartComposite_tab_title;
 	public static String ChartComposite_reconstruct_success;
 	public static String ChartComposite_reconstruct_failure;
-	 
+	
+	//too less players chosen
 	public static String VerifiableSecretSharingComposite_reconstruct_no_players;
 	
+	//boxes with further explanations
 	public static String VerifiableSecretSharingComposite_description_parameters_left;
 	public static String VerifiableSecretSharingComposite_description_parameters_right;
 
