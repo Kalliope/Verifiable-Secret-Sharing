@@ -39,32 +39,30 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.experimental.chart.swt.ChartComposite;
 
 public class ReconstructionChartComposite extends Composite {
-	private int[] playerID = { 1, 2, 3, 4, 5, 6, 7, 8 };
-	private BigInteger[] shares = { new BigInteger("4"), new BigInteger("7"),
-			new BigInteger("10"), new BigInteger("11"), new BigInteger("12"),
-			new BigInteger("13"), new BigInteger("14"), new BigInteger("22") };
-	private Polynomial reconstructedPolynom = new Polynomial(new BigInteger[] {
-			new BigInteger("" + 123), new BigInteger("" + 25) });
+	private int[] playerID = { 0 };
+	private BigInteger[] shares = { new BigInteger("0") };
+	private Polynomial reconstructedPolynom = new Polynomial(
+			new BigInteger[] { new BigInteger("" + 0) });
 	private JFreeChart chart;
 	private Composite body;
 	private StyledText stDescription;
 	private ChartComposite chartComposite;
 	private String generatedPolynom;
 	private int secret;
-	
-	public void setSecret(int secret){
+
+	public void setSecret(int secret) {
 		this.secret = secret;
 	}
-	
-	public int getSecret(){
+
+	public int getSecret() {
 		return secret;
 	}
-	
-	public String getPolynom(){
+
+	public String getPolynom() {
 		return generatedPolynom;
 	}
-	
-	public void setPolynom(String polynom){
+
+	public void setPolynom(String polynom) {
 		this.generatedPolynom = polynom;
 	}
 
@@ -94,17 +92,24 @@ public class ReconstructionChartComposite extends Composite {
 				control.dispose();
 			}
 		}
-		
+
 		chart = createChart(createDataset());
 		chartComposite = new ChartComposite(body, SWT.None, chart, true);
 		body.layout();
-		if(generatedPolynom.compareTo(reconstructedPolynom.toString())==0){
-			stDescription.setText("P'(x) = "+reconstructedPolynom.toString()+"\r\n"+Messages.ChartComposite_reconstruct_success);
-		}else{
-			stDescription.setText("P'(x) = "+reconstructedPolynom.toString()+"\r\n"+Messages.ChartComposite_reconstruct_failure);
+		if (reconstructedPolynom.toString().compareTo("0") == 0) {
+			stDescription.setText(Messages.ChartComposite_noGraph);
+		} else {
+			if (generatedPolynom.compareTo(reconstructedPolynom.toString()) == 0) {
+				stDescription.setText("P'(x) = "
+						+ reconstructedPolynom.toString() + "\r\n"
+						+ Messages.ChartComposite_reconstruct_success);
+			} else {
+				stDescription.setText("P'(x) = "
+						+ reconstructedPolynom.toString() + "\r\n"
+						+ Messages.ChartComposite_reconstruct_failure);
 
+			}
 		}
-
 	}
 
 	public ReconstructionChartComposite(final Composite parent,
@@ -132,7 +137,11 @@ public class ReconstructionChartComposite extends Composite {
 				| SWT.WRAP);
 		stDescription.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,
 				false));
-		stDescription.setText(reconstructedPolynom.toString());
+		if (reconstructedPolynom.toString().compareTo("0") == 0) {
+			stDescription.setText(Messages.ChartComposite_noGraph);
+		} else {
+			stDescription.setText(reconstructedPolynom.toString());
+		}
 	}
 
 	private void createBody() {
@@ -164,7 +173,7 @@ public class ReconstructionChartComposite extends Composite {
 		}
 
 		secretSeries.add(0, secret);
-		
+
 		final XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(playerAndSharesSeries);
 		dataset.addSeries(reconstructionSeries);
@@ -194,35 +203,36 @@ public class ReconstructionChartComposite extends Composite {
 				false, // tooltips
 				false // urls
 				);
-		//XYSplineRenderer -- show data points
+		// XYSplineRenderer -- show data points
 		XYPlot plot = (XYPlot) chart.getPlot();
 		plot.setBackgroundPaint(Color.lightGray);
 		plot.setDomainGridlinePaint(Color.white);
 		plot.setDomainGridlinesVisible(true);
 		plot.setRangeGridlinePaint(Color.white);
-		
-		
-		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
-        //show no line
-		renderer.setSeriesLinesVisible(0, false);
-		renderer.setSeriesLinesVisible(3,false);
-        //show no points
-		renderer.setSeriesShapesVisible(1, false);
-		
-		//set range of axis
-		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
-        domain.setRange(-0.1, playerID[playerID.length-1]+0.1);
-        domain.setTickUnit(new NumberTickUnit(1));
-        domain.setVerticalTickLabels(false);
 
-		// display value 
+		final XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+		// show no line
+		renderer.setSeriesLinesVisible(0, false);
+		renderer.setSeriesLinesVisible(3, false);
+		// show no points
+		renderer.setSeriesShapesVisible(1, false);
+
+		// set range of axis
+		NumberAxis domain = (NumberAxis) plot.getDomainAxis();
+		domain.setRange(-0.1, playerID[playerID.length - 1] + 0.1);
+		domain.setTickUnit(new NumberTickUnit(1));
+		domain.setVerticalTickLabels(false);
+
+		// display value
 		NumberFormat format = NumberFormat.getNumberInstance();
 		format.setMaximumFractionDigits(0);
-		XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT,format, format);
+		XYItemLabelGenerator generator = new StandardXYItemLabelGenerator(
+				StandardXYItemLabelGenerator.DEFAULT_ITEM_LABEL_FORMAT, format,
+				format);
 		renderer.setBaseItemLabelGenerator(generator);
-        renderer.setBaseItemLabelsVisible(true);
-		
-        plot.setRenderer(renderer);
+		renderer.setBaseItemLabelsVisible(true);
+
+		plot.setRenderer(renderer);
 
 		return chart;
 

@@ -37,11 +37,6 @@ public class Messages extends NLS {
 	//texts for descriptions
 	public static String VerifiableSecretSharingComposite_description_title;
 	public static String VerifiableSecretSharingComposite_description_tooltip;
-	public static String VerifiableSecretSharingComposite_description_text_param;
-	public static String VerifiableSecretSharingComposite_description_text_coefficients;
-	public static String VerifiableSecretSharingComposite_description_text_comittments;
-	public static String VerifiableSecretSharingComposite_description_text_shares;
-	public static String VerifiableSecretSharingComposite_description_text_reconstruction;
 	
 	//texts for parameters
 	public static String VerifiableSecretSharingComposite_parameters_players;
@@ -97,8 +92,8 @@ public class Messages extends NLS {
 	public static String ChartComposite_tab_title;
 	public static String ChartComposite_reconstruct_success;
 	public static String ChartComposite_reconstruct_failure;
-	
-	//too less players chosen
+	public static String ChartComposite_noGraph;
+
 	public static String VerifiableSecretSharingComposite_reconstruct_no_players;
 	
 	//boxes with further explanations

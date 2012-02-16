@@ -1181,8 +1181,32 @@ public class VerifiableSecretSharingComposite extends Composite {
 								reconstruction = vss.reconstruct(playerIds,
 										Integer.parseInt(primeFactorText
 												.getText()));
-								MessageDialog.openInformation(getShell(), Messages.VerifiableSecretSharingComposite_reconstruction_reconstruct_dialog_title, Messages.VerifiableSecretSharingComposite_reconstruction_reconstruct_dialog_text+reconstruction.getCoef()[0].toString()+".");
-//								MessageDialog.openError(getShell(), "Error", errorText);
+
+								if (polynomText.getText().compareTo(
+										reconstruction.toString()) == 0) {
+									MessageDialog
+											.openInformation(
+													getShell(),
+													Messages.VerifiableSecretSharingComposite_reconstruction_reconstruct_dialog_title,
+													Messages.ChartComposite_reconstruct_success
+															+ Messages.VerifiableSecretSharingComposite_reconstruction_reconstruct_dialog_text
+															+ reconstruction
+																	.getCoef()[0]
+																	.toString()
+															+ ".");
+								} else {
+									MessageDialog
+											.openInformation(
+													getShell(),
+													Messages.VerifiableSecretSharingComposite_reconstruction_reconstruct_dialog_title,
+													Messages.ChartComposite_reconstruct_failure
+															+ Messages.VerifiableSecretSharingComposite_reconstruction_reconstruct_dialog_text
+															+ reconstruction
+																	.getCoef()[0]
+																	.toString()
+															+ ".");
+								}
+								//MessageDialog.openError(getShell(), "Error",errorText);
 								rcc = ((VerifiableSecretSharingView) platformPart
 										.getView(false))
 										.getReconstructionChartComposite();
