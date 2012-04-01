@@ -5,10 +5,10 @@
 </head>
 <body>
 
-<h1>Verifiable Secret Sharing</h1>
+<h1>Verifiable Secret-Sharing</h1>
 
 <p>
-	Der <b>Verifiable Secret Sharing</b> Algorithmus wurde 1987 von Paul Feldman entwickelt und 
+	Der <b>Verifiable Secret-Sharing</b> Algorithmus wurde 1987 von Paul Feldman entwickelt und 
 	basiert auf dem von Adi Shamir 1979 entwickelten Secret Sharing Verfahren Shamir's Secret Sharing. Mit diesem Algorithmus ist es möglich, 
 	ein Geheimnis auf mehrere Personen aufzuteilen, wobei eine gewisse Untermenge dieser Personen erforderlich ist, 
 	um das Geheimnis zu rekonstruieren. Im Gegensatz zum ursprünglichen Algorithmus von Shamir, kann beim <b>Verifiable Secret Sharing</b> 
@@ -16,11 +16,11 @@
 </p>
 
 <p>
-	Im Folgenden wird die Funktionsweise des <b>Verifiable Secret Sharing</b> Plugins anhand einiger Screenshots und Erklärungen gezeigt.
+	Im Folgenden wird die Funktionsweise des <b>Verifiable Secret-Sharing</b> Plugins anhand einiger Screenshots und Erklärungen gezeigt.
 </p>
 
 <p>
-	Das <b >Verifiable Secret Sharing</b> Plugin lässt sich über das Menü Visualisierungen oder über die View
+	Das <b >Verifiable Secret-Sharing</b> Plugin lässt sich über das Menü Visualisierungen oder über die View
 	<b >Algorithmen</b> im Reiter <b >Visualisierungen</b> starten und in seiner Ansicht maximieren.
 </p>
 
@@ -29,10 +29,10 @@
 </p>
 
 <p>
-	Das Plugin gliedert sich in vier Bereiche: <b>Header</b>, <b>Eingabemasken</b>, <b>Erklärungsboxen</b> sowie den Reiter <b>Rekonstrunktionsgraph</b>.
+	Das Plugin gliedert sich in vier Bereiche: <b>Header</b>, <b>Eingabecontainer</b>, <b>Erklärungsbereich</b> sowie den Reiter <b>Rekonstrunktionsgraph</b>.
 	Im <b>Header</b> wird eine kurze Beschreibung des Plugins angezeigt.
 
-	<p>Die <b>Eingabemasken</b> dienen zur Eingabe der Parameter durch den Benutzer und zur Anzeige der Ergebnisse der verschiedenen Berechnungen.</p>	
+	<p>Die <b>Eingabecontainer</b> dienen zur Eingabe der Parameter durch den Benutzer und zur Anzeige der Ergebnisse der verschiedenen Berechnungen.</p>	
 
 	<p>Am unteren Bildschirmrand gibt es noch einen Bereich <b>Erklärungen</b>, wo zusätzliche Informationen zum aktuellen Arbeitsschritt angezeigt werden.</p>
 
@@ -42,13 +42,13 @@
 <h3>Festlegung der Parameter für die Berechnung</h3>
 
 <p>
-	In der Eingabemaske <b>Parameter</b> werden die nötigen Parameter für den Ablauf des Algorithmus eingestellt.
+	Im Eingabecontainer <b>Parameter</b> werden die nötigen Parameter für den Ablauf des Algorithmus eingestellt.
 	Man wählt die Anzahl der <b>Personen n</b> aus, an die die <b>Shares</b> verteilt werden und die
 
 	Anzahl der <b>Personen t</b>, die für die Rekonstruktion des Geheimnisses nötig sind. Die Anzahl der Personen
 	für die Rekonstruktion darf höchstens der Anzahl der gesamten Personen entsprechen und
 
-	beide müssen <b>mindestens 2</b> sein, da sonst die Idee des Secret Sharing ad absurdum geführt werden würde.
+	beide müssen <b>mindestens 2</b> sein, da sonst die Idee des Secret-Sharing ad absurdum geführt werden würde.
 </p>
 
 <p>
@@ -70,7 +70,7 @@
 <h3>Festlegung der Koeffizienten für das Polynom und Berechnung der Commitments</h3>
 
 <p>
-	In der Eingabemaske <b>Koeffizienten</b> werden die Koeffizienten für das Polynom festgelegt. Diese können entweder vom Plugin, 
+	Im Eingabecontainer <b>Koeffizienten</b> werden die Koeffizienten für das Polynom festgelegt. Diese können entweder vom Plugin, 
 	mittels Klick auf den Button <b>Generieren</b>, generiert werden lassen oder wieder selbst gewählt werden.
 
 	Die Koeffizienten müssen natürliche Zahlen sein und kleiner als der <b>Modul q</b>. Zusätzlich darf der letzte Koeffizient nicht 0 sein, 
@@ -104,9 +104,9 @@
 <h3>Überprüfung der Shares und Rekonstruktion</h3>
 
 <p>
-	Der letzte Schritt verteilt sich auf die beiden Eingabemasken <b>Shares</b> und <b>Rekonstruktion</b>.
+	Der letzte Schritt verteilt sich auf die beiden Eingabecontainer <b>Shares</b> und <b>Rekonstruktion</b>.
 
-	In der <b>Shares</b>-Eingabemaske werden die Zwischenergebnisse vor der Reduktion modulo q und die Shares modulo q angezeigt. 
+	Im <b>Shares</b>-Eingabecontainer werden die Zwischenergebnisse vor der Reduktion modulo q und die Shares modulo q angezeigt. 
 	Alle nachfolgenden Berechnungen werden mit den Shares modulo q durchgeführt. Das Zwischenergebnis vor der Reduktion modulo q wird nicht mehr benötigt. 
 	Es wird trotzdem angezeigt, damit der Benutzer nach der Rekonstruktion den Graphen des Polynoms auf seine Richtigkeit kontrollieren kann.
 </p>
