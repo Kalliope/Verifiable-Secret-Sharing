@@ -43,7 +43,7 @@
 
 <p>
 	Im Eingabecontainer <b>Parameter</b> werden die nötigen Parameter für den Ablauf des Algorithmus eingestellt.
-	Man wählt die Anzahl der <b>Personen n</b> aus, an die die <b>Shares</b> verteilt werden und die
+	Man wählt die Anzahl der <b>Personen n</b> aus, an die die <b>Shares</b> verteilt werden, und die
 
 	Anzahl der <b>Personen t</b>, die für die Rekonstruktion des Geheimnisses nötig sind. Die Anzahl der Personen
 	für die Rekonstruktion darf höchstens der Anzahl der gesamten Personen entsprechen und
@@ -53,7 +53,7 @@
 
 <p>
 	Nachdem als nächstes das <b>Geheimnis s</b> gewählt wurde, wird automatisch der <b>Modul p</b> berechnet,
-	da dieser eine Safe Prime sein muss. Da das Finden von Safe Primes relativ aufwendig ist, wird empfohlen die 
+	da dieser eine Safe Prime sein muss. Da das Finden von Safe Primes relativ aufwendig ist, wird empfohlen, die 
 	vorgeschlagenen Werte zu verwenden. Es kann jedoch auch selbst ein Modul gewählt werden. Auch in diesem Fall 
 	muss der Modul wieder eine Safe Prime sein und mindestens doppelt so groß wie das <b>Geheimnis s</b>. Des Weiteren wird der größte <b>Primfaktor q</b> von (p-1) benötigt. 
 	Der Primfaktor berechnet sich automatisch aus der Safe Prime p wie folgt: q = (p-1)/2. Der letzte Parameter ist der <b>Generator g</b>, welcher automatisch berechnet wird. 
@@ -64,8 +64,8 @@
 <p><img src="vss_parameter_2.jpg"></p>
 
 <p>
-	Sind alle Parameter korrekt gewählt, ist es möglich mit einem Klick auf <b>Koeffizienten bestimmen</b> zum nächsten Schritt fortzufahren.
-</p>
+	Sind alle Parameter korrekt gewählt, kann man zum nächsten Schritt fortfahren, indem man auf <b>Koeffizienten bestimmen</b> klickt.
+</p>	
 
 <h3>Festlegung der Koeffizienten für das Polynom und Berechnung der Commitments</h3>
 
@@ -81,8 +81,8 @@
 <p><img src="vss_coefficients_3.jpg"></p>
 
 <p>
-	Weiters gibt es in diesem Schritt den Button <b>Commit</b>. Die Berechnung der <b>Commitments</b> ist notwendig,
-	 wenn man im weiteren Verlauf die verteilten <b>Shares</b> überprüfen möchte.
+	Weiters gibt es in diesem Schritt den Button <b>Commit</b>. Die Berechnung der <b>Commitments</b> ist optional, jedoch notwendig,
+	 wenn man im weiteren Verlauf die verteilten <b>Shares</b> überprüfen und somit die Verifiable-Funktion nutzen möchte.
 	 
 	 Nach der Berechnung werden die Commitments in einer eigenen Eingabemaske angezeigt.
 </p>
